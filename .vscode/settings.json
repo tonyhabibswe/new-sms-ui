@@ -1,0 +1,18 @@
+{
+    // other settings
+    "tailwindCSS.includeLanguages": {
+      "javascript": "javascript",
+      "html": "HTML"
+    },
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "prettier.configPath": ".prettierrc.json"
+  }
+  

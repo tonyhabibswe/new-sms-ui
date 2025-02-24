@@ -1,0 +1,24 @@
+# Use Node 18 on Alpine for a lightweight image
+FROM node:18-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy dependency files first to leverage Docker cache
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Optionally, if you run into permission issues, you can uncomment these lines:
+# RUN chown -R node:node /app
+# USER node
+
+# Expose the port the Next.js development server uses (default is 3000)
+EXPOSE 3000
+
+# Run the Next.js development server
+CMD ["npm", "run", "dev"]

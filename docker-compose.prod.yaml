@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  sms-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: sms-ui
+    restart: always
+    environment:
+      API_URL: ${API_URL}
+      NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    expose:
+      - "3000"
+    networks:
+      - sms-network
+
+networks:
+  sms-network:
+    external: true

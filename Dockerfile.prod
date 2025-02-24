@@ -1,0 +1,23 @@
+# Stage 1: Build the Next.js application
+FROM node:18-alpine as builder
+WORKDIR /app
+
+# Install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy source code and build the application
+COPY . .
+RUN npm run build
+
+# Stage 2: Production image to run the app
+FROM node:18-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Copy built files and production dependencies from the builder stage
+COPY --from=builder /app ./
+RUN npm ci --production
+
+EXPOSE 3000
+CMD ["npm", "run", "start"]
