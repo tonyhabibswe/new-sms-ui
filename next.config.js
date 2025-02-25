@@ -19,7 +19,7 @@ const nextConfig = {
     return [
       {
         source: '/',
-        destination: '/admin/semester/list',
+        destination: '/admin/semesters/list',
         permanent: true
       }
     ]

@@ -10,7 +10,7 @@ export async function middleware(req) {
   const protectedPaths = ['/admin']
   if (!!token && req.nextUrl.pathname == '/login') {
     const url = req.nextUrl.clone()
-    url.pathname = '/admin/semester/list' // Modify to your sign-in route if needed
+    url.pathname = '/admin/semesters/list' // Modify to your sign-in route if needed
     return NextResponse.redirect(url)
   }
   if (
