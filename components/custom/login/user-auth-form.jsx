@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { useToast } from '@/components/ui/use-toast'
 
 const FormSchema = z.object({
   username: z.string(),
@@ -27,6 +28,8 @@ export function UserAuthForm({ className, ...props }) {
   const [isLoading, setIsLoading] = useState(false)
   const searchParams = useSearchParams()
   const router = useRouter()
+  const { toast } = useToast()
+
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -44,7 +47,12 @@ export function UserAuthForm({ className, ...props }) {
         redirect: false
       })
 
-      if (!res.ok) throw new Error('Invalid Credentials')
+      if (!res.ok) {
+        toast({
+          variant: 'destructive',
+          title: 'Invalid credentials.'
+        })
+      }
       searchParams.get('redirect')
         ? router.push(searchParams.get('redirect'))
         : router.push('/')

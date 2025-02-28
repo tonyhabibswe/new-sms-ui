@@ -23,9 +23,6 @@ import {
 
 import { DataTablePagination } from './data-table-pagination'
 import { useToast } from '@/components/ui/use-toast'
-import { signOut } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-// import { DataTableToolbar } from './data-table-toolbar'
 
 export function DataTable({
   columns,
@@ -45,7 +42,6 @@ export function DataTable({
     pageSize: 30 // Default rows per page set to 30
   })
   const { toast } = useToast()
-  const router = useRouter()
   React.useEffect(() => {
     let timer
     const handleError = async () => {
