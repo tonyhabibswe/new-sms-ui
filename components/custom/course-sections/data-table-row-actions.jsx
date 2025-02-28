@@ -31,11 +31,14 @@ import AddCourseForm from './add-course-form'
 import DeleteCourseButton from './delete-course/delete-course-button'
 import ImportStudentsDialog from '../students/import-students-dialog'
 import Link from 'next/link'
+import AddStudentForm from '../students/add-student/add-student-form'
 
 export function DataTableRowActions({ row }) {
   const [openEditSheet, setOpenEditSheet] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [openImportStudentDialog, setOpenImportStudentDialog] = useState(false)
+  const [openStudentFormSheet, setOpenStudentFormSheet] = useState(false)
+
   const param = useParams()
   return (
     <SessionProvider>
@@ -52,7 +55,9 @@ export function DataTableRowActions({ row }) {
           <DropdownMenuItem onClick={() => setOpenImportStudentDialog(true)}>
             Import Students
           </DropdownMenuItem>
-          <DropdownMenuItem>Add Students</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => setOpenStudentFormSheet(true)}>
+            Add Students
+          </DropdownMenuItem>
           <DropdownMenuSeparator />
           <Link href={`/admin/course-section/${row.original.id}/sessions/list`}>
             <DropdownMenuItem>Sessions List</DropdownMenuItem>
@@ -85,6 +90,20 @@ export function DataTableRowActions({ row }) {
           />
         </DialogContent>
       </Dialog>
+      <Sheet open={openStudentFormSheet} onOpenChange={setOpenStudentFormSheet}>
+        <SheetContent className="md:max-w-md lg:max-w-lg">
+          <SheetHeader>
+            <SheetTitle>Add Student</SheetTitle>
+            <SheetDescription>
+              Add a student here. Click save when you're done.
+            </SheetDescription>
+          </SheetHeader>
+          <AddStudentForm
+            setOpenSheet={setOpenStudentFormSheet}
+            courseSectionId={row.original.id}
+          />
+        </SheetContent>
+      </Sheet>
       <Sheet open={openEditSheet} onOpenChange={setOpenEditSheet}>
         <SheetContent className="md:max-w-md lg:max-w-lg">
           <SheetHeader>
