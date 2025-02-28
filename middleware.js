@@ -1,6 +1,6 @@
 import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
-import jwt from "jsonwebtoken"
+import jwt from 'jsonwebtoken'
 
 // This is the secret used to encrypt your JWT. Ensure this is synced with your NextAuth config.
 const secret = process.env.NEXTAUTH_SECRET
@@ -10,21 +10,29 @@ export async function middleware(req) {
   // Your protected paths can be more dynamic depending on your application's needs.
   const protectedPaths = ['/admin']
   const url = req.nextUrl.clone()
-  if (!!token?.data?.token && !!jwt.decode(token.data.token)?.exp && jwt.decode(token.data.token).exp * 1000 < Date.now()) {
-    console.log("Iam insidee now")
-      url.pathname = '/login' // Modify to your sign-in route if needed
-      const response = NextResponse.redirect(url)
-      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      response.cookies.delete('next-auth.session-token')
-      response.cookies.delete('next-auth.csrf-token')
-      response.cookies.delete('next-auth.callback-url')
-      return response
+  if (
+    !!token?.data?.token &&
+    !!jwt.decode(token.data.token)?.exp &&
+    jwt.decode(token.data.token).exp * 1000 < Date.now()
+  ) {
+    url.pathname = '/login' // Modify to your sign-in route if needed
+    const response = NextResponse.redirect(url)
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, proxy-revalidate'
+    )
+    response.cookies.delete('next-auth.session-token')
+    response.cookies.delete('next-auth.csrf-token')
+    response.cookies.delete('next-auth.callback-url')
+    return response
   }
   if (!!token && req.nextUrl.pathname == '/login') {
-    
-    url.pathname ='/login'
+    url.pathname = '/login'
     const response = NextResponse.redirect(url)
-    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    response.headers.set(
+      'Cache-Control',
+      'no-store, no-cache, must-revalidate, proxy-revalidate'
+    )
 
     return NextResponse.redirect(url)
   }
@@ -38,8 +46,11 @@ export async function middleware(req) {
     return NextResponse.redirect(url)
   }
 
-  const response = NextResponse.next();
-  response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  const response = NextResponse.next()
+  response.headers.set(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, proxy-revalidate'
+  )
 
   // For all other requests, allow them to continue.
   return response

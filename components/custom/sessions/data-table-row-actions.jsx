@@ -40,12 +40,12 @@ export function DataTableRowActions({ row }) {
             <DropdownMenuItem>Attendance</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
+          {/* <DropdownMenuItem
             onClick={() => {
               setOpenEditDialog(true)
             }}>
             Edit Session
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>

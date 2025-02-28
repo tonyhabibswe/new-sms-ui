@@ -1,6 +1,5 @@
 import { DataTable } from '@/components/custom/data-table/data-table'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
-import { signOut } from 'next-auth/react'
 import { columns } from '@/components/custom/courses/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/courses/data-table-list-toolbar'
 import AddCourseButton from '@/components/custom/courses/AddCourse/add-course-button'
@@ -9,7 +8,7 @@ export const metadata = {
   title: 'Courses',
   description: 'Courses List'
 }
-export const revalidate = 0;
+export const revalidate = 0
 
 const getData = async () => {
   const res = await fetchInstanceSSR('/courses', { cache: 'no-store' })
