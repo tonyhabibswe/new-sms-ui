@@ -8,7 +8,7 @@ export const metadata = {
   title: 'Courses',
   description: 'Courses List'
 }
-
+export const revalidate = 0;
 const getData = async (id) => {
   const res = await fetchInstanceSSR(`/semester/${id}/courses`, {
     cache: 'no-store'
@@ -16,7 +16,6 @@ const getData = async (id) => {
 
   if (res.status === 401) throw new Error(res.statusText)
   if (!res.ok) {
-    console.log(res)
     throw new Error('Failed to fetch courses')
   }
   const resJson = await res.json()
@@ -29,9 +28,7 @@ const CoursesListPage = async ({ params }) => {
 
   try {
     data = await getData(params.id)
-    console.log(data)
   } catch (exception) {
-    if (error.message === 'Unauthorized') await signOut({ redirect: false })
     error = exception.message
   }
   return (

@@ -26,8 +26,6 @@ const EditableNameCell = ({ row }) => {
 
   const handleKeyDown = async (e) => {
     if (e.key === 'Enter') {
-      console.log('on enter')
-      console.log(row.original.id)
       setEditing(false)
 
       try {

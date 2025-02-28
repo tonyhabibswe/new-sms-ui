@@ -7,7 +7,7 @@ export const metadata = {
   title: 'Students',
   description: 'Students List'
 }
-
+export const revalidate = 0;
 const getData = async (id) => {
   const res = await fetchInstanceSSR(`/course-section/${id}/students`, {
     cache: 'no-store'
@@ -28,7 +28,6 @@ const CourseStudentsListPage = async ({ params }) => {
   try {
     data = await getData(params.id)
   } catch (exception) {
-    if (error.message === 'Unauthorized') await signOut({ redirect: false })
     error = exception.message
   }
   return (

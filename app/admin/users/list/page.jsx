@@ -16,7 +16,7 @@ export const metadata = {
   title: 'Tasks',
   description: 'A task and issue tracker build using Tanstack Table.'
 }
-
+export const revalidate = 0;
 // // Simulate a database read for tasks.
 // async function getTasks() {
 //   const data = await fs.readFile(

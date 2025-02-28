@@ -13,7 +13,7 @@ function useFetchApi() {
   // Function to call on form submit
   const fetchData = async (url, options, noHeader = false) => {
     const token = session?.token
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
+    const apiUrl = process.env.NODE_ENV === "development" ? "http://127.0.0.1:8000/api" :process.env.NEXT_PUBLIC_API_URL 
     const fullUrl = apiUrl + url
     let defaultHeaders
 

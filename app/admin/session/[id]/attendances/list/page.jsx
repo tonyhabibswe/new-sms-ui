@@ -7,6 +7,7 @@ export const metadata = {
   title: 'Attendance',
   description: 'Attendance List'
 }
+export const revalidate = 0;
 
 const getData = async (id) => {
   const res = await fetchInstanceSSR(
@@ -31,7 +32,6 @@ const AttendanceList = async ({ params }) => {
   try {
     data = await getData(params.id)
   } catch (exception) {
-    if (error.message === 'Unauthorized') await signOut({ redirect: false })
     error = exception.message
   }
   return (

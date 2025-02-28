@@ -8,6 +8,7 @@ export const metadata = {
   title: 'Holidays',
   description: 'Holidays List'
 }
+export const revalidate = 0;
 
 const getData = async (id) => {
   const res = await fetchInstanceSSR(`/semester/${id}/holidays`, {
@@ -29,7 +30,6 @@ const HolidaysListPage = async ({ params }) => {
   try {
     data = await getData(params.id)
   } catch (exception) {
-    if (error.message === 'Unauthorized') await signOut({ redirect: false })
     error = exception.message
   }
   return (

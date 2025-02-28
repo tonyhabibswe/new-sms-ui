@@ -4,7 +4,7 @@ export const metadata = {
   title: 'Authentication',
   description: 'Authentication forms built using the components.'
 }
-
+export const revalidate = 0;
 const LoginPage = () => {
   return (
     <div className="lg:p-8 h-full">

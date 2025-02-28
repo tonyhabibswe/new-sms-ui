@@ -3,12 +3,12 @@ import { columns } from '@/components/custom/semesters/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/semesters/data-table-list-toolbar'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
 import AddSemesterButton from '@/components/custom/semesters/AddSemester/add-semester-button'
-import { signOut } from 'next-auth/react'
 
 export const metadata = {
   title: 'Semesters',
   description: 'Semester List'
 }
+export const revalidate = 0;
 
 const getData = async () => {
   const res = await fetchInstanceSSR('/semesters', { cache: 'no-store' })
@@ -19,7 +19,6 @@ const getData = async () => {
   const resJson = await res.json()
   return resJson.data
 }
-
 const SemestersListPage = async () => {
   let data = []
   let error = ''
@@ -27,7 +26,6 @@ const SemestersListPage = async () => {
   try {
     data = await getData()
   } catch (exception) {
-    if (error.message === 'Unauthorized') await signOut({ redirect: false })
     error = exception.message
   }
 

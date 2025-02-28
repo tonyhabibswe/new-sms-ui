@@ -40,7 +40,6 @@ const FormSchemaEdit = z.object({
 })
 
 const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
-  console.log('defaultData', defaultData)
   const { isLoading, fetchData } = useFetchApi()
   const {
     data: courses,

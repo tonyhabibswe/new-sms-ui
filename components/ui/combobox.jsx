@@ -33,7 +33,6 @@ export function Combobox({
   const [open, setOpen] = useState(false)
   const [internalValue, setInternalValue] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-  console.log('items', items)
   // Use the controlled value if provided; otherwise, fall back to internal state.
   const value = controlledValue !== undefined ? controlledValue : internalValue
 
