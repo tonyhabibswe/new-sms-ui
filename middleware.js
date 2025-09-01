@@ -1,57 +1,40 @@
-import { getToken } from 'next-auth/jwt'
+// middleware.ts (or middleware.js)
 import { NextResponse } from 'next/server'
-import jwt from 'jsonwebtoken'
+import { getToken } from 'next-auth/jwt'
 
-// This is the secret used to encrypt your JWT. Ensure this is synced with your NextAuth config.
-const secret = process.env.NEXTAUTH_SECRET
+const AUTH_PAGES = ['/login']
+const SEMESTER_LIST = '/admin/semesters/list'
 
 export async function middleware(req) {
-  const token = await getToken({ req, secret })
-  // Your protected paths can be more dynamic depending on your application's needs.
-  const protectedPaths = ['/admin']
-  const url = req.nextUrl.clone()
-  if (
-    !!token?.data?.token &&
-    !!jwt.decode(token.data.token)?.exp &&
-    jwt.decode(token.data.token).exp * 1000 < Date.now()
-  ) {
-    url.pathname = '/login' // Modify to your sign-in route if needed
-    const response = NextResponse.redirect(url)
-    response.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate, proxy-revalidate'
-    )
-    response.cookies.delete('next-auth.session-token')
-    response.cookies.delete('next-auth.csrf-token')
-    response.cookies.delete('next-auth.callback-url')
-    return response
-  }
-  if (!!token && req.nextUrl.pathname == '/login') {
-    url.pathname = '/login'
-    const response = NextResponse.redirect(url)
-    response.headers.set(
-      'Cache-Control',
-      'no-store, no-cache, must-revalidate, proxy-revalidate'
-    )
+  const url = new URL(req.url)
+  const pathname = url.pathname
 
-    return NextResponse.redirect(url)
-  }
-  if (
-    protectedPaths.some((path) => req.nextUrl.pathname.startsWith(path)) &&
-    !token
-  ) {
-    // Check if the current path is a protected path and if the user doesn't have a valid session.
-    url.pathname = `/login` // Modify to your sign-in route if needed
-    url.searchParams.set('redirect', req.nextUrl.pathname)
-    return NextResponse.redirect(url)
+  // Get the NextAuth token (returns null if not authenticated or expired)
+  const token = await getToken({ req: req })
+
+  const isAuthenticated = !!token
+  const isAuthPage = AUTH_PAGES.includes(pathname)
+  const isProtected = pathname.startsWith('/admin')
+
+  // 1) Block protected routes if not authenticated
+  if (!isAuthenticated && isProtected) {
+    const loginUrl = new URL('/login', url.origin)
+    // Preserve where the user wanted to go
+    loginUrl.searchParams.set('callbackUrl', pathname + url.search)
+    return NextResponse.redirect(loginUrl)
   }
 
-  const response = NextResponse.next()
-  response.headers.set(
-    'Cache-Control',
-    'no-store, no-cache, must-revalidate, proxy-revalidate'
-  )
+  // 2) If already logged in and visiting an auth page, go to dashboard
+  if (isAuthenticated && isAuthPage) {
+    const dashUrl = new URL(SEMESTER_LIST, url.origin)
+    return NextResponse.redirect(dashUrl)
+  }
 
-  // For all other requests, allow them to continue.
-  return response
+  // 3) Otherwise, continue
+  return NextResponse.next()
+}
+
+// Run middleware on the routes we care about:
+export const config = {
+  matcher: ['/admin/:path*', '/login']
 }
