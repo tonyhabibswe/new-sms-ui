@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useState } from 'react'
@@ -19,10 +20,17 @@ import {
 } from '@/components/ui/dialog'
 import AddCourseForm from './AddCourse/add-course-form'
 import DeleteCourseButton from './delete-course/delete-course-button'
+import { useRouter } from 'next/navigation'
 
 export function DataTableRowActions({ row }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
+  const router = useRouter()
+
+  const handlePassingGrades = () => {
+    router.push(`/admin/courses/${row.original.id}/passing-grades`)
+  }
+
   return (
     <SessionProvider>
       <DropdownMenu>
@@ -35,6 +43,10 @@ export function DataTableRowActions({ row }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
+          <DropdownMenuItem onClick={handlePassingGrades}>
+            Passing Grades
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenEditDialog(true)}>
             Edit
           </DropdownMenuItem>
