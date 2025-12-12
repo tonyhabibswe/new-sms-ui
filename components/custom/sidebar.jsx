@@ -1,4 +1,4 @@
-import { BackpackIcon, FileTextIcon } from '@radix-ui/react-icons'
+import { BackpackIcon, FileTextIcon, ReaderIcon } from '@radix-ui/react-icons'
 import SidebarLink from './sidebar-link'
 
 export function Sidebar({ className, ...props }) {
@@ -18,6 +18,11 @@ export function Sidebar({ className, ...props }) {
         icon={<FileTextIcon className="w-6 h-6" />}
         to="/admin/courses/list"
         name="Courses"
+      />
+      <SidebarLink
+        icon={<ReaderIcon className="w-6 h-6" />}
+        to="/admin/majors/list"
+        name="Majors"
       />
       {/* <SidebarCollapsibleLink
         icon={<PersonIcon className="w-6 h-6" />}
