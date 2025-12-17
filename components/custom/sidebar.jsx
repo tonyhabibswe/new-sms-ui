@@ -1,5 +1,6 @@
 import { BackpackIcon, FileTextIcon, ReaderIcon } from '@radix-ui/react-icons'
 import SidebarLink from './sidebar-link'
+import { GraduationCap } from 'lucide-react'
 
 export function Sidebar({ className, ...props }) {
   return (
@@ -20,7 +21,7 @@ export function Sidebar({ className, ...props }) {
         name="Courses"
       />
       <SidebarLink
-        icon={<ReaderIcon className="w-6 h-6" />}
+        icon={<GraduationCap className="w-6 h-6" />}
         to="/admin/majors/list"
         name="Majors"
       />

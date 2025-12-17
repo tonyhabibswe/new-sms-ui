@@ -5,10 +5,10 @@ import { DataTable } from '@/components/custom/data-table/data-table'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
 
 export const metadata = {
-  title: 'Courses',
-  description: 'Courses List'
+  title: 'Course Sections List',
+  description: 'Course Sections List'
 }
-export const revalidate = 0;
+export const revalidate = 0
 const getData = async (id) => {
   const res = await fetchInstanceSSR(`/semester/${id}/courses`, {
     cache: 'no-store'
@@ -34,7 +34,9 @@ const CoursesListPage = async ({ params }) => {
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <div className="flex items-center">
-        <h2 className="text-2xl font-bold tracking-tight">Courses List</h2>
+        <h2 className="text-2xl font-bold tracking-tight">
+          Course Sections List
+        </h2>
         <AddCourseButton />
       </div>
       <DataTable

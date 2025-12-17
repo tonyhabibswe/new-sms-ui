@@ -36,3 +36,5 @@ next-env.d.ts
 
 /plan
 /plan/*
+/spec
+/spec/*

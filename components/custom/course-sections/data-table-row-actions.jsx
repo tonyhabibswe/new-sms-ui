@@ -65,6 +65,16 @@ export function DataTableRowActions({ row }) {
           <Link href={`/admin/course-section/${row.original.id}/students/list`}>
             <DropdownMenuItem>Students List</DropdownMenuItem>
           </Link>
+          <Link
+            href={`/admin/course-section/${
+              row.original.id
+            }/gradebook?code=${encodeURIComponent(
+              row.original.code
+            )}&section=${encodeURIComponent(
+              row.original.sectionCode
+            )}&name=${encodeURIComponent(row.original.name)}`}>
+            <DropdownMenuItem>Gradebook</DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenEditSheet(true)}>
             Edit
