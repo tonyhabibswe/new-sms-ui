@@ -8,7 +8,6 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
@@ -132,7 +131,7 @@ export default function GradesGrid({
   return (
     <Card>
       <CardContent className="p-0">
-        <div className="relative overflow-auto h-[600px] w-full">
+        <div className="relative overflow-auto w-full">
           <Table>
             <TableHeader className="sticky top-0 z-30">
               <TableRow className="border-b">

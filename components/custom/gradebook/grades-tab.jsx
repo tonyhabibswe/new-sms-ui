@@ -5,8 +5,6 @@ import useFetchApi from '@/hooks/useFetchApi'
 import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Label } from '@/components/ui/label'
 import {
   Card,
   CardContent,
@@ -34,7 +32,6 @@ export default function GradesTab({ courseSectionId }) {
   const [isSaving, setIsSaving] = useState(false)
 
   // UI state
-  const [includeInactive, setIncludeInactive] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
   const [modifiedGrades, setModifiedGrades] = useState(new Map())
   const [cellErrors, setCellErrors] = useState(new Map())
@@ -117,7 +114,7 @@ export default function GradesTab({ courseSectionId }) {
 
     try {
       const response = await fetchData(
-        `/course-sections/${courseSectionId}/grades/table?includeInactive=${includeInactive.toString()}`,
+        `/course-sections/${courseSectionId}/grades/table`,
         { method: 'GET' }
       )
 
@@ -298,14 +295,14 @@ export default function GradesTab({ courseSectionId }) {
   }, [gradesTableData?.rows, searchQuery])
 
   /**
-   * Fetch on mount and when courseSectionId or includeInactive changes
+   * Fetch on mount and when courseSectionId changes
    */
   useEffect(() => {
     if (courseSectionId) {
       fetchGradesTable()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [courseSectionId, includeInactive])
+  }, [courseSectionId])
 
   /**
    * Warn before leaving with unsaved changes
@@ -395,18 +392,6 @@ export default function GradesTab({ courseSectionId }) {
                 <X className="h-4 w-4" />
               </Button>
             )}
-          </div>
-
-          {/* Include Inactive Toggle */}
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="includeInactive"
-              checked={includeInactive}
-              onCheckedChange={setIncludeInactive}
-            />
-            <Label htmlFor="includeInactive" className="text-sm cursor-pointer">
-              Show inactive students
-            </Label>
           </div>
 
           {/* Filtered count */}
