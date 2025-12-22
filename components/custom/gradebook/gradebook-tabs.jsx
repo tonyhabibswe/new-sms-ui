@@ -1,15 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useToast } from '@/components/ui/use-toast'
 import useFetchApi from '@/hooks/useFetchApi'
 import CategoriesItemsTab from './categories-items-tab'
 import GradesTab from './grades-tab'
+import AttendanceTab from './attendance-tab'
 
 export default function GradebookTabs({ courseSectionId }) {
-  const [activeTab, setActiveTab] = useState('categories-items')
+  const searchParams = useSearchParams()
+  const initialTab = searchParams.get('tab') || 'categories-items'
+  const [activeTab, setActiveTab] = useState(initialTab)
   const { toast } = useToast()
   const router = useRouter()
   const { fetchData } = useFetchApi()
@@ -322,11 +325,26 @@ export default function GradebookTabs({ courseSectionId }) {
     }
   }
 
+  /**
+   * Handle tab change and update URL with query parameter
+   * Preserves existing query parameters (code, section, name)
+   */
+  const handleTabChange = (value) => {
+    setActiveTab(value)
+
+    // Get current search params and update tab parameter
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('tab', value)
+
+    router.push(`?${params.toString()}`, { scroll: false })
+  }
+
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="grid w-full max-w-md grid-cols-2">
+    <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
+      <TabsList className="grid w-full max-w-lg grid-cols-3">
         <TabsTrigger value="categories-items">Categories & Items</TabsTrigger>
         <TabsTrigger value="grades">Grades</TabsTrigger>
+        <TabsTrigger value="attendance">Attendance</TabsTrigger>
       </TabsList>
 
       <TabsContent value="categories-items" className="mt-6">
@@ -349,6 +367,10 @@ export default function GradebookTabs({ courseSectionId }) {
 
       <TabsContent value="grades" className="mt-6">
         <GradesTab courseSectionId={courseSectionId} />
+      </TabsContent>
+
+      <TabsContent value="attendance" className="mt-6">
+        <AttendanceTab courseSectionId={courseSectionId} />
       </TabsContent>
     </Tabs>
   )

@@ -75,6 +75,17 @@ export const columns = [
     )
   },
   {
+    accessorKey: 'curveAlgorithm',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Curve Algorithm" />
+    ),
+    cell: ({ row }) => (
+      <div className="min-w-[120px]">
+        {row.getValue('curveAlgorithm') || '—'}
+      </div>
+    )
+  },
+  {
     id: 'actions',
     cell: ({ row }) => (
       <div className="flex justify-end mr-8">

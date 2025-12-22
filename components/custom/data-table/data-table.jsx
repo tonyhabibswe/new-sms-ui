@@ -29,7 +29,8 @@ export function DataTable({
   data,
   toolbar: DataTableToolbar,
   error,
-  columnVisibilityInitialState = {}
+  columnVisibilityInitialState = {},
+  meta
 }) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] = React.useState(
@@ -83,7 +84,8 @@ export function DataTable({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
-    onPaginationChange: setPagination
+    onPaginationChange: setPagination,
+    meta
   })
 
   return (

@@ -31,12 +31,14 @@ const FormSchema = z.object({
   courseDays: z.array(z.string()).optional(),
   startSessionTime: z.string(),
   endSessionTime: z.string(),
-  room: z.string()
+  room: z.string(),
+  curveAlgorithm: z.string().nullable().optional()
 })
 
 const FormSchemaEdit = z.object({
   id: z.number(),
-  sectionCode: z.string()
+  sectionCode: z.string(),
+  curveAlgorithm: z.string().nullable().optional()
 })
 
 const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
@@ -53,7 +55,8 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
     defaultValues: defaultData
       ? {
           id: defaultData.id || 0,
-          sectionCode: defaultData.sectionCode || ''
+          sectionCode: defaultData.sectionCode || '',
+          curveAlgorithm: defaultData.curveAlgorithm || null
         }
       : {
           courseId: 0,
@@ -61,7 +64,8 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
           courseDays: [],
           startSessionTime: '',
           endSessionTime: '',
-          room: ''
+          room: '',
+          curveAlgorithm: null
         }
   })
 
@@ -104,7 +108,8 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
       await fetchData(`/course-section/${data.id}`, {
         method: 'PUT',
         body: JSON.stringify({
-          sectionCode: data.sectionCode
+          sectionCode: data.sectionCode,
+          curveAlgorithm: data.curveAlgorithm
         }),
         cache: 'no-store'
       })
@@ -173,6 +178,37 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                 )}
               />
             </div>
+            {!!defaultData && (
+              <div className="grid gap-4 py-4">
+                <FormField
+                  control={form.control}
+                  name="curveAlgorithm"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-4 items-center gap-4">
+                      <FormLabel className="text-right">
+                        Curve Algorithm
+                      </FormLabel>
+                      <FormControl>
+                        <Combobox
+                          items={[
+                            { id: 'AVERAGE_BASED', code: 'AVERAGE_BASED' }
+                          ]}
+                          placeholder="Select curve algorithm..."
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          valueKey="id"
+                          displayKey="code"
+                          searchKey="code"
+                          allowClear={true}
+                          className="col-span-3"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
             {!defaultData && (
               <>
                 <div className="grid gap-4 py-4">
@@ -273,6 +309,35 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                             placeholder="Enter course room"
                             type="text"
                             {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid gap-4 py-4">
+                  <FormField
+                    control={form.control}
+                    name="curveAlgorithm"
+                    render={({ field }) => (
+                      <FormItem className="grid grid-cols-4 items-center gap-4">
+                        <FormLabel className="text-right">
+                          Curve Algorithm
+                        </FormLabel>
+                        <FormControl>
+                          <Combobox
+                            items={[
+                              { id: 'AVERAGE_BASED', code: 'AVERAGE_BASED' }
+                            ]}
+                            placeholder="Select curve algorithm..."
+                            value={field.value}
+                            onValueChange={field.onChange}
+                            valueKey="id"
+                            displayKey="code"
+                            searchKey="code"
+                            allowClear={true}
+                            className="col-span-3"
                           />
                         </FormControl>
                         <FormMessage />

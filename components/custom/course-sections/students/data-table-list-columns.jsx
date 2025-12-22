@@ -2,6 +2,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '../../data-table/data-table-column-header'
+import { StatusSelectCell } from './status-select-cell'
 
 export const columns = [
   {
@@ -55,6 +56,31 @@ export const columns = [
     cell: ({ row }) => {
       return <div className="min-w-[80px]">{row.getValue('lastName')}</div>
     }
+  },
+  {
+    accessorKey: 'statusId',
+    label: 'Status',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Status" />
+    ),
+    cell: ({ row, table }) => {
+      const statuses = table.options.meta?.statuses || []
+      const onStatusChange = table.options.meta?.onStatusChange
+
+      console.log('Column cell - meta:', table.options.meta)
+      console.log('Column cell - statuses:', statuses)
+
+      return (
+        <StatusSelectCell
+          enrollmentId={row.original.id}
+          currentStatusId={row.getValue('statusId')}
+          statuses={statuses}
+          onStatusChange={onStatusChange}
+        />
+      )
+    },
+    enableSorting: true,
+    enableHiding: true
   },
   {
     accessorKey: 'major',
