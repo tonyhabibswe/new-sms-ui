@@ -52,12 +52,20 @@ export function UserAuthForm({ className, ...props }) {
           variant: 'destructive',
           title: 'Invalid credentials.'
         })
+        // Exit early on authentication failure - only redirect on success
+        return
       }
-      searchParams.get('redirect')
-        ? router.push(searchParams.get('redirect'))
-        : router.push('/')
+
+      // Only execute redirect on successful authentication
+      const redirectUrl = searchParams.get('redirect') || '/'
+      // Use replace to prevent back button from returning to login page
+      router.replace(redirectUrl)
     } catch (error) {
       console.error(error)
+      toast({
+        variant: 'destructive',
+        title: 'An error occurred during login.'
+      })
     } finally {
       setIsLoading(false)
     }

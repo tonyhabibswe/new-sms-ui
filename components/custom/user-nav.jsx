@@ -20,7 +20,8 @@ export function UserNav() {
 
   const handleSignOut = async () => {
     await signOut({ redirect: false })
-    router.push('/login')
+    // Use replace instead of push to prevent back button navigation
+    router.replace('/login')
   }
 
   return (
