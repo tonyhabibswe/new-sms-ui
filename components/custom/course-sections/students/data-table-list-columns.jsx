@@ -67,9 +67,6 @@ export const columns = [
       const statuses = table.options.meta?.statuses || []
       const onStatusChange = table.options.meta?.onStatusChange
 
-      console.log('Column cell - meta:', table.options.meta)
-      console.log('Column cell - statuses:', statuses)
-
       return (
         <StatusSelectCell
           enrollmentId={row.original.id}

@@ -43,8 +43,6 @@ export default function AttendanceTab({ courseSectionId }) {
         method: 'GET'
       })
 
-      console.log('Statuses API Response:', response)
-      console.log('Statuses data:', response.data)
       setStatuses(response.data || [])
     } catch (err) {
       console.error('Error fetching statuses:', err)
@@ -74,8 +72,6 @@ export default function AttendanceTab({ courseSectionId }) {
         }
       )
 
-      console.log('Students API Response:', response)
-      console.log('First student data:', response.data?.[0])
       setStudents(response.data || [])
     } catch (err) {
       console.error('Error fetching students:', err)

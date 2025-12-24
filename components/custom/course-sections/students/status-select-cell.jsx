@@ -32,11 +32,7 @@ export function StatusSelectCell({
 }) {
   const [isUpdating, setIsUpdating] = useState(false)
   const [localStatusId, setLocalStatusId] = useState(currentStatusId)
-  console.log('StatusSelectCell props:', {
-    enrollmentId,
-    currentStatusId,
-    statusesCount: statuses.length
-  })
+
   // Handle edge case: empty statuses array
   if (!statuses || statuses.length === 0) {
     return <span className="text-muted-foreground text-sm">No statuses</span>

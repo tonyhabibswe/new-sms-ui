@@ -165,7 +165,6 @@ const AddPassingGradeForm = ({ setOpenDialog, courseId }) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {console.log(semesters)}
                     {semesters.map((semester) => (
                       <SelectItem
                         key={semester.id}
