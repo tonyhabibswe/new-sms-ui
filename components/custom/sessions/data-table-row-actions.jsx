@@ -22,8 +22,24 @@ import {
 import { useState } from 'react'
 import EditSessionForm from './edit-session/edit-session-form'
 
-export function DataTableRowActions({ row }) {
+export function DataTableRowActions({ row, table }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
+  const meta = table?.options?.meta || {}
+  const { courseCode = '', sectionCode = '', courseTime = '' } = meta
+  
+  // Format session date
+  const sessionDate = row.original.sessionStart
+    ? new Date(row.original.sessionStart).toLocaleString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
+      })
+    : ''
+
   return (
     <SessionProvider>
       <DropdownMenu>
@@ -36,7 +52,8 @@ export function DataTableRowActions({ row }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
-          <Link href={`/admin/session/${row.original.id}/attendances/list`}>
+          <Link
+            href={`/admin/session/${row.original.id}/attendances/list?code=${encodeURIComponent(courseCode)}&section=${encodeURIComponent(sectionCode)}&time=${encodeURIComponent(courseTime)}&date=${encodeURIComponent(sessionDate)}`}>
             <DropdownMenuItem>Attendance</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />

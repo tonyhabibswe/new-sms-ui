@@ -104,6 +104,7 @@ export default function AttendanceTab({ courseSectionId }) {
 
       // Show success notification
       toast({
+        variant: 'success',
         title: 'Success',
         description: 'Student status updated successfully'
       })

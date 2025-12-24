@@ -28,7 +28,13 @@ export function DataTableRowActions({ row }) {
   const router = useRouter()
 
   const handlePassingGrades = () => {
-    router.push(`/admin/courses/${row.original.id}/passing-grades`)
+    const queryParams = new URLSearchParams({
+      code: row.original.code,
+      name: row.original.name
+    }).toString()
+    router.push(
+      `/admin/courses/${row.original.id}/passing-grades?${queryParams}`
+    )
   }
 
   return (

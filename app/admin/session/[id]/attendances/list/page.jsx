@@ -24,14 +24,31 @@ const getData = async (id) => {
   return resJson.data
 }
 
-const AttendanceList = async ({ params }) => {
+const AttendanceList = async ({ params, searchParams }) => {
   const data = await getData(params.id)
+  const courseCode = searchParams.code || ''
+  const sectionCode = searchParams.section || ''
+  const courseTime = searchParams.time || ''
+  const sessionDate = searchParams.date || ''
+
   return (
     <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-          Attendance List
-        </h2>
+        <div>
+          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
+            Attendance List
+          </h2>
+          {(courseCode || sectionCode || courseTime) && (
+            <p className="text-sm text-muted-foreground md:text-base">
+              {[courseCode, sectionCode, courseTime].filter(Boolean).join(' - ')}
+            </p>
+          )}
+          {sessionDate && (
+            <p className="text-sm text-muted-foreground md:text-base">
+              {sessionDate}
+            </p>
+          )}
+        </div>
       </div>
       <DataTable
         data={data}

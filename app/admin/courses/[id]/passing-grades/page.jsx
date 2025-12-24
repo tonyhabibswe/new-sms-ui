@@ -22,27 +22,26 @@ const getData = async (courseId) => {
   return resJson.data
 }
 
-const CoursePassingGradesPage = async ({ params }) => {
+const CoursePassingGradesPage = async ({ params, searchParams }) => {
   const courseId = params.id
   const data = await getData(courseId)
 
-  // Extract course info from the first passing grade if available
-  const courseInfo =
-    data.length > 0
-      ? {
-          code: data[0].courseCode,
-          name: data[0].courseName
-        }
-      : null
+  // Get course info from URL params or fallback to data
+  const courseInfo = {
+    code: searchParams.code || (data.length > 0 ? data[0].courseCode : ''),
+    name: searchParams.name || (data.length > 0 ? data[0].courseName : '')
+  }
 
   return (
-    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
+    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Passing Grades</h2>
-          {courseInfo && (
-            <p className="text-muted-foreground">
-              Course: {courseInfo.code} - {courseInfo.name}
+          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
+            Passing Grades
+          </h2>
+          {(courseInfo.code || courseInfo.name) && (
+            <p className="text-sm text-muted-foreground md:text-base">
+              {courseInfo.code} - {courseInfo.name}
             </p>
           )}
         </div>

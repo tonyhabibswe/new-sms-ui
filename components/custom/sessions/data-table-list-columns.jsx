@@ -59,6 +59,6 @@ export const columns = [
   {
     id: 'actions',
     label: 'Actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />
+    cell: ({ row, table }) => <DataTableRowActions row={row} table={table} />
   }
 ]
