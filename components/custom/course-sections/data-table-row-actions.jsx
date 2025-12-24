@@ -60,10 +60,7 @@ export function DataTableRowActions({ row }) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <Link href={`/admin/course-section/${row.original.id}/sessions/list`}>
-            <DropdownMenuItem>Sessions List</DropdownMenuItem>
-          </Link>
-          <Link href={`/admin/course-section/${row.original.id}/students/list`}>
-            <DropdownMenuItem>Students List</DropdownMenuItem>
+            <DropdownMenuItem>Sessions</DropdownMenuItem>
           </Link>
           <Link
             href={`/admin/course-section/${

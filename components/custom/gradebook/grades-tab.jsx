@@ -16,6 +16,7 @@ import { Loader2, Search, Save, X, RefreshCcw } from 'lucide-react'
 import GradesGrid from './grades-grid'
 import GradesTableLoadingSkeleton from './grades-table-loading-skeleton'
 import ErrorDisplay from './error-display'
+import { GradesExportButton } from './grades-export-button'
 
 /**
  * Grades Tab Component - API-integrated version
@@ -403,6 +404,9 @@ export default function GradesTab({ courseSectionId }) {
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Export */}
+          <GradesExportButton courseSectionId={courseSectionId} />
+
           {/* Refresh */}
           <Button
             variant="outline"

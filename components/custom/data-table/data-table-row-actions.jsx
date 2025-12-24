@@ -41,7 +41,7 @@ export function DataTableRowActions({ row }) {
         <DropdownMenuContent align="end" className="w-[160px]">
           <Link
             href={`/admin/semester/${row.original.id}/course-sections/list`}>
-            <DropdownMenuItem>Courses List</DropdownMenuItem>
+            <DropdownMenuItem>Courses</DropdownMenuItem>
           </Link>
           <Link href={`/admin/semester/${row.original.id}/holidays/list`}>
             <DropdownMenuItem>Holidays</DropdownMenuItem>

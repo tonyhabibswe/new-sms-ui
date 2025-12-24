@@ -5,8 +5,8 @@ import { DataTable } from '@/components/custom/data-table/data-table'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
 
 export const metadata = {
-  title: 'Course Sections List',
-  description: 'Course Sections List'
+  title: 'Course Sections',
+  description: 'Course Sections'
 }
 export const revalidate = 0
 const getData = async (id) => {
@@ -35,7 +35,7 @@ const CoursesListPage = async ({ params }) => {
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <div className="flex items-center">
         <h2 className="text-2xl font-bold tracking-tight">
-          Course Sections List
+          Course Sections
         </h2>
         <AddCourseButton />
       </div>
@@ -46,7 +46,8 @@ const CoursesListPage = async ({ params }) => {
         error={error}
         columnVisibilityInitialState={{
           id: false,
-          name: false
+          name: false,
+          curveAlgorithm: false
         }}
       />
     </div>

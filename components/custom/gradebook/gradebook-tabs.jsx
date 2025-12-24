@@ -344,7 +344,7 @@ export default function GradebookTabs({ courseSectionId }) {
       <TabsList className="grid w-full max-w-lg grid-cols-3">
         <TabsTrigger value="categories-items">Categories & Items</TabsTrigger>
         <TabsTrigger value="grades">Grades</TabsTrigger>
-        <TabsTrigger value="attendance">Attendance</TabsTrigger>
+        <TabsTrigger value="attendance">Students</TabsTrigger>
       </TabsList>
 
       <TabsContent value="categories-items" className="mt-6">
