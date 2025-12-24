@@ -15,21 +15,29 @@ import {
 } from '@/components/ui/select'
 
 export function DataTablePagination({ table }) {
+  const hasSelection = table.getFilteredSelectedRowModel().rows.length > 0
+
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex-1 text-sm text-muted-foreground">
+    <div className="flex flex-col gap-4 px-2 md:flex-row md:items-center md:justify-between">
+      <div
+        className={`flex-1 text-sm text-muted-foreground ${
+          hasSelection ? '' : 'hidden md:block'
+        }`}>
         {table.getFilteredSelectedRowModel().rows.length} of{' '}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+          <p className="text-sm font-medium">
+            <span className="hidden sm:inline">Rows per page</span>
+            <span className="sm:hidden">Rows</span>
+          </p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value))
             }}>
-            <SelectTrigger className="h-8 w-[70px]">
+            <SelectTrigger className="h-10 w-[70px] md:h-8">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
@@ -56,7 +64,7 @@ export function DataTablePagination({ table }) {
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="h-10 w-10 p-0 md:h-8 md:w-8"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}>
             <span className="sr-only">Go to previous page</span>
@@ -64,7 +72,7 @@ export function DataTablePagination({ table }) {
           </Button>
           <Button
             variant="outline"
-            className="h-8 w-8 p-0"
+            className="h-10 w-10 p-0 md:h-8 md:w-8"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}>
             <span className="sr-only">Go to next page</span>

@@ -28,6 +28,7 @@ export const columns = [
   // },
   {
     accessorKey: 'id',
+    label: 'ID',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
@@ -37,6 +38,7 @@ export const columns = [
   },
   {
     accessorKey: 'code',
+    label: 'Code',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Code" />
     ),
@@ -49,6 +51,7 @@ export const columns = [
   },
   {
     accessorKey: 'name',
+    label: 'Name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
@@ -58,6 +61,7 @@ export const columns = [
   },
   {
     accessorKey: 'time',
+    label: 'Time',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Time" />
     ),
@@ -67,6 +71,7 @@ export const columns = [
   },
   {
     accessorKey: 'room',
+    label: 'Room',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Room" />
     ),
@@ -76,6 +81,7 @@ export const columns = [
   },
   {
     accessorKey: 'curveAlgorithm',
+    label: 'Curve Algorithm',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Curve Algorithm" />
     ),
@@ -87,6 +93,7 @@ export const columns = [
   },
   {
     id: 'actions',
+    label: 'Actions',
     cell: ({ row }) => (
       <div className="flex justify-end mr-8">
         <DataTableRowActions row={row} />

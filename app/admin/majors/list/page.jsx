@@ -22,11 +22,13 @@ const MajorsListPage = async () => {
   const data = await getData()
 
   return (
-    <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
-      <div className="flex items-center justify-between">
+    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
+      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Majors</h2>
-          <p className="text-muted-foreground">
+          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
+            Majors
+          </h2>
+          <p className="text-sm text-muted-foreground md:text-base">
             View and edit major labels. Double-click on a label to edit.
           </p>
         </div>

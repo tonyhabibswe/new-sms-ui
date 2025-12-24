@@ -1,19 +1,33 @@
+'use client'
+
 import { Menu } from '@/components/custom/menu'
 import { Sidebar } from '@/components/custom/sidebar'
 import { NextAuthProvider } from '@/components/next-auth-provider'
+import { useState } from 'react'
 
-export const metadata = {
-  title: 'SMS',
-  description:
-    'SMS is an admin dashboard developed using NextJS and TailwindCSS'
-}
+const AdminLayout = ({ children }) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
-const AdminLayout = async ({ children }) => {
   return (
     <NextAuthProvider>
-      <Menu />
+      <Menu onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
       <div className="bg-background">
-        <Sidebar className="hidden px-2 pt-20 fixed top-0 left-0 bottom-0 md:w-64 border-r z-10 bg-background lg:flex space-x-2 lg:flex-col" />
+        {/* Mobile sidebar overlay */}
+        {isSidebarOpen && (
+          <div
+            className="fixed inset-0 z-30 bg-black/80 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+        
+        {/* Sidebar */}
+        <Sidebar
+          className={`fixed top-0 left-0 bottom-0 z-40 w-64 transform border-r bg-background px-2 pt-20 transition-transform duration-300 ease-in-out md:z-10 md:translate-x-0 lg:flex lg:flex-col ${
+            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          } md:flex md:flex-col`}
+          onLinkClick={() => setIsSidebarOpen(false)}
+        />
+        
         <div className="px-4 py-6 lg:px-8 lg:ml-64 mt-16">{children}</div>
       </div>
     </NextAuthProvider>

@@ -30,6 +30,7 @@ export const columns = [
   },
   {
     accessorKey: 'id',
+    label: 'ID',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
@@ -80,6 +81,7 @@ export const columns = [
   },
   {
     accessorKey: 'major',
+    label: 'Major',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Major" />
     ),
@@ -87,6 +89,7 @@ export const columns = [
   },
   {
     accessorKey: 'email',
+    label: 'Email',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Email" />
     ),
@@ -94,6 +97,7 @@ export const columns = [
   },
   {
     accessorKey: 'campus',
+    label: 'Campus',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Campus" />
     ),
@@ -101,6 +105,7 @@ export const columns = [
   },
   {
     accessorKey: 'attendance',
+    label: 'Attendance',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Attendance" />
     ),

@@ -6,6 +6,7 @@ import { DataTableRowActions } from './data-table-row-actions'
 export const columns = [
   {
     accessorKey: 'id',
+    label: 'ID',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
@@ -15,6 +16,7 @@ export const columns = [
   },
   {
     accessorKey: 'code',
+    label: 'Code',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Code" />
     ),
@@ -31,6 +33,7 @@ export const columns = [
 
   {
     id: 'actions',
+    label: 'Actions',
     cell: ({ row }) => <DataTableRowActions row={row} />
   }
 ]

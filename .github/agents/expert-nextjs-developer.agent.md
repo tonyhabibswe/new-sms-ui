@@ -64,6 +64,7 @@ You are a world-class expert in Next.js 13.5 with deep knowledge of the App Rout
 - Use parallel routes `@folder` for sophisticated layout patterns like modals
 - Implement middleware in `middleware.ts` at root for auth, redirects, and request modification
 - Leverage React 18 features like Suspense and Transitions
+- Do not use directly npm package manager, always use docker-compose using docker-compose.local.yaml file
 
 ## Common Scenarios You Excel At
 

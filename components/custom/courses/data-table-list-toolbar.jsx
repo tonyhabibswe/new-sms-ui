@@ -5,15 +5,15 @@ import { DataTableViewOptions } from '@/components/custom/data-table/data-table-
 
 export function DataTableToolbar({ table }) {
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
       <div className="flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Filter semesters..."
+          placeholder="Filter courses..."
           value={table.getColumn('name')?.getFilterValue() ?? ''}
           onChange={(event) =>
             table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-10 w-full md:h-8 md:w-[150px] lg:w-[250px]"
         />
       </div>
       <DataTableViewOptions table={table} />

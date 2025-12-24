@@ -6,6 +6,7 @@ import EditableNameCell from './editable-name-cell'
 export const columns = [
   {
     accessorKey: 'id',
+    label: 'ID',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
@@ -15,6 +16,7 @@ export const columns = [
   },
   {
     accessorKey: 'date',
+    label: 'Date',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Date" />
     ),
@@ -31,6 +33,7 @@ export const columns = [
   },
   {
     accessorKey: 'name',
+    label: 'Name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),

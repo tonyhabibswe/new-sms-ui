@@ -31,6 +31,7 @@ export const columns = [
   // },
   {
     accessorKey: 'id',
+    label: 'ID',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
@@ -40,6 +41,7 @@ export const columns = [
   },
   {
     accessorKey: 'name',
+    label: 'Name',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
@@ -82,6 +84,7 @@ export const columns = [
   },
   {
     id: 'actions',
+    label: 'Actions',
     cell: ({ row }) => <DataTableRowActions row={row} />
   }
 ]
