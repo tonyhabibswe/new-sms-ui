@@ -22,7 +22,7 @@ export default function CategoriesItemsTab({
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
       <CategoriesPanel
         courseSectionId={courseSectionId}
         categories={categories}

@@ -351,21 +351,29 @@ export default function GradesTab({ courseSectionId }) {
       {/* Statistics Header */}
       <Card>
         <CardHeader className="pb-3">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
-              <CardTitle>{courseName}</CardTitle>
-              <CardDescription>{semesterName}</CardDescription>
+              <CardTitle className="text-lg md:text-xl">{courseName}</CardTitle>
+              <CardDescription className="text-sm">
+                {semesterName}
+              </CardDescription>
             </div>
-            <div className="flex gap-6 text-sm">
+            <div className="grid grid-cols-2 gap-4 md:flex md:gap-6 text-sm">
               <div className="text-center">
-                <div className="text-2xl font-bold">{totalStudents}</div>
-                <div className="text-muted-foreground">Students</div>
+                <div className="text-xl md:text-2xl font-bold">
+                  {totalStudents}
+                </div>
+                <div className="text-xs md:text-sm text-muted-foreground">
+                  Students
+                </div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold">
+                <div className="text-xl md:text-2xl font-bold">
                   {classAverage !== undefined ? classAverage.toFixed(2) : '—'}
                 </div>
-                <div className="text-muted-foreground">Class Average</div>
+                <div className="text-xs md:text-sm text-muted-foreground">
+                  Class Average
+                </div>
               </div>
             </div>
           </div>
@@ -373,16 +381,16 @@ export default function GradesTab({ courseSectionId }) {
       </Card>
 
       {/* Toolbar */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-4 flex-1">
+      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4 flex-1">
           {/* Search */}
-          <div className="relative flex-1 max-w-md">
+          <div className="relative flex-1 md:max-w-md">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search students..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8"
+              className="h-10 pl-8 md:h-8"
             />
             {searchQuery && (
               <Button
@@ -403,7 +411,7 @@ export default function GradesTab({ courseSectionId }) {
           )}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Export */}
           <GradesExportButton courseSectionId={courseSectionId} />
 
@@ -412,9 +420,10 @@ export default function GradesTab({ courseSectionId }) {
             variant="outline"
             size="sm"
             onClick={fetchGradesTable}
-            disabled={isSaving}>
-            <RefreshCcw className="h-4 w-4 mr-2" />
-            Refresh
+            disabled={isSaving}
+            className="h-10 md:h-8">
+            <RefreshCcw className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:inline">Refresh</span>
           </Button>
 
           {/* Discard */}
@@ -423,9 +432,10 @@ export default function GradesTab({ courseSectionId }) {
               variant="outline"
               size="sm"
               onClick={handleDiscardChanges}
-              disabled={isSaving}>
-              <X className="h-4 w-4 mr-2" />
-              Discard
+              disabled={isSaving}
+              className="h-10 md:h-8">
+              <X className="h-4 w-4 md:mr-2" />
+              <span className="hidden md:inline">Discard</span>
             </Button>
           )}
 
@@ -434,7 +444,8 @@ export default function GradesTab({ courseSectionId }) {
             variant="default"
             size="sm"
             onClick={handleSaveAll}
-            disabled={!hasUnsavedChanges || isSaving}>
+            disabled={!hasUnsavedChanges || isSaving}
+            className="h-10 flex-1 md:flex-none md:h-8">
             {isSaving ? (
               <Loader2 className="h-4 w-4 mr-2 animate-spin" />
             ) : (
@@ -442,8 +453,8 @@ export default function GradesTab({ courseSectionId }) {
             )}
             {isSaving
               ? 'Saving...'
-              : `Save ${modifiedGrades.size > 0 ? modifiedGrades.size : ''} ${
-                  modifiedGrades.size === 1 ? 'change' : 'changes'
+              : `Save ${
+                  modifiedGrades.size > 0 ? `(${modifiedGrades.size})` : ''
                 }`}
           </Button>
         </div>

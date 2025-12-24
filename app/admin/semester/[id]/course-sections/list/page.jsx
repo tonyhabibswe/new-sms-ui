@@ -26,7 +26,9 @@ const CoursesListPage = async ({ params }) => {
   return (
     <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">Course Sections</h2>
+        <h2 className="text-xl font-bold tracking-tight md:text-2xl">
+          Course Sections
+        </h2>
         <AddCourseButton />
       </div>
       <DataTable

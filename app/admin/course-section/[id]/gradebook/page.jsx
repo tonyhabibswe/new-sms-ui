@@ -12,11 +12,13 @@ export default async function GradebookPage({ params, searchParams }) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Gradebook</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl font-bold tracking-tight md:text-3xl">
+            Gradebook
+          </h1>
+          <p className="text-sm text-muted-foreground md:text-base">
             {courseSection.courseCode} - {courseSection.section} -{' '}
             {courseSection.courseName}
           </p>
