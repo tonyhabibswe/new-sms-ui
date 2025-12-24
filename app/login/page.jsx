@@ -1,10 +1,10 @@
 import { UserAuthForm } from '@/components/custom/login/user-auth-form'
 
 export const metadata = {
-  title: 'Authentication',
-  description: 'Authentication forms built using the components.'
+  title: 'SMS - Login',
+  description: 'Login to SMS account'
 }
-export const revalidate = 0;
+export const revalidate = 0
 const LoginPage = () => {
   return (
     <div className="lg:p-8 h-full">
