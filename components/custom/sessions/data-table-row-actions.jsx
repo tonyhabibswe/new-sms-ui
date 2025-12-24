@@ -26,7 +26,7 @@ export function DataTableRowActions({ row, table }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const meta = table?.options?.meta || {}
   const { courseCode = '', sectionCode = '', courseTime = '' } = meta
-  
+
   // Format session date
   const sessionDate = row.original.sessionStart
     ? new Date(row.original.sessionStart).toLocaleString('en-US', {
@@ -53,7 +53,15 @@ export function DataTableRowActions({ row, table }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <Link
-            href={`/admin/session/${row.original.id}/attendances/list?code=${encodeURIComponent(courseCode)}&section=${encodeURIComponent(sectionCode)}&time=${encodeURIComponent(courseTime)}&date=${encodeURIComponent(sessionDate)}`}>
+            href={`/admin/session/${
+              row.original.id
+            }/attendances/list?code=${encodeURIComponent(
+              courseCode
+            )}&section=${encodeURIComponent(
+              sectionCode
+            )}&time=${encodeURIComponent(courseTime)}&date=${encodeURIComponent(
+              sessionDate
+            )}`}>
             <DropdownMenuItem>Attendance</DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />

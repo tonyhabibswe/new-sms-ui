@@ -40,7 +40,11 @@ export function DataTableRowActions({ row }) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-[160px]">
           <Link
-            href={`/admin/semester/${row.original.id}/course-sections/list?semester=${encodeURIComponent(row.original.name)}`}>
+            href={`/admin/semester/${
+              row.original.id
+            }/course-sections/list?semester=${encodeURIComponent(
+              row.original.name
+            )}`}>
             <DropdownMenuItem>Courses</DropdownMenuItem>
           </Link>
           <Link href={`/admin/semester/${row.original.id}/holidays/list`}>

@@ -37,7 +37,9 @@ const SessionsListPage = async ({ params, searchParams }) => {
           </h2>
           {(courseCode || sectionCode || courseTime) && (
             <p className="text-sm text-muted-foreground md:text-base">
-              {[courseCode, sectionCode, courseTime].filter(Boolean).join(' - ')}
+              {[courseCode, sectionCode, courseTime]
+                .filter(Boolean)
+                .join(' - ')}
             </p>
           )}
         </div>
