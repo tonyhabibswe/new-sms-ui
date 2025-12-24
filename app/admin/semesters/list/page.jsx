@@ -8,11 +8,10 @@ export const metadata = {
   title: 'Semesters',
   description: 'Semester List'
 }
-export const revalidate = 0;
+export const revalidate = 0
 
 const getData = async () => {
   const res = await fetchInstanceSSR('/semesters', { cache: 'no-store' })
-  if (res.status === 401) throw new Error(res.statusText)
   if (!res.ok) {
     throw new Error('Failed to fetch semesters')
   }
@@ -20,14 +19,7 @@ const getData = async () => {
   return resJson.data
 }
 const SemestersListPage = async () => {
-  let data = []
-  let error = ''
-
-  try {
-    data = await getData()
-  } catch (exception) {
-    error = exception.message
-  }
+  const data = await getData()
 
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
@@ -39,7 +31,6 @@ const SemestersListPage = async () => {
         data={data}
         columns={columns}
         toolbar={DataTableToolbar}
-        error={error}
         columnVisibilityInitialState={{
           id: false
         }}

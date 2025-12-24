@@ -14,7 +14,6 @@ const getData = async (id) => {
     cache: 'no-store'
   })
 
-  if (res.status === 401) throw new Error(res.statusText)
   if (!res.ok) {
     throw new Error('Failed to fetch courses')
   }
@@ -23,27 +22,17 @@ const getData = async (id) => {
 }
 
 const CoursesListPage = async ({ params }) => {
-  let data = []
-  let error = ''
-
-  try {
-    data = await getData(params.id)
-  } catch (exception) {
-    error = exception.message
-  }
+  const data = await getData(params.id)
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <div className="flex items-center">
-        <h2 className="text-2xl font-bold tracking-tight">
-          Course Sections
-        </h2>
+        <h2 className="text-2xl font-bold tracking-tight">Course Sections</h2>
         <AddCourseButton />
       </div>
       <DataTable
         data={data}
         columns={columns}
         toolbar={DataTableToolbar}
-        error={error}
         columnVisibilityInitialState={{
           id: false,
           name: false,

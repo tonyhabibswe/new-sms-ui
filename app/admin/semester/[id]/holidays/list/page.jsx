@@ -8,14 +8,13 @@ export const metadata = {
   title: 'Holidays',
   description: 'Holidays List'
 }
-export const revalidate = 0;
+export const revalidate = 0
 
 const getData = async (id) => {
   const res = await fetchInstanceSSR(`/semester/${id}/holidays`, {
     cache: 'no-store'
   })
 
-  if (res.status === 401) throw new Error(res.statusText)
   if (!res.ok) {
     throw new Error('Failed to fetch courses')
   }
@@ -24,14 +23,7 @@ const getData = async (id) => {
 }
 
 const HolidaysListPage = async ({ params }) => {
-  let data = []
-  let error = ''
-
-  try {
-    data = await getData(params.id)
-  } catch (exception) {
-    error = exception.message
-  }
+  const data = await getData(params.id)
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <div className="flex items-center">
@@ -42,7 +34,6 @@ const HolidaysListPage = async ({ params }) => {
         data={data}
         columns={columns}
         toolbar={DataTableToolbar}
-        error={error}
         columnVisibilityInitialState={{
           id: false
         }}

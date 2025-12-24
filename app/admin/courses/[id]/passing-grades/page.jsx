@@ -15,7 +15,6 @@ const getData = async (courseId) => {
     }
   )
 
-  if (res.status === 401) throw new Error(res.statusText)
   if (!res.ok) {
     throw new Error('Failed to fetch course passing grades')
   }
@@ -25,14 +24,7 @@ const getData = async (courseId) => {
 
 const CoursePassingGradesPage = async ({ params }) => {
   const courseId = params.id
-  let data = []
-  let error = ''
-
-  try {
-    data = await getData(courseId)
-  } catch (exception) {
-    error = exception.message
-  }
+  const data = await getData(courseId)
 
   // Extract course info from the first passing grade if available
   const courseInfo =
@@ -55,7 +47,7 @@ const CoursePassingGradesPage = async ({ params }) => {
           )}
         </div>
       </div>
-      <PassingGradesTable data={data} error={error} courseId={courseId} />
+      <PassingGradesTable data={data} courseId={courseId} />
     </div>
   )
 }

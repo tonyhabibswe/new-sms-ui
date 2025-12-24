@@ -15,7 +15,6 @@ const getData = async (id) => {
     cache: 'no-store'
   })
 
-  if (res.status === 401) throw new Error(res.statusText)
   if (!res.ok) {
     throw new Error('Failed to fetch sessions')
   }
@@ -24,14 +23,7 @@ const getData = async (id) => {
 }
 
 const SessionsListPage = async ({ params }) => {
-  let data = []
-  let error = ''
-
-  try {
-    data = await getData(params.id)
-  } catch (exception) {
-    error = exception.message
-  }
+  const data = await getData(params.id)
   return (
     <div className="hidden h-full flex-1 flex-col space-y-8 p-8 md:flex">
       <div className="flex items-center">
@@ -42,7 +34,6 @@ const SessionsListPage = async ({ params }) => {
         data={data}
         columns={columns}
         toolbar={Fragment}
-        error={error}
         columnVisibilityInitialState={{
           id: false
         }}
