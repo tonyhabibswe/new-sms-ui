@@ -7,11 +7,11 @@ export const metadata = {
 export const revalidate = 0
 const LoginPage = () => {
   return (
-    <div className="lg:p-8 h-full">
-      <div className="mx-auto flex w-full h-full flex-col justify-center space-y-6 sm:w-[350px]">
+    <div className="flex h-full items-center justify-center p-4 md:p-8">
+      <div className="mx-auto flex w-full max-w-sm flex-col justify-center space-y-6">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Login</h1>
-          <p className="text-sm text-muted-foreground">
+          <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">Login</h1>
+          <p className="text-sm text-muted-foreground md:text-base">
             Enter your username and password below to login to your account
           </p>
         </div>

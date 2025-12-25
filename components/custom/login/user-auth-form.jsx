@@ -79,11 +79,12 @@ export function UserAuthForm({ className, ...props }) {
           name="username"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel className="text-sm md:text-base">Username</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter your username"
                   type="username"
+                  className="h-11 md:h-10"
                   {...field}
                 />
               </FormControl>
@@ -96,11 +97,12 @@ export function UserAuthForm({ className, ...props }) {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel className="text-sm md:text-base">Password</FormLabel>
               <FormControl>
                 <Input
                   placeholder="Enter your password"
                   type="password"
+                  className="h-11 md:h-10"
                   {...field}
                 />
               </FormControl>
@@ -109,7 +111,7 @@ export function UserAuthForm({ className, ...props }) {
           )}
         />
 
-        <Button disabled={isLoading} type="submit">
+        <Button disabled={isLoading} type="submit" className="h-11 md:h-10">
           {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Sign In
         </Button>
