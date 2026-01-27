@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  demo-sms-ui:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: demo-sms-ui
+    restart: always
+    environment:
+      API_URL: ${API_URL}
+      NEXT_PUBLIC_URL: ${NEXT_PUBLIC_URL}
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
+    expose:
+      - "3000"
+    networks:
+      - demo-sms-network
+
+networks:
+  demo-sms-network:
+    external: true
