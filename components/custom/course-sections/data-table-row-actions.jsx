@@ -11,7 +11,6 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import { useState } from 'react'
-import { SessionProvider } from 'next-auth/react'
 import {
   Dialog,
   DialogContent,
@@ -41,7 +40,7 @@ export function DataTableRowActions({ row }) {
 
   const param = useParams()
   return (
-    <SessionProvider>
+    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -147,6 +146,6 @@ export function DataTableRowActions({ row }) {
           />
         </DialogContent>
       </Dialog>
-    </SessionProvider>
+    </>
   )
 }

@@ -9,7 +9,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { SessionProvider } from 'next-auth/react'
 
 import Link from 'next/link'
 import {
@@ -41,7 +40,7 @@ export function DataTableRowActions({ row, table }) {
     : ''
 
   return (
-    <SessionProvider>
+    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -84,6 +83,6 @@ export function DataTableRowActions({ row, table }) {
           />
         </DialogContent>
       </Dialog>
-    </SessionProvider>
+    </>
   )
 }

@@ -3,7 +3,6 @@
 import { Input } from '@/components/ui/input'
 import { DataTableViewOptions } from '@/components/custom/data-table/data-table-view-options'
 import { DataTableActionOptions } from './data-table-action-options'
-import { SessionProvider } from 'next-auth/react'
 
 export function DataTableToolbar({ table }) {
   return (
