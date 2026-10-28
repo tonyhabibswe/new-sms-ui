@@ -83,8 +83,10 @@ Semesters organize your academic calendar. Each one holds its holidays and its c
 ### Open, Rename or Delete a Semester
 
 - Click a semester's name to open it
-- To rename a semester, open it and click **"Edit semester"**
-- Semesters in the list below the current one also have a **⋯** button → **"Edit"** or **"Delete"**
+- Click the **⋯** button on a semester's card → **"Edit"** to rename it, or **"Delete"** to remove it
+- You can also rename a semester from its own page with **"Edit semester"**
+
+> **Careful:** Deleting a semester also deletes its holidays, passing grades and course sections, with their attendance and grades
 
 ### Holidays
 
