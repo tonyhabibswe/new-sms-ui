@@ -1,6 +1,14 @@
 'use client'
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import {
+  ClipboardCheck,
+  Pencil,
+  Sheet as SheetIcon,
+  Trash2,
+  Upload,
+  UserPlus
+} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -32,11 +40,12 @@ import ImportStudentsDialog from '../students/import-students-dialog'
 import Link from 'next/link'
 import AddStudentForm from '../students/add-student/add-student-form'
 
-export function DataTableRowActions({ row }) {
+export function DataTableRowActions({ row, links }) {
   const [openEditSheet, setOpenEditSheet] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
   const [openImportStudentDialog, setOpenImportStudentDialog] = useState(false)
   const [openStudentFormSheet, setOpenStudentFormSheet] = useState(false)
+  const title = `${row.original.code} · ${row.original.sectionCode}`
 
   const param = useParams()
   return (
@@ -44,57 +53,54 @@ export function DataTableRowActions({ row }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-            <DotsHorizontalIcon className="h-4 w-4" />
+            variant="outline"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground data-[state=open]:bg-accent">
+            <DotsHorizontalIcon className="h-[18px] w-[18px]" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem onClick={() => setOpenImportStudentDialog(true)}>
-            Import Students
-          </DropdownMenuItem>
+        <DropdownMenuContent align="end" className="w-[232px]">
+          <Link href={links.sessions}>
+            <DropdownMenuItem>
+              <ClipboardCheck aria-hidden="true" />
+              Sessions
+            </DropdownMenuItem>
+          </Link>
+          <Link href={links.gradebook}>
+            <DropdownMenuItem>
+              <SheetIcon aria-hidden="true" />
+              Gradebook
+            </DropdownMenuItem>
+          </Link>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenStudentFormSheet(true)}>
-            Add Students
+            <UserPlus aria-hidden="true" />
+            Add a student
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <Link
-            href={`/admin/course-section/${
-              row.original.id
-            }/sessions/list?code=${encodeURIComponent(
-              row.original.code
-            )}&section=${encodeURIComponent(
-              row.original.sectionCode
-            )}&time=${encodeURIComponent(row.original.time)}`}>
-            <DropdownMenuItem>Sessions</DropdownMenuItem>
-          </Link>
-          <Link
-            href={`/admin/course-section/${
-              row.original.id
-            }/gradebook?code=${encodeURIComponent(
-              row.original.code
-            )}&section=${encodeURIComponent(
-              row.original.sectionCode
-            )}&name=${encodeURIComponent(row.original.name)}`}>
-            <DropdownMenuItem>Gradebook</DropdownMenuItem>
-          </Link>
-          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => setOpenImportStudentDialog(true)}>
+            <Upload aria-hidden="true" />
+            Import students (CSV)
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenEditSheet(true)}>
-            Edit
+            <Pencil aria-hidden="true" />
+            Edit section
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
-            <span className="text-red-500">Delete</span>
+            <Trash2 className="text-destructive" aria-hidden="true" />
+            <span className="font-semibold text-destructive">Delete section</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog
         open={openImportStudentDialog}
         onOpenChange={setOpenImportStudentDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Import Students</DialogTitle>
+            <DialogTitle>Import students</DialogTitle>
             <DialogDescription>
-              Drop the OGS CSV file to import the students into the course.
+              Choose the OGS CSV file to add its students to {title}.
             </DialogDescription>
           </DialogHeader>
           <ImportStudentsDialog
@@ -104,12 +110,10 @@ export function DataTableRowActions({ row }) {
         </DialogContent>
       </Dialog>
       <Sheet open={openStudentFormSheet} onOpenChange={setOpenStudentFormSheet}>
-        <SheetContent className="md:max-w-md lg:max-w-lg">
+        <SheetContent>
           <SheetHeader>
-            <SheetTitle>Add Student</SheetTitle>
-            <SheetDescription>
-              Add a student here. Click save when you&apos;re done.
-            </SheetDescription>
+            <SheetTitle>Add a student</SheetTitle>
+            <SheetDescription>Enrol a student in {title}.</SheetDescription>
           </SheetHeader>
           <AddStudentForm
             setOpenSheet={setOpenStudentFormSheet}
@@ -118,12 +122,10 @@ export function DataTableRowActions({ row }) {
         </SheetContent>
       </Sheet>
       <Sheet open={openEditSheet} onOpenChange={setOpenEditSheet}>
-        <SheetContent className="md:max-w-md lg:max-w-lg">
+        <SheetContent>
           <SheetHeader>
-            <SheetTitle>Edit Course</SheetTitle>
-            <SheetDescription>
-              Edit a course here. Click save when you&apos;re done.
-            </SheetDescription>
+            <SheetTitle>Edit course section</SheetTitle>
+            <SheetDescription>Change {title}&apos;s section code or curve.</SheetDescription>
           </SheetHeader>
           <AddCourseForm
             setOpenSheet={setOpenEditSheet}
@@ -133,11 +135,11 @@ export function DataTableRowActions({ row }) {
         </SheetContent>
       </Sheet>
       <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Course</DialogTitle>
+            <DialogTitle>Delete course section</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete course {row.original.code} ?
+              Are you sure you want to delete {title}?
             </DialogDescription>
           </DialogHeader>
           <DeleteCourseButton

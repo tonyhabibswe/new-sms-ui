@@ -27,14 +27,14 @@ export function DataTableColumnHeader({ column, title, className }) {
           <Button
             variant="ghost"
             size="sm"
-            className="-ml-3 h-8 data-[state=open]:bg-accent">
+            className="-ml-3 h-8 gap-1.5 px-3 text-xs font-semibold uppercase tracking-[1.2px] text-faint hover:text-foreground data-[state=open]:bg-accent">
             <span>{title}</span>
             {column.getIsSorted() === 'desc' ? (
-              <ArrowDownIcon className="ml-2 h-4 w-4" />
+              <ArrowDownIcon className="h-3.5 w-3.5" />
             ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUpIcon className="ml-2 h-4 w-4" />
+              <ArrowUpIcon className="h-3.5 w-3.5" />
             ) : (
-              <CaretSortIcon className="ml-2 h-4 w-4" />
+              <CaretSortIcon className="h-3.5 w-3.5" />
             )}
           </Button>
         </DropdownMenuTrigger>

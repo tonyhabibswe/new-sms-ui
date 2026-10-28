@@ -4,19 +4,13 @@ import { useState, useEffect, useMemo } from 'react'
 import useFetchApi from '@/hooks/useFetchApi'
 import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import { Loader2, Search, Save, X, RefreshCcw } from 'lucide-react'
+import { Card } from '@/components/ui/card'
+import { Loader2, Save, X, RefreshCcw } from 'lucide-react'
 import GradesGrid from './grades-grid'
 import GradesTableLoadingSkeleton from './grades-table-loading-skeleton'
 import ErrorDisplay from './error-display'
 import { GradesExportButton } from './grades-export-button'
+import { DataTableSearch } from '../data-table/data-table-search'
 
 /**
  * Grades Tab Component - API-integrated version
@@ -320,129 +314,77 @@ export default function GradesTab({ courseSectionId }) {
   // No data
   if (!gradesTableData) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <p className="text-muted-foreground">No grades data available</p>
-        </CardContent>
+      <Card className="flex flex-col items-center justify-center px-6 py-12">
+        <p className="text-muted-foreground">No grades data available</p>
       </Card>
     )
   }
 
-  const { columns, totalStudents, classAverage, courseName, semesterName } =
-    gradesTableData
+  const { columns, totalStudents, classAverage } = gradesTableData
   const categorized = categorizeColumns(columns)
   const hasUnsavedChanges = modifiedGrades.size > 0
 
+  const saveLabel = isSaving
+    ? 'Saving...'
+    : hasUnsavedChanges
+      ? `Save ${modifiedGrades.size} ${modifiedGrades.size === 1 ? 'change' : 'changes'}`
+      : 'Save'
+
   return (
-    <div className="space-y-4">
-      {/* Statistics Header */}
-      <Card>
-        <CardHeader className="pb-3">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <CardTitle className="text-lg md:text-xl">{courseName}</CardTitle>
-              <CardDescription className="text-sm">
-                {semesterName}
-              </CardDescription>
-            </div>
-            <div className="grid grid-cols-2 gap-4 md:flex md:gap-6 text-sm">
-              <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold">
-                  {totalStudents}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground">
-                  Students
-                </div>
-              </div>
-              <div className="text-center">
-                <div className="text-xl md:text-2xl font-bold">
-                  {classAverage !== undefined ? classAverage.toFixed(2) : '—'}
-                </div>
-                <div className="text-xs md:text-sm text-muted-foreground">
-                  Class Average
-                </div>
-              </div>
-            </div>
+    <div className="flex flex-col gap-4 pb-20 md:pb-0">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex w-full flex-wrap items-center gap-3 md:w-auto">
+          <DataTableSearch
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search students"
+          />
+          <div className="flex flex-wrap gap-2">
+            <span className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card px-3.5 text-[13px] text-muted-foreground">
+              Class average
+              <strong className="font-display text-[15px] text-foreground">
+                {classAverage !== undefined && classAverage !== null
+                  ? classAverage.toFixed(1)
+                  : '—'}
+              </strong>
+            </span>
+            <span className="inline-flex h-9 items-center rounded-full border border-border bg-card px-3.5 text-[13px] text-muted-foreground">
+              {searchQuery
+                ? `${filteredRows.length} of ${totalStudents} students`
+                : `${totalStudents} students`}
+            </span>
           </div>
-        </CardHeader>
-      </Card>
-
-      {/* Toolbar */}
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-4 flex-1">
-          {/* Search */}
-          <div className="relative flex-1 md:max-w-md">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search students..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-10 pl-8 md:h-8"
-            />
-            {searchQuery && (
-              <Button
-                variant="ghost"
-                size="sm"
-                className="absolute right-0 top-0 h-full"
-                onClick={() => setSearchQuery('')}>
-                <X className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-
-          {/* Filtered count */}
-          {searchQuery && (
-            <div className="text-sm text-muted-foreground">
-              Showing {filteredRows.length} of {totalStudents} students
-            </div>
-          )}
         </div>
-
         <div className="flex flex-wrap items-center gap-2">
-          {/* Export */}
           <GradesExportButton courseSectionId={courseSectionId} />
-
-          {/* Refresh */}
           <Button
             variant="outline"
-            size="sm"
+            size="icon"
             onClick={fetchGradesTable}
             disabled={isSaving}
-            className="h-10 md:h-8">
-            <RefreshCcw className="h-4 w-4 md:mr-2" />
-            <span className="hidden md:inline">Refresh</span>
+            aria-label="Refresh grades">
+            <RefreshCcw className="h-[18px] w-[18px]" />
           </Button>
-
-          {/* Discard */}
           {hasUnsavedChanges && (
             <Button
               variant="outline"
-              size="sm"
               onClick={handleDiscardChanges}
               disabled={isSaving}
-              className="h-10 md:h-8">
-              <X className="h-4 w-4 md:mr-2" />
-              <span className="hidden md:inline">Discard</span>
+              className="hidden md:inline-flex">
+              <X className="h-[18px] w-[18px]" />
+              Discard
             </Button>
           )}
-
-          {/* Save All */}
           <Button
-            variant="default"
-            size="sm"
             onClick={handleSaveAll}
             disabled={!hasUnsavedChanges || isSaving}
-            className="h-10 flex-1 md:flex-none md:h-8">
+            className="hidden md:inline-flex">
             {isSaving ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              <Loader2 className="h-[18px] w-[18px] animate-spin" />
             ) : (
-              <Save className="h-4 w-4 mr-2" />
+              <Save className="h-[18px] w-[18px]" />
             )}
-            {isSaving
-              ? 'Saving...'
-              : `Save ${
-                  modifiedGrades.size > 0 ? `(${modifiedGrades.size})` : ''
-                }`}
+            {saveLabel}
           </Button>
         </div>
       </div>
@@ -455,6 +397,32 @@ export default function GradesTab({ courseSectionId }) {
         onGradeChange={handleGradeChange}
         onValidate={validateGrade}
       />
+
+      {hasUnsavedChanges && (
+        <div className="fixed inset-x-0 bottom-0 z-30 flex items-center justify-between gap-3 border-t border-border bg-card px-5 pb-[max(env(safe-area-inset-bottom),12px)] pt-3 md:hidden">
+          <div className="flex flex-col">
+            <span className="text-sm font-semibold">
+              {modifiedGrades.size} unsaved{' '}
+              {modifiedGrades.size === 1 ? 'change' : 'changes'}
+            </span>
+            <button
+              type="button"
+              onClick={handleDiscardChanges}
+              disabled={isSaving}
+              className="self-start text-[13px] font-semibold text-primary">
+              Discard
+            </button>
+          </div>
+          <Button size="lg" onClick={handleSaveAll} disabled={isSaving}>
+            {isSaving ? (
+              <Loader2 className="h-[18px] w-[18px] animate-spin" />
+            ) : (
+              <Save className="h-[18px] w-[18px]" />
+            )}
+            {isSaving ? 'Saving...' : 'Save'}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

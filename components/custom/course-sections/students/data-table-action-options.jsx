@@ -1,14 +1,16 @@
 'use client'
 
-import { DownloadIcon } from '@radix-ui/react-icons'
+import { Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import useFetchApi from '@/hooks/useFetchApi'
 import { useParams, useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import { useEffect } from 'react'
 
-export function DataTableActionOptions() {
-  const { data, fetchData } = useFetchApi()
+// Downloads a course section's attendance as Excel. Defaults to the section in
+// the route (the gradebook); the attendance page passes it in.
+export function DataTableActionOptions({ sectionId, className }) {
+  const { data, isLoading, fetchData } = useFetchApi()
   const router = useRouter()
   const { toast } = useToast()
   const param = useParams()
@@ -16,7 +18,7 @@ export function DataTableActionOptions() {
   const handleExportClick = async (e) => {
     e.preventDefault()
     try {
-      await fetchData(`/course-section/${param.id}/export-attendance`, {
+      await fetchData(`/course-section/${sectionId ?? param.id}/export-attendance`, {
         method: 'GET',
         cache: 'no-store'
       })
@@ -60,11 +62,11 @@ export function DataTableActionOptions() {
   return (
     <Button
       variant="outline"
-      size="sm"
-      className="ml-auto hidden h-8 lg:flex"
+      className={className}
+      disabled={isLoading}
       onClick={handleExportClick}>
-      <DownloadIcon className="mr-2 h-4 w-4" />
-      Export
+      <Download className="h-[18px] w-[18px]" aria-hidden="true" />
+      Export attendance
     </Button>
   )
 }

@@ -53,11 +53,11 @@ export default function ComboBoxMulti({
             <PopoverTrigger asChild>
               <FormControl {...formControlProps}>
                 <Button
-                  variant="outline"
-                  className={`w-full justify-start ${buttonProps.className}`}>
-                  <PlusCircleIcon className="mr-2 h-4 w-4" />
+                  variant="field"
+                  className={`h-auto min-h-[44px] w-full justify-start py-2 ${buttonProps.className}`}>
+                  <PlusCircleIcon className="h-4 w-4 text-muted-foreground" />
                   {selectedValues?.size == 0 && (
-                    <span className="text-gray-500 dark:text-gray-400 font-normal">
+                    <span className="font-normal text-faint">
                       {buttonProps.placeholder}
                     </span>
                   )}

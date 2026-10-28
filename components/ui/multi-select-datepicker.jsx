@@ -21,12 +21,12 @@ export default function MultiSelectDatePicker({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="field"
           className={cn(
-            'w-[280px] justify-start text-left font-normal',
-            (!dates || dates.length === 0) && 'text-muted-foreground'
+            'w-full justify-start text-left',
+            (!dates || dates.length === 0) && 'text-faint'
           )}>
-          <CalendarIcon className="mr-2 h-4 w-4" />
+          <CalendarIcon className="h-4 w-4 text-muted-foreground" />
           {dates && dates.length > 0 ? (
             dates.length > 1 ? (
               <span>{dates.length} dates selected</span>

@@ -1,59 +1,44 @@
 'use client'
 
 import { flexRender } from '@tanstack/react-table'
-import { Card, CardContent } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
 
-export function DataTableMobileCard({ row, columns }) {
-  // Filter out hidden columns and the selection column
-  const visibleColumns = columns.filter((column) => {
-    if (column.id === 'select') return false
-    if (row.getIsVisible && !row.getIsVisible(column.id)) return false
-    return column.accessorKey || column.id === 'actions'
-  })
+const titleOf = (column) => {
+  const { label, header } = column.columnDef
+  return label || (typeof header === 'string' ? header : column.id)
+}
+
+// How a table row reads on a phone: its first column as the title, the row's
+// menu beside it, the other columns as labelled fields underneath
+export function DataTableMobileCard({ row }) {
+  const cells = row.getVisibleCells().filter((cell) => cell.column.id !== 'select')
+  const actions = cells.find((cell) => cell.column.id === 'actions')
+  const [primary, ...fields] = cells.filter((cell) => cell.column.id !== 'actions')
+  const render = (cell) => flexRender(cell.column.columnDef.cell, cell.getContext())
 
   return (
-    <Card className="mb-3">
-      <CardContent className="p-4 space-y-3">
-        {visibleColumns.map((column) => {
-          const cell = row
-            .getVisibleCells()
-            .find((c) => c.column.id === (column.accessorKey || column.id))
-
-          if (!cell) return null
-
-          // Special handling for actions column - render full width at the bottom
-          if (column.id === 'actions') {
-            return (
-              <div key={column.id}>
-                <Separator className="my-3" />
-                <div className="flex justify-end">
-                  {flexRender(column.cell, cell.getContext())}
-                </div>
-              </div>
-            )
-          }
-
-          // Get column header title
-          const headerTitle =
-            column.label ||
-            (typeof column.header === 'function'
-              ? column.accessorKey
-              : column.header) ||
-            column.accessorKey
-
-          return (
-            <div key={column.accessorKey || column.id} className="space-y-1">
-              <div className="text-xs font-medium text-muted-foreground uppercase">
-                {headerTitle}
-              </div>
-              <div className="text-sm">
-                {flexRender(column.cell, cell.getContext())}
-              </div>
+    <article className="flex flex-col gap-3 rounded-card-sm border border-border bg-card p-4 shadow-card">
+      <div className="flex items-start justify-between gap-3">
+        {primary && (
+          <div className="min-w-0 pt-2 font-display text-[17px] font-bold leading-6 [&>*]:min-w-0">
+            {render(primary)}
+          </div>
+        )}
+        {actions && <div className="-mr-1 shrink-0">{render(actions)}</div>}
+      </div>
+      {fields.length > 0 && (
+        <dl className="grid grid-cols-2 gap-x-4 gap-y-3">
+          {fields.map((cell) => (
+            <div key={cell.id} className="min-w-0">
+              <dt className="text-[11px] font-semibold uppercase leading-4 tracking-[1.2px] text-faint">
+                {titleOf(cell.column)}
+              </dt>
+              <dd className="mt-0.5 text-sm text-foreground [&>*]:min-w-0">
+                {render(cell)}
+              </dd>
             </div>
-          )
-        })}
-      </CardContent>
-    </Card>
+          ))}
+        </dl>
+      )}
+    </article>
   )
 }

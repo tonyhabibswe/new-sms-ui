@@ -1,21 +1,18 @@
 'use client'
 
-import { Input } from '@/components/ui/input'
+import { DataTableSearch } from '@/components/custom/data-table/data-table-search'
 import { DataTableViewOptions } from '@/components/custom/data-table/data-table-view-options'
 
 export function DataTableToolbar({ table }) {
   return (
-    <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-      <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Filter majors..."
-          value={table.getColumn('label')?.getFilterValue() ?? ''}
-          onChange={(event) =>
-            table.getColumn('label')?.setFilterValue(event.target.value)
-          }
-          className="h-10 w-full md:h-8 md:w-[150px] lg:w-[250px]"
-        />
-      </div>
+    <div className="flex items-center justify-between gap-3">
+      <DataTableSearch
+        placeholder="Search majors"
+        value={table.getColumn('systemName')?.getFilterValue() ?? ''}
+        onChange={(event) =>
+          table.getColumn('systemName')?.setFilterValue(event.target.value)
+        }
+      />
       <DataTableViewOptions table={table} />
     </div>
   )

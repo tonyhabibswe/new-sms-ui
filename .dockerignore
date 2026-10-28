@@ -1,0 +1,10 @@
+# Not needed to build the image. Keep .env: next build reads NEXT_PUBLIC_* from it.
+.git
+.github
+.vscode
+.next
+node_modules
+npm-debug.log*
+docs
+plan
+spec

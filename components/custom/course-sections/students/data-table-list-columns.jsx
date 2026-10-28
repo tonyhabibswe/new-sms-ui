@@ -3,6 +3,22 @@
 import { DataTableColumnHeader } from '../../data-table/data-table-column-header'
 import { StatusSelectCell } from './status-select-cell'
 
+// Counts read as a column of figures in the table, as plain values on a phone card
+const countColumn = (key, title) => ({
+  accessorKey: key,
+  label: title,
+  header: ({ column }) => (
+    <DataTableColumnHeader
+      className="justify-end text-right"
+      column={column}
+      title={title}
+    />
+  ),
+  cell: ({ row }) => (
+    <div className="tabular-nums md:text-right">{row.getValue(key)}</div>
+  )
+})
+
 export const columns = [
   {
     accessorKey: 'id',
@@ -17,6 +33,24 @@ export const columns = [
     show: false
   },
   {
+    // The search box matches this, so first or last name both find a student
+    id: 'name',
+    accessorFn: (row) => `${row.firstName ?? ''} ${row.lastName ?? ''}`.trim(),
+    label: 'Student',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Student" />
+    ),
+    cell: ({ row }) => (
+      <div className="flex flex-col">
+        <span className="font-semibold">{row.getValue('name')}</span>
+        <span className="font-sans text-sm font-normal text-muted-foreground">
+          {row.original.studentId}
+        </span>
+      </div>
+    ),
+    enableHiding: false
+  },
+  {
     accessorKey: 'studentId',
     label: 'Student ID',
     header: ({ column }) => (
@@ -28,9 +62,9 @@ export const columns = [
   },
   {
     accessorKey: 'firstName',
-    label: 'First Name',
+    label: 'First name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="First Name" />
+      <DataTableColumnHeader column={column} title="First name" />
     ),
     cell: ({ row }) => {
       return <div className="min-w-[80px]">{row.getValue('firstName')}</div>
@@ -38,9 +72,9 @@ export const columns = [
   },
   {
     accessorKey: 'fatherName',
-    label: 'Father Name',
+    label: "Father's name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Father Name" />
+      <DataTableColumnHeader column={column} title="Father's name" />
     ),
     cell: ({ row }) => {
       return <div className="min-w-[80px]">{row.getValue('fatherName')}</div>
@@ -48,9 +82,9 @@ export const columns = [
   },
   {
     accessorKey: 'lastName',
-    label: 'Last Name',
+    label: 'Last name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Last Name" />
+      <DataTableColumnHeader column={column} title="Last name" />
     ),
     cell: ({ row }) => {
       return <div className="min-w-[80px]">{row.getValue('lastName')}</div>
@@ -108,56 +142,8 @@ export const columns = [
       return <div className="min-w-[80px]">{row.getValue('campus')}</div>
     }
   },
-  {
-    accessorKey: 'abscences',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="justify-end text-right"
-        column={column}
-        title="Abscences"
-      />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="text-right px-3 min-w-[80px]">
-          {row.getValue('abscences')}
-        </div>
-      )
-    }
-  },
-  {
-    accessorKey: 'sessions',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="justify-end text-right"
-        column={column}
-        title="Sessions"
-      />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="text-right px-3 min-w-[100px]">
-          {row.getValue('sessions')}
-        </div>
-      )
-    }
-  },
-  {
-    accessorKey: 'totalSessions',
-    label: 'Total Sessions',
-    header: ({ column }) => (
-      <DataTableColumnHeader
-        className="justify-end text-right"
-        column={column}
-        title="Total Sessions"
-      />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="text-right px-3 min-w-[100px]">
-          {row.getValue('totalSessions')}
-        </div>
-      )
-    }
-  }
+  countColumn('abscences', 'Absences'),
+  // Sessions this student's attendance has been taken for, of all of them
+  countColumn('sessions', 'Sessions marked'),
+  countColumn('totalSessions', 'Total sessions')
 ]

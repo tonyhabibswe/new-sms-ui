@@ -1,23 +1,32 @@
-# Stage 1: Build the Next.js application
-FROM node:24-alpine as builder
+# syntax=docker/dockerfile:1
+
+# Stage 1: Install dependencies. Docker reuses this layer until package.json or
+# package-lock.json changes; the cache mount keeps npm's downloads between builds.
+FROM node:24-alpine AS deps
 WORKDIR /app
-
-# Install dependencies
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm npm ci
 
-# Copy source code and build the application
+# Stage 2: Build the Next.js application. NEXT_PUBLIC_* values are read from
+# the .env file in the build context and baked into the browser code here.
+FROM node:24-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-# Stage 2: Production image to run the app
+# Stage 3: Production image with only the standalone server (output: 'standalone'
+# in next.config.js), which bundles the packages it needs; no npm install here
 FROM node:24-alpine
 WORKDIR /app
 ENV NODE_ENV=production
+ENV PORT=3000
+# Docker sets HOSTNAME to the container ID; listen on every interface instead
+ENV HOSTNAME=0.0.0.0
 
-# Copy built files and production dependencies from the builder stage
-COPY --from=builder /app ./
-RUN npm ci --omit=dev
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
 
 EXPOSE 3000
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]

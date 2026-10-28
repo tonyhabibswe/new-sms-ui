@@ -3,13 +3,14 @@ import { DialogFooter } from '@/components/ui/dialog'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import React from 'react'
 
 const DeletePassingGrade = ({ defaultData, setOpenDialog }) => {
   const { isLoading, fetchData } = useFetchApi()
   const { toast } = useToast()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
 
   const handleDelete = async () => {
     try {
@@ -17,8 +18,8 @@ const DeletePassingGrade = ({ defaultData, setOpenDialog }) => {
         method: 'DELETE',
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Passing grade deleted successfully'
@@ -45,14 +46,14 @@ const DeletePassingGrade = ({ defaultData, setOpenDialog }) => {
         <Button
           variant="outline"
           onClick={() => setOpenDialog(false)}
-          disabled={isLoading}>
+          disabled={busy}>
           Cancel
         </Button>
         <Button
           variant="destructive"
-          disabled={isLoading}
+          disabled={busy}
           onClick={handleDelete}>
-          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          {busy && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
           Delete
         </Button>
       </DialogFooter>

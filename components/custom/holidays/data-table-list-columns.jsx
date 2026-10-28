@@ -2,6 +2,8 @@
 
 import { DataTableColumnHeader } from '../data-table/data-table-column-header'
 import EditableNameCell from './editable-name-cell'
+import { format } from 'date-fns'
+import { toDay } from '@/lib/semesters'
 
 export const columns = [
   {
@@ -21,13 +23,8 @@ export const columns = [
       <DataTableColumnHeader column={column} title="Date" />
     ),
     cell: ({ row }) => (
-      <div className="w-[250px]">
-        {new Date(row.getValue('date')).toLocaleString('en-US', {
-          weekday: 'long', // long, short, narrow
-          year: 'numeric', // numeric, 2-digit
-          month: 'long', // numeric, 2-digit, long, short, narrow
-          day: 'numeric' // numeric, 2-digit
-        })}
+      <div className="font-display text-[17px] font-bold leading-6">
+        {format(toDay(row.getValue('date')), 'EEEE, MMMM d, yyyy')}
       </div>
     )
   },

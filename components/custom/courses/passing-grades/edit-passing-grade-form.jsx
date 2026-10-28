@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import { DialogFooter } from '@/components/ui/dialog'
@@ -43,7 +43,8 @@ const FormSchema = z.object({
 
 const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
   const { isLoading, fetchData } = useFetchApi()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
   const { toast } = useToast()
   const [majors, setMajors] = useState([])
   const [semesters, setSemesters] = useState([])
@@ -93,8 +94,8 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
         }),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Passing grade updated successfully!'
@@ -126,13 +127,13 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="major_id"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Major</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Major</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger className="col-span-3">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a major" />
                     </SelectTrigger>
                   </FormControl>
@@ -144,7 +145,7 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
                     ))}
                   </SelectContent>
                 </Select>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -153,13 +154,13 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="semester_id"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Semester</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Semester</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger className="col-span-3">
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a semester" />
                     </SelectTrigger>
                   </FormControl>
@@ -173,7 +174,7 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
                     ))}
                   </SelectContent>
                 </Select>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -182,11 +183,11 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="grade_value"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Grade Value</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Passing grade</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="e.g., 75 or 75.5"
                     type="number"
                     step="0.1"
@@ -195,17 +196,17 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />
         </div>
         <DialogFooter>
-          <Button disabled={isLoading} type="submit">
-            {isLoading && (
+          <Button disabled={busy} type="submit">
+            {busy && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Save Changes
+            Save changes
           </Button>
         </DialogFooter>
       </form>

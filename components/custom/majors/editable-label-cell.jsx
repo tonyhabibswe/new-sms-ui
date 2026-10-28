@@ -15,8 +15,9 @@ import { Loader2 } from 'lucide-react'
 export function EditableLabelCell({ row }) {
   const major = row.original
   const [isEditing, setIsEditing] = useState(false)
-  const [value, setValue] = useState(major.label)
-  const [originalValue] = useState(major.label)
+  // A major can have no label yet
+  const [value, setValue] = useState(major.label ?? '')
+  const [originalValue] = useState(major.label ?? '')
   const inputRef = useRef(null)
   const { toast } = useToast()
   const router = useRouter()
@@ -100,19 +101,28 @@ export function EditableLabelCell({ row }) {
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
           disabled={isLoading}
-          className="h-8 w-[300px]"
+          aria-label={`Label for ${major.systemName}`}
+          className="h-10 w-[300px] max-w-full rounded-lg"
         />
-        {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {isLoading && <Loader2 className="h-4 w-4 shrink-0 animate-spin" />}
       </div>
     )
   }
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       onDoubleClick={handleDoubleClick}
-      className="w-[300px] cursor-pointer rounded px-2 py-1 hover:bg-muted"
+      onKeyDown={(e) => e.key === 'Enter' && handleDoubleClick()}
+      aria-label={`Edit the label for ${major.systemName}`}
+      className="-mx-2 w-[300px] max-w-full cursor-pointer rounded-lg px-2 py-1.5 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       title="Double-click to edit">
-      {value}
+      {value || (
+        <span className="text-primary underline underline-offset-2">
+          Double click to edit
+        </span>
+      )}
     </div>
   )
 }

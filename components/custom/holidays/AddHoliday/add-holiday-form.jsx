@@ -17,7 +17,7 @@ import {
 
 import { Input } from '@/components/ui/input'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import DatePicker from '@/components/ui/datepicker'
@@ -33,7 +33,8 @@ const FormSchema = z.object({
 
 const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
   const { isLoading, fetchData } = useFetchApi()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
   const { toast } = useToast()
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -51,8 +52,8 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
         }),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Holiday created!'
@@ -77,11 +78,11 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
             control={form.control}
             name="date"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Select Date</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Date</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="col-span-3"
+                    className="w-full"
                     date={field.value}
                     setDate={field.onChange}
                     placeholder="Pick a date"
@@ -97,11 +98,11 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter holiday name"
                     type="text"
                     {...field}
@@ -113,8 +114,8 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
           />
         </div>
         <DialogFooter>
-          <Button disabled={isLoading} type="submit">
-            {isLoading && (
+          <Button disabled={busy} type="submit">
+            {busy && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Save changes

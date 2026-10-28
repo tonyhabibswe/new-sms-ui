@@ -16,7 +16,7 @@ import {
 
 import { Input } from '@/components/ui/input'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import { SheetFooter } from '@/components/ui/sheet'
@@ -29,13 +29,20 @@ const FormSchema = z.object({
   }),
   startSessionTime: z.string(),
   endSessionTime: z.string(),
-  room: z.string()
+  // Same rule as the API
+  room: z
+    .string()
+    .trim()
+    .min(1, 'Room is required')
+    .max(100, 'Room must be 100 characters or fewer')
 })
 
 const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
   const { isLoading, fetchData } = useFetchApi()
 
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+
+  const busy = isLoading || isRefreshing
   const { toast } = useToast()
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -49,8 +56,8 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
         body: JSON.stringify(data),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Session created!'
@@ -95,11 +102,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="sessionDate"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Select Date</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Date</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="col-span-3"
+                    className="w-full"
                     date={field.value}
                     setDate={field.onChange}
                     placeholder="Pick a date"
@@ -115,11 +122,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="startSessionTime"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Start Time</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Start time</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter session start time"
                     type="time"
                     {...field}
@@ -135,11 +142,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="endSessionTime"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">End Time</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>End time</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter session end time"
                     type="time"
                     {...field}
@@ -155,11 +162,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="room"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Room</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Room</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter session room"
                     type="text"
                     {...field}
@@ -171,8 +178,8 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
           />
         </div>
         <SheetFooter>
-          <Button type="submit">
-            {isLoading && (
+          <Button disabled={busy} type="submit">
+            {busy && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Save changes

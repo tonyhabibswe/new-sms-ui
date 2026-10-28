@@ -16,7 +16,7 @@ import {
 
 import { Input } from '@/components/ui/input'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import { DialogFooter } from '@/components/ui/dialog'
@@ -28,7 +28,8 @@ const FormSchema = z.object({
 
 const AddCourseForm = ({ setOpenDialog, defaultData }) => {
   const { isLoading, fetchData } = useFetchApi()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
   const { toast } = useToast()
   const form = useForm({
     resolver: zodResolver(FormSchema),
@@ -50,8 +51,8 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
         }),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Course created!'
@@ -73,8 +74,8 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
         }),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: `Course ${defaultData.code} edited!`
@@ -101,11 +102,11 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="code"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Code</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Code</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter course code"
                     type="text"
                     {...field}
@@ -119,11 +120,11 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter course name"
                     type="text"
                     {...field}
@@ -135,8 +136,8 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
           />
         </div>
         <DialogFooter>
-          <Button disabled={isLoading} type="submit">
-            {isLoading && (
+          <Button disabled={busy} type="submit">
+            {busy && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Save changes

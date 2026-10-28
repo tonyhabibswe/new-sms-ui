@@ -1,8 +1,10 @@
+import { Fragment } from 'react'
 import { DataTable } from '@/components/custom/data-table/data-table'
+import { PageHeader } from '@/components/custom/layout/page-header'
 import AddSessionButton from '@/components/custom/sessions/add-session/add-session-button'
 import { columns } from '@/components/custom/sessions/data-table-list-columns'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
-import { Fragment } from 'react'
+import { pickSectionParams, sectionCrumbs, sectionTitle } from '@/lib/section-links'
 
 export const metadata = {
   title: 'Sessions',
@@ -26,36 +28,22 @@ const SessionsListPage = async (props) => {
   const params = await props.params
   const searchParams = await props.searchParams
   const data = await getData(params.id)
-  const courseCode = searchParams.code || ''
-  const sectionCode = searchParams.section || ''
-  const courseTime = searchParams.time || ''
+  const sectionParams = pickSectionParams(searchParams)
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-            Sessions
-          </h2>
-          {(courseCode || sectionCode || courseTime) && (
-            <p className="text-sm text-muted-foreground md:text-base">
-              {[courseCode, sectionCode, courseTime]
-                .filter(Boolean)
-                .join(' - ')}
-            </p>
-          )}
-        </div>
-        <AddSessionButton />
-      </div>
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <PageHeader
+        breadcrumbs={[...sectionCrumbs(params.id, sectionParams), { label: 'Sessions' }]}
+        eyebrow={[sectionTitle(sectionParams), sectionParams.name].filter(Boolean).join(' · ')}
+        title="Sessions"
+        description={[sectionParams.time, sectionParams.room].filter(Boolean).join(' · ')}
+        actions={<AddSessionButton />}
+      />
       <DataTable
         data={data}
         columns={columns}
         toolbar={Fragment}
-        meta={{
-          courseCode,
-          sectionCode,
-          courseTime
-        }}
+        meta={{ sectionId: params.id, sectionParams }}
         columnVisibilityInitialState={{
           id: false
         }}
