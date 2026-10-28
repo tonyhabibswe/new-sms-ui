@@ -61,7 +61,9 @@ export function SemesterActions({ semester }) {
           <DialogHeader>
             <DialogTitle>Delete semester</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete semester {semester.name}?
+              Are you sure you want to delete semester {semester.name}? Its
+              holidays, passing grades and course sections go with it,
+              including their attendance and grades.
             </DialogDescription>
           </DialogHeader>
           <DeleteSemesterButton setOpenDialog={setOpenDeleteDialog} defaultData={semester} />
