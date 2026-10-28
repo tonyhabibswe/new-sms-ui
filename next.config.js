@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Build a self-contained server in .next/standalone for the Docker image
+  output: 'standalone',
   images: {
     remotePatterns: [
       {
