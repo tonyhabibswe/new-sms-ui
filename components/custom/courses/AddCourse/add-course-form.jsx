@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -56,7 +56,7 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
         variant: 'success',
         title: 'Course created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create course'
@@ -89,7 +89,7 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
   }
 
   async function onSubmit(data) {
-    if (!!defaultData) await editData(data)
+    if (defaultData) await editData(data)
     else await createData(data)
   }
 

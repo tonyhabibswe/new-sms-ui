@@ -65,7 +65,7 @@ export function DataTableRowActions({ row }) {
           <DialogHeader>
             <DialogTitle>Edit Course</DialogTitle>
             <DialogDescription>
-              Edit a course here. Click save when you're done.
+              Edit a course here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <AddCourseForm

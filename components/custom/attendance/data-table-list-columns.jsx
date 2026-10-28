@@ -2,7 +2,7 @@
 
 import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '../data-table/data-table-column-header'
-import { DataTableRowActions } from './data-table-row-actions'
+
 import UpdateAttendanceInput from './update-attendance-input'
 
 export const columns = [

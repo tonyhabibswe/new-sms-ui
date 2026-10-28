@@ -43,7 +43,7 @@ const AddCourseButton = () => {
         <DialogHeader>
           <DialogTitle>Add Course</DialogTitle>
           <DialogDescription>
-            Create a course here. Click save when you're done.
+            Create a course here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <AddCourseForm setOpenDialog={setOpenDialog} />

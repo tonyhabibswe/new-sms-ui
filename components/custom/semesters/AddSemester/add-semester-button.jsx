@@ -1,11 +1,9 @@
 'use client'
 
-import DatePicker from '@/components/ui/datepicker'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger
@@ -45,7 +43,7 @@ const AddSemesterButton = () => {
         <DialogHeader>
           <DialogTitle>Add Semester</DialogTitle>
           <DialogDescription>
-            Create a semester here. Click save when you're done.
+            Create a semester here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <AddSemesterForm setOpenDialog={setOpenDialog} />

@@ -1,5 +1,5 @@
-# Use Node 18 on Alpine for a lightweight image
-FROM node:18-alpine
+# Use Node 24 on Alpine for a lightweight image
+FROM node:24-alpine
 
 # Set the working directory in the container
 WORKDIR /app

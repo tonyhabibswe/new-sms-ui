@@ -1,36 +1,17 @@
 'use client'
 
-import { DownloadIcon, GearIcon } from '@radix-ui/react-icons'
+import { DownloadIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button'
 import useFetchApi from '@/hooks/useFetchApi'
 import { useParams, useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import { useEffect } from 'react'
 
-export function DataTableActionOptions({ table }) {
-  const { data, isLoading, fetchData } = useFetchApi()
+export function DataTableActionOptions() {
+  const { data, fetchData } = useFetchApi()
   const router = useRouter()
   const { toast } = useToast()
   const param = useParams()
-
-  function base64ToBlob(base64Data, contentType = '', sliceSize = 512) {
-    const byteCharacters = atob(base64Data)
-    const byteArrays = []
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize)
-
-      const byteNumbers = new Array(slice.length)
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i)
-      }
-
-      const byteArray = new Uint8Array(byteNumbers)
-      byteArrays.push(byteArray)
-    }
-
-    return new Blob(byteArrays, { type: contentType })
-  }
 
   const handleExportClick = async (e) => {
     e.preventDefault()

@@ -108,7 +108,7 @@ export function DataTableRowActions({ row }) {
           <SheetHeader>
             <SheetTitle>Add Student</SheetTitle>
             <SheetDescription>
-              Add a student here. Click save when you're done.
+              Add a student here. Click save when you&apos;re done.
             </SheetDescription>
           </SheetHeader>
           <AddStudentForm
@@ -122,7 +122,7 @@ export function DataTableRowActions({ row }) {
           <SheetHeader>
             <SheetTitle>Edit Course</SheetTitle>
             <SheetDescription>
-              Edit a course here. Click save when you're done.
+              Edit a course here. Click save when you&apos;re done.
             </SheetDescription>
           </SheetHeader>
           <AddCourseForm

@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 
 import {
   Select,

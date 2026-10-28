@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { DialogFooter } from '@/components/ui/dialog'
-import { useToast } from '@/components/ui/use-toast'
 
 const FormSchema = z.object({
   name: z.string().min(1, 'Category name is required').max(100),
@@ -29,13 +28,7 @@ const FormSchema = z.object({
     })
 })
 
-export default function AddCategoryForm({
-  courseSectionId,
-  onCategoryAdd,
-  onCancel
-}) {
-  const { toast } = useToast()
-
+export default function AddCategoryForm({ onCategoryAdd, onCancel }) {
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
