@@ -41,7 +41,7 @@ The Student Management System is your one-stop platform for managing academic ac
 📖 **Manage Courses** - Keep your course catalog and passing grades  
 🎓 **Track Majors** - Give each academic program a clear name  
 ✅ **Take Attendance** - Mark each session in a few taps  
-📊 **Enter Grades** - Use a weighted gradebook with Excel export  
+📊 **Enter Grades** - Use a weighted gradebook, try grades in what-if mode and export to Excel  
 📱 **Access Anywhere** - Works on desktop, tablet, and phone
 
 ---
@@ -176,14 +176,47 @@ Open a course section and click **"Gradebook"** (from its page, its **⋯** menu
 - Click **"Save"** (it shows how many changes you have), or **"Discard"** to undo them
 
 **The system automatically calculates:**
-- Category averages
+- Category scores, in one of two ways (shown under each category's name):
+  - **Points average** - points earned ÷ points possible, so an item worth more counts more. Once one item is graded, an empty one counts as 0
+  - **Best item** - only each student's best item counts
 - Final grade
-- Letter grade (failing grades are highlighted)
+- Letter grade
 - Curved final and letter grades (the same as the final grade unless the section has a curve)
 
-You'll also find the **class average**, a **search** box, **"Export to Excel"** and a refresh button here.
+Grades below a student's passing mark are shown in orange. The passing mark is the [passing grade](#passing-grades) set for their major, or 60 if there isn't one.
+
+You'll also find the **class average**, a **search** box, **"Export to Excel"**, **"What-if"** and a refresh button here.
 
 > **On a phone:** pick an item at the top, then enter each student's grade down the list and tap **"Save"** in the bar at the bottom.
+
+#### What-if Mode: Try Grades Without Saving
+
+What-if mode lets you try out grades, for example to see what each student needs on the final exam to pass. SMS works out the results exactly as it does for saved grades, but nothing is saved.
+
+1. On the **Grades** tab, click **"What-if"**
+2. If you have unsaved changes, choose **"Save and continue"** or **"Discard changes"**. What-if mode always starts from the saved grades
+3. Click a grade (empty ones too), type a value and press Enter. What-if values have a dashed outline
+4. Click **"Exit what-if"** in the **What-if mode** banner at the top when you're done. The real grades are just as they were
+
+While you try grades:
+
+- Category scores, final, letter and curved grades update a moment after you enter a grade. A result that changed shows its saved value under it
+- The **class average** and the **curve** update too, since the curve depends on the class average
+- **"Reset"** clears every what-if value so you can start again
+- What-if values are only on your screen. They're gone when you exit or leave the page, and **"Export to Excel"** still exports the saved grades
+
+**What each student needs to pass:**
+
+The **Needed on** column on the right shows the lowest score each student needs on one item to pass, counting their other grades as shown and the curve. Pick the item from the **Needed on** list above the table. SMS starts with the last item nobody has a grade for yet, usually the final exam.
+
+- **54.65 / 100**, to reach 60 - the student needs at least 54.65 on that item
+- **Passing already**, even with 0 - the student passes whatever they get on it
+- **Can't pass**, 100 / 100 gives 57 - even full marks aren't enough, and 57 is the best they can reach
+- Students marked W, UW or I show their status instead
+
+In the table, each student's name also shows their major and passing mark, like "Computer Science · pass 60". When the section has a curve, the curved grade is what has to reach the passing mark.
+
+> **On a phone:** tap **"What-if"**, then pick an item at the top. Each card shows the student's grade and what they need on that item, and **"Reset"** is in the bar at the bottom.
 
 ---
 
@@ -255,6 +288,8 @@ A passing grade is the final grade a student of a given major needs to pass the 
 3. Choose the major and the semester, and enter the grade
 4. Click **"Save"**
 
+The gradebook uses it to flag failing grades and to work out what each student needs in what-if mode. Where there's no passing grade for a student's major, it uses 60.
+
 ---
 
 ## Managing Majors
@@ -295,7 +330,13 @@ SMS is built to work on your phone or tablet!
 A: Check your username and password. Contact IT if you need a reset.
 
 **Q: Grades not saving?**  
-A: Click the **Save** button after entering grades. Changed grades stay outlined in blue until they're saved. A grade can't be higher than the item's maximum points.
+A: Click the **Save** button after entering grades. Changed grades stay outlined in blue until they're saved. A grade can't be higher than the item's maximum points or have more than 2 decimals.
+
+**Q: Did what-if mode change my grades?**  
+A: No. What-if values are never saved. Click **"Exit what-if"** and you're back to the saved grades.
+
+**Q: Why is a grade orange?**  
+A: It's below the student's passing mark: the passing grade set for their major, or 60 if there isn't one.
 
 **Q: Do I need to save attendance?**  
 A: No. Each tap is saved straight away.
@@ -331,6 +372,7 @@ Need more help? Contact your institution's IT support team.
 - ✓ Click ⋯ for more options
 - ✓ Double-click to quick-edit names and labels
 - ✓ Attendance saves itself, grades need **Save**
+- ✓ Use **What-if** to try grades without saving them
 
 ---
 
