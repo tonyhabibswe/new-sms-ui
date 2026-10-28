@@ -51,7 +51,7 @@ const FormItem = React.forwardRef(({ className, ...props }, ref) => {
 
   return (
     (<FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+      <div ref={ref} className={cn("flex flex-col gap-2", className)} {...props} />
     </FormItemContext.Provider>)
   );
 })
@@ -113,7 +113,7 @@ const FormMessage = React.forwardRef(({ className, children, ...props }, ref) =>
     (<p
       ref={ref}
       id={formMessageId}
-      className={cn("text-sm font-medium text-destructive", className)}
+      className={cn("text-[13px] font-medium text-destructive", className)}
       {...props}>
       {body}
     </p>)

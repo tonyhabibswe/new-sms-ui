@@ -1,6 +1,8 @@
 'use client'
 
+import Link from 'next/link'
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { BadgeCheck, Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -19,53 +21,52 @@ import {
 } from '@/components/ui/dialog'
 import AddCourseForm from './AddCourse/add-course-form'
 import DeleteCourseButton from './delete-course/delete-course-button'
-import { useRouter } from 'next/navigation'
+import { toQuery } from '@/lib/section-links'
+
+// The passing grades page shows the course's code and name from the query
+export const passingGradesHref = (course) =>
+  `/admin/courses/${course.id}/passing-grades${toQuery({ code: course.code, name: course.name })}`
 
 export function DataTableRowActions({ row }) {
   const [openEditDialog, setOpenEditDialog] = useState(false)
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false)
-  const router = useRouter()
-
-  const handlePassingGrades = () => {
-    const queryParams = new URLSearchParams({
-      code: row.original.code,
-      name: row.original.name
-    }).toString()
-    router.push(
-      `/admin/courses/${row.original.id}/passing-grades?${queryParams}`
-    )
-  }
 
   return (
     <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-            <DotsHorizontalIcon className="h-4 w-4" />
+            variant="outline"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground data-[state=open]:bg-accent">
+            <DotsHorizontalIcon className="h-[18px] w-[18px]" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px]">
-          <DropdownMenuItem onClick={handlePassingGrades}>
-            Passing Grades
+        <DropdownMenuContent align="end" className="w-[200px]">
+          <DropdownMenuItem asChild>
+            <Link href={passingGradesHref(row.original)}>
+              <BadgeCheck aria-hidden="true" />
+              Passing grades
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => setOpenEditDialog(true)}>
-            Edit
+            <Pencil aria-hidden="true" />
+            Edit course
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
-            <span className="text-red-500">Delete</span>
+            <Trash2 className="text-destructive" aria-hidden="true" />
+            <span className="font-semibold text-destructive">Delete course</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Course</DialogTitle>
+            <DialogTitle>Edit course</DialogTitle>
             <DialogDescription>
-              Edit a course here. Click save when you&apos;re done.
+              Change {row.original.code}&apos;s code or name.
             </DialogDescription>
           </DialogHeader>
           <AddCourseForm
@@ -75,11 +76,11 @@ export function DataTableRowActions({ row }) {
         </DialogContent>
       </Dialog>
       <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Course</DialogTitle>
+            <DialogTitle>Delete course</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete course {row.original.code} ?
+              Are you sure you want to delete {row.original.code}?
             </DialogDescription>
           </DialogHeader>
           <DeleteCourseButton

@@ -20,15 +20,19 @@ export default function CategoriesItemsTab({
   onItemDelete
 }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null)
+  // Until one is picked (or if the picked one is deleted), show the first
+  const activeCategoryId = categories.some((c) => c.id === selectedCategoryId)
+    ? selectedCategoryId
+    : (categories[0]?.id ?? null)
 
   return (
-    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+    <div className="grid grid-cols-1 gap-4 lg:gap-6 xl:grid-cols-2">
       <CategoriesPanel
         courseSectionId={courseSectionId}
         categories={categories}
         categoriesLoading={categoriesLoading}
         categoriesError={categoriesError}
-        selectedCategoryId={selectedCategoryId}
+        selectedCategoryId={activeCategoryId}
         onCategorySelect={setSelectedCategoryId}
         onCategoryAdd={onCategoryAdd}
         onCategoryEdit={onCategoryEdit}
@@ -36,7 +40,7 @@ export default function CategoriesItemsTab({
       />
 
       <ItemsPanel
-        selectedCategoryId={selectedCategoryId}
+        selectedCategoryId={activeCategoryId}
         categories={categories}
         items={items}
         itemsLoading={itemsLoading}

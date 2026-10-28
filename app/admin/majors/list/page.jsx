@@ -1,7 +1,8 @@
 import { DataTable } from '@/components/custom/data-table/data-table'
+import { PageHeader } from '@/components/custom/layout/page-header'
+import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
 import { columns } from '@/components/custom/majors/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/majors/data-table-list-toolbar'
-import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
 
 export const metadata = {
   title: 'Majors',
@@ -22,17 +23,12 @@ const MajorsListPage = async () => {
   const data = await getData()
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <div>
-          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-            Majors
-          </h2>
-          <p className="text-sm text-muted-foreground md:text-base">
-            View and edit major labels. Double-click on a label to edit.
-          </p>
-        </div>
-      </div>
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <PageHeader
+        eyebrow="Catalog"
+        title="Majors"
+        description="Majors are added along with the students who study them. Double-click a label to rename it."
+      />
       <DataTable
         data={data}
         columns={columns}

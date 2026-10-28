@@ -32,11 +32,11 @@ export default function ItemsPanel({
       <CardHeader>
         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg md:text-xl">Grade Items</CardTitle>
-            <CardDescription className="text-sm">
+            <CardTitle>{selectedCategory ? `Items in ${selectedCategory.name}` : 'Items'}</CardTitle>
+            <CardDescription>
               {selectedCategory
-                ? `Items in "${selectedCategory.name}"`
-                : 'Select a category to view items'}
+                ? `Each item counts equally inside ${selectedCategory.name}.`
+                : 'Select a category to view its items'}
             </CardDescription>
           </div>
           <AddItemButton

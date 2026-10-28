@@ -46,29 +46,42 @@ export default function ItemsTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Item Title</TableHead>
-            <TableHead className="w-32">Max Points</TableHead>
-            <TableHead className="w-24 text-right">Actions</TableHead>
+            <TableHead className="px-3">Title</TableHead>
+            <TableHead className="hidden px-3 sm:table-cell">Max points</TableHead>
+            <TableHead className="px-3">
+              <span className="sr-only">Actions</span>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {items.map((item) => (
             <TableRow key={item.id}>
-              <TableCell className="font-medium">{item.title}</TableCell>
-              <TableCell>{item.maxPoints}</TableCell>
-              <TableCell className="text-right">
+              <TableCell className="px-3 font-semibold">
+                {item.title}
+                <span className="mt-0.5 block text-[13px] font-normal text-muted-foreground sm:hidden">
+                  {item.maxPoints} points
+                </span>
+              </TableCell>
+              <TableCell className="hidden px-3 sm:table-cell">
+                <span className="whitespace-nowrap rounded-lg border border-border bg-muted px-2.5 py-1 text-xs font-medium text-faint">
+                  {item.maxPoints} points
+                </span>
+              </TableCell>
+              <TableCell className="px-3 text-right">
                 <div className="flex justify-end gap-2">
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
+                    aria-label={`Edit ${item.title}`}
                     onClick={() => setEditingItem(item)}>
-                    <Pencil className="h-4 w-4" />
+                    <Pencil className="h-4 w-4 text-muted-foreground" />
                   </Button>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
+                    aria-label={`Delete ${item.title}`}
                     onClick={() => setDeletingItem(item)}>
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
               </TableCell>

@@ -1,8 +1,11 @@
+import { notFound } from 'next/navigation'
 import { DataTable } from '@/components/custom/data-table/data-table'
 import AddHolidayButton from '@/components/custom/holidays/AddHoliday/add-holiday-button'
 import { columns } from '@/components/custom/holidays/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/holidays/data-table-list-toolbar'
+import { SemesterHeader } from '@/components/custom/semesters/semester-header'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
+import { getSemester, getSemesterSections } from '@/lib/semesters-server'
 
 export const metadata = {
   title: 'Holidays',
@@ -24,15 +27,22 @@ const getData = async (id) => {
 
 const HolidaysListPage = async (props) => {
   const params = await props.params
-  const data = await getData(params.id)
+  const [semester, data, sections] = await Promise.all([
+    getSemester(params.id),
+    getData(params.id),
+    getSemesterSections(params.id)
+  ])
+  if (!semester) notFound()
+
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-          Holidays List
-        </h2>
-        <AddHolidayButton />
-      </div>
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <SemesterHeader
+        semester={semester}
+        active="holidays"
+        sectionCount={sections.length}
+        holidayCount={data.length}
+        action={<AddHolidayButton />}
+      />
       <DataTable
         data={data}
         columns={columns}

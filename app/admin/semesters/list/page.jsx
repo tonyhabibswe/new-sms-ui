@@ -1,8 +1,7 @@
-import { DataTable } from '@/components/custom/data-table/data-table'
-import { columns } from '@/components/custom/semesters/data-table-list-columns'
-import { DataTableToolbar } from '@/components/custom/semesters/data-table-list-toolbar'
-import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
+import { PageHeader } from '@/components/custom/layout/page-header'
 import AddSemesterButton from '@/components/custom/semesters/AddSemester/add-semester-button'
+import { SemestersOverview } from '@/components/custom/semesters/semesters-overview'
+import { getSemesterSections, getSemesters } from '@/lib/semesters-server'
 
 export const metadata = {
   title: 'Semesters',
@@ -10,32 +9,23 @@ export const metadata = {
 }
 export const revalidate = 0
 
-const getData = async () => {
-  const res = await fetchInstanceSSR('/semesters', { cache: 'no-store' })
-  if (!res.ok) {
-    throw new Error('Failed to fetch semesters')
-  }
-  const resJson = await res.json()
-  return resJson.data
-}
 const SemestersListPage = async () => {
-  const data = await getData()
+  const semesters = await getSemesters()
+  const current = semesters.find((semester) => semester.status === 'in-progress') ?? null
+  const currentSections = current ? await getSemesterSections(current.id) : null
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-          Semesters
-        </h2>
-        <AddSemesterButton />
-      </div>
-      <DataTable
-        data={data}
-        columns={columns}
-        toolbar={DataTableToolbar}
-        columnVisibilityInitialState={{
-          id: false
-        }}
+    <div className="flex flex-col gap-8">
+      <PageHeader
+        eyebrow="Academic calendar"
+        title="Semesters"
+        description="Plan each term, its holidays and the course sections you teach."
+        actions={<AddSemesterButton />}
+      />
+      <SemestersOverview
+        semesters={semesters}
+        current={current}
+        currentSectionCount={currentSections?.length ?? null}
       />
     </div>
   )

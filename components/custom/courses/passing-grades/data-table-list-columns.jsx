@@ -3,82 +3,58 @@
 import { DataTableColumnHeader } from '../../data-table/data-table-column-header'
 import { DataTableRowActions } from './data-table-row-actions'
 
+// Ids the page needs but nobody reads; hidden and left out of the column menu
+const idColumn = (key, title) => ({
+  accessorKey: key,
+  label: title,
+  header: ({ column }) => <DataTableColumnHeader column={column} title={title} />,
+  cell: ({ row }) => <div>{row.getValue(key)}</div>,
+  enableSorting: false,
+  enableHiding: false
+})
+
 export const columns = [
-  {
-    accessorKey: 'id',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Id" />
-    ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
-    enableSorting: false,
-    enableHiding: false
-  },
-  {
-    accessorKey: 'majorId',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Major ID" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue('majorId')}</div>
-    ),
-    enableSorting: false,
-    enableHiding: true
-  },
-  {
-    accessorKey: 'semesterId',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Semester ID" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue('semesterId')}</div>
-    ),
-    enableSorting: false,
-    enableHiding: true
-  },
-  {
-    accessorKey: 'courseId',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Course ID" />
-    ),
-    cell: ({ row }) => (
-      <div className="w-[80px]">{row.getValue('courseId')}</div>
-    ),
-    enableSorting: false,
-    enableHiding: true
-  },
+  idColumn('id', 'Id'),
+  idColumn('majorId', 'Major ID'),
+  idColumn('semesterId', 'Semester ID'),
+  idColumn('courseId', 'Course ID'),
   {
     accessorKey: 'majorName',
+    label: 'Major',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Major" />
     ),
     cell: ({ row }) => (
-      <div className="w-[200px] font-medium">
-        {row.getValue('majorName') || 'N/A'}
-      </div>
+      <div className="font-semibold">{row.getValue('majorName') || 'N/A'}</div>
     )
   },
   {
     accessorKey: 'semesterName',
+    label: 'Semester',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Semester" />
     ),
-    cell: ({ row }) => (
-      <div className="w-[150px]">{row.getValue('semesterName') || 'N/A'}</div>
-    )
+    cell: ({ row }) => <div>{row.getValue('semesterName') || 'N/A'}</div>
   },
   {
     accessorKey: 'gradeValue',
+    label: 'Passing grade',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Passing Grade" />
+      <DataTableColumnHeader column={column} title="Passing grade" />
     ),
     cell: ({ row }) => (
-      <div className="w-[120px] font-semibold">
+      <div className="font-display text-[17px] font-bold tabular-nums text-primary">
         {row.getValue('gradeValue')}
       </div>
     )
   },
   {
     id: 'actions',
-    cell: ({ row }) => <DataTableRowActions row={row} />
+    label: 'Actions',
+    cell: ({ row }) => (
+      <div className="flex justify-end">
+        <DataTableRowActions row={row} />
+      </div>
+    )
   }
 ]

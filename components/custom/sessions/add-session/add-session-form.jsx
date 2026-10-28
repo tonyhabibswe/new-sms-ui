@@ -95,11 +95,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="sessionDate"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Select Date</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Date</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="col-span-3"
+                    className="w-full"
                     date={field.value}
                     setDate={field.onChange}
                     placeholder="Pick a date"
@@ -115,11 +115,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="startSessionTime"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Start Time</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Start time</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter session start time"
                     type="time"
                     {...field}
@@ -135,11 +135,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="endSessionTime"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">End Time</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>End time</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter session end time"
                     type="time"
                     {...field}
@@ -155,11 +155,11 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
             control={form.control}
             name="room"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Room</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Room</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter session room"
                     type="text"
                     {...field}

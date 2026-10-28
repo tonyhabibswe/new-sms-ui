@@ -72,11 +72,10 @@ export function GradesExportButton({ courseSectionId }) {
   return (
     <Button
       variant="outline"
-      size="sm"
       onClick={handleExportClick}
       disabled={isExporting || isLoading}>
-      <DownloadIcon className="h-4 w-4 mr-2" />
-      {isExporting ? 'Exporting...' : 'Export Gradebook'}
+      <DownloadIcon className="h-[18px] w-[18px]" />
+      {isExporting ? 'Exporting...' : 'Export to Excel'}
     </Button>
   )
 }

@@ -196,7 +196,9 @@ export default function AttendanceTab({ courseSectionId }) {
         columnVisibilityInitialState={{
           id: false,
           studentId: false,
+          firstName: false,
           fatherName: false,
+          lastName: false,
           major: false,
           email: false,
           campus: false
@@ -206,11 +208,6 @@ export default function AttendanceTab({ courseSectionId }) {
           onStatusChange: handleStatusChange
         }}
       />
-      {/* Debug info */}
-      <div className="text-xs text-muted-foreground">
-        Statuses loaded: {statuses.length} | Loading:{' '}
-        {isLoadingStatuses.toString()}
-      </div>
     </div>
   )
 }

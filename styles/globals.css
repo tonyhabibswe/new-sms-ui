@@ -2,50 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  CodeWithT design system (light and dark), mapped onto the shadcn variables.
+  canvas = page background, surface = cards and popovers, ink = headings,
+  muted = body text, faint = eyebrows and captions, line = hairlines.
+  Not in CodeWithT yet: --input (form control borders, 3:1 on their ground),
+  --absent (absent and failing) and --destructive.
+*/
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 224 71.4% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --background: 0 0% 98%; /* canvas #FAFAFA */
+    --foreground: 228 5.3% 18.6%; /* ink #2D2E32 */
+
+    --card: 0 0% 100%; /* surface #FFFFFF */
+    --card-foreground: 228 5.3% 18.6%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.5rem;
+    --popover-foreground: 228 5.3% 18.6%;
+
+    --primary: 215.4 100% 41.2%; /* brand-600 #0056D2 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 100%;
+    --secondary-foreground: 228 5.3% 18.6%;
+
+    --muted: 0 0% 98%;
+    --muted-foreground: 222.9 3.2% 43.3%; /* muted #6B6D72 */
+
+    --faint: 222.9 3.1% 44.5%; /* faint #6E7075 */
+
+    --accent: 240 7.1% 94.5%; /* line #F0F0F2, hover fills */
+    --accent-foreground: 228 5.3% 18.6%;
+
+    --destructive: 4.2 76.5% 40%; /* #B42318 */
+    --destructive-foreground: 0 0% 100%;
+
+    --absent: 17.5 88.3% 40.4%; /* #C2410C */
+    --absent-solid: 17.5 88.3% 40.4%;
+    --absent-tint: 33.3 100% 96.5%; /* #FFF7ED */
+
+    --brand-400: 215.6 91.5% 63.1%; /* #4B91F7 */
+    --brand-600: 215.4 100% 41.2%; /* #0056D2 */
+
+    --border: 240 7.1% 94.5%; /* line #F0F0F2 */
+    --input: 220 2.7% 56.9%; /* #8E9094 */
+    --ring: 215.4 100% 41.2%;
+
+    --radius: 0.75rem;
+
+    --shadow-card: 0 4px 24px #2d2e320f, 0 1px 4px #2d2e320a;
+    --shadow-hero: 0 24px 64px #4b91f714, 0 8px 24px #2d2e320f;
   }
 
   .dark {
-    --background: 224 71.4% 4.1%;
-    --foreground: 210 20% 98%;
-    --card: 224 71.4% 4.1%;
-    --card-foreground: 210 20% 98%;
-    --popover: 224 71.4% 4.1%;
-    --popover-foreground: 210 20% 98%;
-    --primary: 263.4 70% 50.4%;
-    --primary-foreground: 210 20% 98%;
-    --secondary: 215 27.9% 16.9%;
-    --secondary-foreground: 210 20% 98%;
-    --muted: 215 27.9% 16.9%;
-    --muted-foreground: 217.9 10.6% 64.9%;
-    --accent: 215 27.9% 16.9%;
-    --accent-foreground: 210 20% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 20% 98%;
-    --border: 215 27.9% 16.9%;
-    --input: 215 27.9% 16.9%;
-    --ring: 263.4 70% 50.4%;
+    --background: 240 20% 4.9%; /* canvas #0A0A0F */
+    --foreground: 240 20% 95.1%; /* ink #F0F0F5 */
+
+    --card: 240 11.1% 8.8%; /* surface #141419 */
+    --card-foreground: 240 20% 95.1%;
+
+    --popover: 240 11.1% 8.8%;
+    --popover-foreground: 240 20% 95.1%;
+
+    /* brand-400 reads on dark grounds; its buttons take dark labels */
+    --primary: 215.6 91.5% 63.1%;
+    --primary-foreground: 240 20% 4.9%;
+
+    --secondary: 240 11.1% 8.8%;
+    --secondary-foreground: 240 20% 95.1%;
+
+    --muted: 240 20% 4.9%;
+    --muted-foreground: 230 2.6% 55.3%; /* muted #8A8B90 */
+
+    --faint: 222.9 2.8% 51.2%; /* faint #7F8186 */
+
+    --accent: 240 9.1% 12.9%; /* line #1E1E24 */
+    --accent-foreground: 240 20% 95.1%;
+
+    --destructive: 4.1 92.5% 68.8%; /* #F97066 */
+    --destructive-foreground: 240 20% 4.9%;
+
+    --absent: 27 96% 61%; /* #FB923C */
+    --absent-solid: 17.5 88.3% 40.4%;
+    --absent-tint: 22.2 45.8% 11.6%; /* #2B1A10 */
+
+    --border: 240 9.1% 12.9%;
+    --input: 222.9 3.4% 40.6%; /* #64666B */
+    --ring: 215.6 91.5% 63.1%;
+
+    --shadow-card: 0 4px 24px #0000004d, 0 1px 4px #00000033;
+    --shadow-hero: 0 24px 64px #4b91f71f, 0 8px 24px #0000004d;
   }
 }
 
@@ -54,32 +100,24 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  ::placeholder {
+    color: hsl(var(--faint));
+    opacity: 1;
   }
 }
 
 html,
-body,
-#root {
-  width: 100%;
-  height: 100%;
-  /* font-family: 'Inter', sans-serif; */
-  /* letter-spacing: 0.08rem; */
-}
-
 body {
-  overflow-x: auto;
+  width: 100%;
+  min-height: 100%;
 }
 
-#drawer-root {
-  position: fixed;
-  z-index: 1300;
-  height: 100vh;
-}
-/* 
-    Workaround just because it is a TailwindCSS Issue 
-    where the darkmode background specifity 
-    overrides the checked specifity 
+/*
+    Workaround just because it is a TailwindCSS Issue
+    where the darkmode background specifity
+    overrides the checked specifity
 */
 .dark [role='checkbox']:checked,
 .dark [role='radio']:checked {

@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
 import {
   Dialog,
   DialogContent,
@@ -19,17 +19,16 @@ const AddPassingGradeButton = ({ courseId }) => {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="ml-auto h-8">
-          <PlusCircledIcon className="mr-2 h-4 w-4" />
-          Add Passing Grade
+        <Button>
+          <Plus className="h-[18px] w-[18px]" aria-hidden="true" />
+          Add passing grade
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Passing Grade</DialogTitle>
+          <DialogTitle>Add passing grade</DialogTitle>
           <DialogDescription>
-            Set a passing grade for this course with a specific major and
-            semester.
+            Set the grade a major needs to pass this course in a semester.
           </DialogDescription>
         </DialogHeader>
         <AddPassingGradeForm
