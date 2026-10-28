@@ -12,7 +12,8 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem
+  CommandItem,
+  CommandList
 } from '@/components/ui/command'
 import {
   Form,
@@ -99,44 +100,46 @@ export default function ComboBoxMulti({
             <PopoverContent className="w-[200px] p-0" align="start">
               <Command>
                 <CommandInput placeholder="Search Day..." className="h-9" />
-                <CommandEmpty>No result found.</CommandEmpty>
-                <CommandGroup>
-                  {options.map((option, index) => {
-                    const isSelected = selectedValues.has(option.value)
-                    return (
-                      <CommandItem
-                        key={index}
-                        onSelect={() => {
-                          if (isSelected) {
-                            setSelectedValues((prev) => {
-                              prev.delete(option.value)
-                              return prev
-                            })
-                            // selectedValues.delete(option.value)
-                          } else {
-                            setSelectedValues((prev) => {
-                              prev.add(option.value)
-                              return prev
-                            })
-                            // selectedValues.add(option.value)
-                          }
-                          const filterValues = Array.from(selectedValues)
-                          form.setValue(name, filterValues)
-                        }}>
-                        <div
-                          className={cn(
-                            'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                            isSelected
-                              ? 'bg-primary text-primary-foreground'
-                              : 'opacity-50 [&_svg]:invisible'
-                          )}>
-                          <CheckIcon className={cn('h-4 w-4')} />
-                        </div>
-                        <span>{option.label}</span>
-                      </CommandItem>
-                    )
-                  })}
-                </CommandGroup>
+                <CommandList>
+                  <CommandEmpty>No result found.</CommandEmpty>
+                  <CommandGroup>
+                    {options.map((option, index) => {
+                      const isSelected = selectedValues.has(option.value)
+                      return (
+                        <CommandItem
+                          key={index}
+                          onSelect={() => {
+                            if (isSelected) {
+                              setSelectedValues((prev) => {
+                                prev.delete(option.value)
+                                return prev
+                              })
+                              // selectedValues.delete(option.value)
+                            } else {
+                              setSelectedValues((prev) => {
+                                prev.add(option.value)
+                                return prev
+                              })
+                              // selectedValues.add(option.value)
+                            }
+                            const filterValues = Array.from(selectedValues)
+                            form.setValue(name, filterValues)
+                          }}>
+                          <div
+                            className={cn(
+                              'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                              isSelected
+                                ? 'bg-primary text-primary-foreground'
+                                : 'opacity-50 [&_svg]:invisible'
+                            )}>
+                            <CheckIcon className={cn('h-4 w-4')} />
+                          </div>
+                          <span>{option.label}</span>
+                        </CommandItem>
+                      )
+                    })}
+                  </CommandGroup>
+                </CommandList>
               </Command>
             </PopoverContent>
           </Popover>

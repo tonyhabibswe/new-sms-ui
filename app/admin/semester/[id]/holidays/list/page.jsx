@@ -22,7 +22,8 @@ const getData = async (id) => {
   return resJson.data
 }
 
-const HolidaysListPage = async ({ params }) => {
+const HolidaysListPage = async (props) => {
+  const params = await props.params
   const data = await getData(params.id)
   return (
     <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">

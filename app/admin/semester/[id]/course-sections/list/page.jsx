@@ -21,7 +21,9 @@ const getData = async (id) => {
   return resJson.data
 }
 
-const CoursesListPage = async ({ params, searchParams }) => {
+const CoursesListPage = async (props) => {
+  const params = await props.params
+  const searchParams = await props.searchParams
   const data = await getData(params.id)
   const semesterName = searchParams.semester || ''
 

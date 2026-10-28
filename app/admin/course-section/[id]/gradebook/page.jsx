@@ -1,6 +1,8 @@
 import GradebookTabs from '@/components/custom/gradebook/gradebook-tabs'
 
-export default async function GradebookPage({ params, searchParams }) {
+export default async function GradebookPage(props) {
+  const params = await props.params
+  const searchParams = await props.searchParams
   const { id } = params
 
   // Get course info from URL params or use defaults

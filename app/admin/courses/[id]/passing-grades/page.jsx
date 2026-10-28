@@ -22,7 +22,9 @@ const getData = async (courseId) => {
   return resJson.data
 }
 
-const CoursePassingGradesPage = async ({ params, searchParams }) => {
+const CoursePassingGradesPage = async (props) => {
+  const params = await props.params
+  const searchParams = await props.searchParams
   const courseId = params.id
   const data = await getData(courseId)
 

@@ -1,11 +1,11 @@
-// middleware.ts (or middleware.js)
+// proxy.js (called middleware.js before Next.js 16)
 import { NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
 const AUTH_PAGES = ['/login']
 const SEMESTER_LIST = '/admin/semesters/list'
 
-export async function middleware(req) {
+export async function proxy(req) {
   const url = new URL(req.url)
   const pathname = url.pathname
 
@@ -34,7 +34,7 @@ export async function middleware(req) {
   return NextResponse.next()
 }
 
-// Run middleware on the routes we care about:
+// Run the proxy on the routes we care about:
 export const config = {
   matcher: ['/admin/:path*', '/login']
 }

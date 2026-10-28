@@ -55,7 +55,7 @@ export default function SemesterDatePicker({ form, label, placeholder, name }) {
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                initialFocus
+                autoFocus
               />
             </PopoverContent>
           </Popover>

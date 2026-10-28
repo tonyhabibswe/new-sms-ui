@@ -48,7 +48,7 @@ export default function MultiSelectDatePicker({
           mode="multiple"
           selected={dates}
           onSelect={(selected) => setDates(selected || [])}
-          initialFocus
+          autoFocus
         />
       </PopoverContent>
     </Popover>
