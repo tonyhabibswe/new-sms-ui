@@ -15,8 +15,14 @@ import EditCategoryForm from './edit-category-form'
 import DeleteCategoryDialog from './delete-category-dialog'
 import { cn } from '@/lib/utils'
 
-const algorithmLabel = (algorithm) =>
-  algorithm === 'equal' ? 'Equal weight' : 'Points based'
+// How the API turns a category's items into one score
+export const algorithmLabel = (algorithm) =>
+  algorithm === 'PICK_HIGHEST' ? 'Best item' : 'Points average'
+
+export const algorithmHint = (category) =>
+  category.algorithm === 'PICK_HIGHEST'
+    ? `Only each student's best item in ${category.name} counts.`
+    : 'Points earned ÷ points possible, so an item worth more counts more. Once one item is graded, an empty one counts as 0.'
 
 export default function CategoriesTable({
   categories,

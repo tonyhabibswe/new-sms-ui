@@ -11,6 +11,7 @@ import AddItemButton from './add-item-button'
 import ItemsTable from './items-table'
 import ItemsLoadingSkeleton from './items-loading-skeleton'
 import ErrorDisplay from './error-display'
+import { algorithmHint } from './categories-table'
 
 export default function ItemsPanel({
   selectedCategoryId,
@@ -35,7 +36,7 @@ export default function ItemsPanel({
             <CardTitle>{selectedCategory ? `Items in ${selectedCategory.name}` : 'Items'}</CardTitle>
             <CardDescription>
               {selectedCategory
-                ? `Each item counts equally inside ${selectedCategory.name}.`
+                ? algorithmHint(selectedCategory)
                 : 'Select a category to view its items'}
             </CardDescription>
           </div>
