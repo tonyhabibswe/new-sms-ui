@@ -62,8 +62,9 @@ export function DataTable({
     return () => {
       clearTimeout(timer)
     }
-  }, [toast])
+  }, [data.length, error, toast])
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- only matters for React Compiler, which this app doesn't use
   const table = useReactTable({
     data,
     columns,

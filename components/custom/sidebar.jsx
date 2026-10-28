@@ -1,4 +1,4 @@
-import { BackpackIcon, FileTextIcon, ReaderIcon } from '@radix-ui/react-icons'
+import { BackpackIcon, FileTextIcon } from '@radix-ui/react-icons'
 import SidebarLink from './sidebar-link'
 import { GraduationCap } from 'lucide-react'
 

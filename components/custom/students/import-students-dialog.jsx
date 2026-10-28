@@ -14,13 +14,13 @@ import useFetchApi from '@/hooks/useFetchApi'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Icons } from '@/components/ui/icons'
 
 const FormSchema = z.object({
   file: z
-    .instanceof(File)
+    .instanceof(File, { error: 'CSV File is required' })
     .refine((val) => val.name.includes('.csv'), 'CSV File is required')
 })
 

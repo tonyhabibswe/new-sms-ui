@@ -25,11 +25,11 @@ export default function AttendanceTab({ courseSectionId }) {
   const { fetchData } = useFetchApi()
   const { toast } = useToast()
   const [students, setStudents] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(Boolean(courseSectionId))
   const [error, setError] = useState(null)
   const [statuses, setStatuses] = useState([])
   const [isLoadingStatuses, setIsLoadingStatuses] = useState(true)
-  const [statusesError, setStatusesError] = useState(null)
+  const [, setStatusesError] = useState(null)
 
   /**
    * Fetch available student statuses from API
@@ -85,7 +85,7 @@ export default function AttendanceTab({ courseSectionId }) {
    * Handle status change for a student
    * Updates student status via API with optimistic UI pattern
    */
-  const handleStatusChange = async (enrollmentId, newStatusId, oldStatusId) => {
+  const handleStatusChange = async (enrollmentId, newStatusId) => {
     try {
       // Call API to update status
       await fetchData(`/course-enrollments/${enrollmentId}/status`, {
@@ -136,11 +136,9 @@ export default function AttendanceTab({ courseSectionId }) {
    * Effect to fetch students when component mounts or courseSectionId changes
    */
   useEffect(() => {
-    if (!courseSectionId) {
-      setIsLoading(false)
-      return
-    }
+    if (!courseSectionId) return
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loads data; state is set once the request settles
     fetchStudents()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseSectionId])
@@ -149,6 +147,7 @@ export default function AttendanceTab({ courseSectionId }) {
    * Effect to fetch statuses on component mount
    */
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- loads data; state is set once the request settles
     fetchStatuses()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

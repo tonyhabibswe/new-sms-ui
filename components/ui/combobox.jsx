@@ -84,7 +84,7 @@ export function Combobox({
           <CommandInput
             placeholder={`Search ${placeholder.toLowerCase()}`}
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onValueChange={setSearchTerm}
           />
           <CommandList>
             <CommandEmpty>No options found.</CommandEmpty>

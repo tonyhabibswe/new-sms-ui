@@ -6,7 +6,6 @@ import { GearIcon } from '@radix-ui/react-icons'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
-  DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
@@ -17,7 +16,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 
 export function DataTableActionOptions({ table }) {
-  const { isLoading, fetchData } = useFetchApi()
+  const { fetchData } = useFetchApi()
   const router = useRouter()
   const { toast } = useToast()
   const param = useParams()

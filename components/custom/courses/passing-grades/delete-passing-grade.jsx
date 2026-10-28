@@ -23,7 +23,7 @@ const DeletePassingGrade = ({ defaultData, setOpenDialog }) => {
         variant: 'success',
         title: 'Passing grade deleted successfully'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to delete passing grade'

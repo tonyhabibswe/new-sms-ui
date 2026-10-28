@@ -19,15 +19,6 @@ export default function GradeCell({
   const [error, setError] = useState(null)
   const inputRef = useRef(null)
 
-  // Update input value when value prop changes
-  useEffect(() => {
-    if (!isEditing) {
-      setInputValue(
-        value !== undefined && value !== null ? value.toString() : ''
-      )
-    }
-  }, [value, isEditing])
-
   // Focus input when editing starts
   useEffect(() => {
     if (isEditing && inputRef.current) {

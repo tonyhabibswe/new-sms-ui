@@ -15,7 +15,7 @@ export function DataTableMobileCard({ row, columns }) {
   return (
     <Card className="mb-3">
       <CardContent className="p-4 space-y-3">
-        {visibleColumns.map((column, index) => {
+        {visibleColumns.map((column) => {
           const cell = row
             .getVisibleCells()
             .find((c) => c.column.id === (column.accessorKey || column.id))

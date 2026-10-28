@@ -5,7 +5,7 @@ export async function GET() {
   // next-auth.session-token.0). Browsers ignore Set-Cookie for __Secure- and
   // __Host- prefixed names unless the Secure attribute is present, so it must
   // be set for those or the session survives and /login bounces back here.
-  const cookieStore = cookies()
+  const cookieStore = await cookies()
   cookieStore
     .getAll()
     .filter(({ name }) => name.includes('next-auth.'))

@@ -8,10 +8,9 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 import useFetchApi from '@/hooks/useFetchApi'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
 const UpdateAttendanceInput = ({ value, attendanceId }) => {
-  const { isLoading, fetchData } = useFetchApi()
+  const { fetchData } = useFetchApi()
   const router = useRouter()
   const { toast } = useToast()
 

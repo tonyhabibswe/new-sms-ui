@@ -1,4 +1,4 @@
-import { useSession, signOut } from 'next-auth/react'
+import { getSession, useSession, signOut } from 'next-auth/react'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
@@ -8,7 +8,7 @@ function useFetchApi() {
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
   const { toast } = useToast()
   const isLoggingOut = useRef(false)
@@ -49,7 +49,11 @@ function useFetchApi() {
 
   // Function to call on form submit
   const fetchData = async (url, options, noHeader = false) => {
-    const token = session?.token
+    // Components fetch on mount, before useSession() has loaded the session on a
+    // full page load. Ask next-auth for it then, rather than sending
+    // "Bearer undefined", which the API rejects and handleUnauthorized logs out.
+    const token =
+      session?.token ?? (await getSession({ broadcast: false }))?.token
     const apiUrl =
       process.env.NODE_ENV === 'development'
         ? 'http://127.0.0.1:8000/api'

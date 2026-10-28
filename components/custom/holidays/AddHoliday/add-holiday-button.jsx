@@ -45,7 +45,7 @@ const AddHolidayButton = () => {
         <DialogHeader>
           <DialogTitle>Add Holiday</DialogTitle>
           <DialogDescription>
-            Create a holiday here. Click save when you're done.
+            Create a holiday here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <AddHolidayForm setOpenDialog={setOpenDialog} semesterId={param.id} />
