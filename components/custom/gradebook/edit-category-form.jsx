@@ -21,7 +21,6 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/components/ui/use-toast'
 
 const FormSchema = z.object({
   name: z.string().min(1, 'Category name is required').max(100),
@@ -42,8 +41,6 @@ export default function EditCategoryForm({
   onOpenChange,
   onCategoryEdit
 }) {
-  const { toast } = useToast()
-
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {

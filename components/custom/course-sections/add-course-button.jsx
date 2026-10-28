@@ -12,7 +12,6 @@ import {
 import AddCourseForm from './add-course-form'
 import { useParams } from 'next/navigation'
 
-const { Button } = require('@/components/ui/button')
 const {
   TooltipTrigger,
   TooltipProvider,
@@ -41,7 +40,7 @@ const AddCourseButton = () => {
         <SheetHeader>
           <SheetTitle>Add Course</SheetTitle>
           <SheetDescription>
-            Create a course here. Click save when you're done.
+            Create a course here. Click save when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
         <AddCourseForm setOpenSheet={setOpenSheet} semesterId={param.id} />

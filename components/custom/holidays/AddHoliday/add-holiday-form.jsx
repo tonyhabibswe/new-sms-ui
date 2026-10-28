@@ -57,7 +57,7 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
         variant: 'success',
         title: 'Holiday created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create holiday'

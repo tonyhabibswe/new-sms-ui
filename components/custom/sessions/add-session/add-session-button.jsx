@@ -45,7 +45,7 @@ const AddSessionButton = () => {
         <DialogHeader>
           <DialogTitle>Add Session</DialogTitle>
           <DialogDescription>
-            Create a session here. Click save when you're done.
+            Create a session here. Click save when you&apos;re done.
           </DialogDescription>
         </DialogHeader>
         <AddSessionForm

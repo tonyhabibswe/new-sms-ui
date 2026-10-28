@@ -53,7 +53,7 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
         variant: 'success',
         title: 'Student created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create student'

@@ -24,7 +24,7 @@ const FormSchema = z.object({
   password: z.string()
 })
 
-export function UserAuthForm({ className, ...props }) {
+export function UserAuthForm() {
   const [isLoading, setIsLoading] = useState(false)
   const searchParams = useSearchParams()
   const router = useRouter()

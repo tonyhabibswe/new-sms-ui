@@ -56,7 +56,7 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
         variant: 'success',
         title: 'Course created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create course'
@@ -89,7 +89,7 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
   }
 
   async function onSubmit(data) {
-    if (!!defaultData) await editData(data)
+    if (defaultData) await editData(data)
     else await createData(data)
   }
 

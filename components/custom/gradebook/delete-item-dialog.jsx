@@ -42,7 +42,7 @@ export default function DeleteItemDialog({
         <DialogHeader>
           <DialogTitle>Delete Grade Item</DialogTitle>
           <DialogDescription>
-            Are you sure you want to delete "{item?.title}"?
+            Are you sure you want to delete &quot;{item?.title}&quot;?
             <br />
             <br />
             This will also remove all student grades for this item. This action

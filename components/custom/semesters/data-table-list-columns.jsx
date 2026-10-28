@@ -1,6 +1,5 @@
 'use client'
 
-import { Checkbox } from '@/components/ui/checkbox'
 import { DataTableColumnHeader } from '../data-table/data-table-column-header'
 import { DataTableRowActions } from '../data-table/data-table-row-actions'
 

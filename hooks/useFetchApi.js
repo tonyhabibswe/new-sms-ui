@@ -8,7 +8,7 @@ function useFetchApi() {
   const [data, setData] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   const router = useRouter()
   const { toast } = useToast()
   const isLoggingOut = useRef(false)

@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { DialogFooter } from '@/components/ui/dialog'
-import { useToast } from '@/components/ui/use-toast'
 
 const FormSchema = z.object({
   title: z.string().min(1, 'Item title is required').max(150),
@@ -27,8 +26,6 @@ const FormSchema = z.object({
 })
 
 export default function AddItemForm({ categoryId, onItemAdd, onCancel }) {
-  const { toast } = useToast()
-
   const form = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {

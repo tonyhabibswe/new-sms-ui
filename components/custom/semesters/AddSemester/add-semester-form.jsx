@@ -16,14 +16,13 @@ import {
 } from '@/components/ui/form'
 
 import { Input } from '@/components/ui/input'
-import { DialogClose, DialogFooter } from '@/components/ui/dialog'
+import { DialogFooter } from '@/components/ui/dialog'
 import SemesterDatePicker from './semester-datepicker'
 import useFetchApi from '@/hooks/useFetchApi'
 import { useRouter } from 'next/navigation'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import MultiSelectDatePicker from '@/components/ui/multi-select-datepicker'
-import { useState } from 'react'
 
 const FormSchema = z.object({
   name: z.string(),
@@ -75,7 +74,7 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
         variant: 'success',
         title: 'Semester created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create semester'
@@ -107,7 +106,7 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
   }
 
   async function onSubmit(data) {
-    if (!!defaultData) await editData(data)
+    if (defaultData) await editData(data)
     else await createData(data)
   }
 
@@ -133,7 +132,7 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
               </FormItem>
             )}
           />
-          {!!defaultData ? (
+          {defaultData ? (
             <></>
           ) : (
             <>
