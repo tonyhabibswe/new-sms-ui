@@ -29,7 +29,12 @@ const FormSchema = z.object({
   }),
   startSessionTime: z.string(),
   endSessionTime: z.string(),
-  room: z.string()
+  // Same rule as the API
+  room: z
+    .string()
+    .trim()
+    .min(1, 'Room is required')
+    .max(100, 'Room must be 100 characters or fewer')
 })
 
 const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
