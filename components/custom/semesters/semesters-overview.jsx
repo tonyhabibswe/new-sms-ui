@@ -30,59 +30,64 @@ function CurrentSemester({ semester, sectionCount }) {
   return (
     <section
       aria-labelledby="current-semester"
-      className="flex flex-wrap items-center justify-between gap-6 rounded-card-sm border border-brand-400/30 bg-card p-5 shadow-hero sm:rounded-panel sm:p-8">
-      <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-4">
-        <div className="flex items-center justify-between gap-3 sm:justify-start">
-          <SemesterStatusChip status={semester.status} />
-          <span className="text-[13px] text-faint sm:hidden">
-            Week {semester.week} of {semester.weeks}
-          </span>
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <h2
-            id="current-semester"
-            className="font-display text-2xl font-bold leading-[30px] sm:text-[32px] sm:leading-10">
-            {semester.name}
-          </h2>
-          <p className="text-sm text-muted-foreground sm:text-base">
-            {semester.range}
-            <span className="hidden sm:inline">
-              {' '}
-              · Week {semester.week} of {semester.weeks}
-            </span>
-          </p>
-        </div>
-        <div className="flex max-w-[520px] flex-col gap-2">
-          <div
-            role="progressbar"
-            aria-label={`${semester.name} progress`}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={semester.progress}
-            className="h-2 overflow-hidden rounded-full bg-accent">
-            <div
-              className="h-2 rounded-full bg-primary"
-              style={{ width: `${semester.progress}%` }}
-            />
-          </div>
-          <p className="text-[13px] text-faint">{semester.progress}% of the term is done</p>
+      className="flex flex-col gap-4 rounded-card-sm border border-brand-400/30 bg-card p-5 shadow-hero sm:rounded-panel sm:p-8">
+      <div className="flex items-center gap-3">
+        <SemesterStatusChip status={semester.status} />
+        <span className="text-[13px] text-faint sm:hidden">
+          Week {semester.week} of {semester.weeks}
+        </span>
+        <div className="ml-auto">
+          <SemesterActions semester={semester} />
         </div>
       </div>
-      <div className="grid w-full grid-cols-2 gap-3 sm:w-auto">
-        {stats.map((stat) => (
-          <Link
-            key={stat.label}
-            href={stat.href}
-            className="flex min-w-0 flex-col gap-1 rounded-card-sm border border-border bg-muted px-4 py-3.5 transition-colors hover:bg-accent sm:min-w-[160px] sm:px-6 sm:py-5">
-            <span className="font-display text-xl font-bold leading-[26px] sm:text-2xl sm:leading-8">
-              {stat.value ?? '–'}
-            </span>
-            <span className="flex items-center gap-1.5 text-[13px] font-semibold text-primary sm:text-sm">
-              {stat.label}
-              <ChevronRight className="hidden h-4 w-4 sm:block" aria-hidden="true" />
-            </span>
-          </Link>
-        ))}
+      <div className="flex flex-wrap items-center justify-between gap-6">
+        <div className="flex min-w-0 flex-[1_1_320px] flex-col gap-4">
+          <div className="flex flex-col gap-1.5">
+            <h2
+              id="current-semester"
+              className="font-display text-2xl font-bold leading-[30px] sm:text-[32px] sm:leading-10">
+              {semester.name}
+            </h2>
+            <p className="text-sm text-muted-foreground sm:text-base">
+              {semester.range}
+              <span className="hidden sm:inline">
+                {' '}
+                · Week {semester.week} of {semester.weeks}
+              </span>
+            </p>
+          </div>
+          <div className="flex max-w-[520px] flex-col gap-2">
+            <div
+              role="progressbar"
+              aria-label={`${semester.name} progress`}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={semester.progress}
+              className="h-2 overflow-hidden rounded-full bg-accent">
+              <div
+                className="h-2 rounded-full bg-primary"
+                style={{ width: `${semester.progress}%` }}
+              />
+            </div>
+            <p className="text-[13px] text-faint">{semester.progress}% of the term is done</p>
+          </div>
+        </div>
+        <div className="grid w-full grid-cols-2 gap-3 sm:w-auto">
+          {stats.map((stat) => (
+            <Link
+              key={stat.label}
+              href={stat.href}
+              className="flex min-w-0 flex-col gap-1 rounded-card-sm border border-border bg-muted px-4 py-3.5 transition-colors hover:bg-accent sm:min-w-[160px] sm:px-6 sm:py-5">
+              <span className="font-display text-xl font-bold leading-[26px] sm:text-2xl sm:leading-8">
+                {stat.value ?? '–'}
+              </span>
+              <span className="flex items-center gap-1.5 text-[13px] font-semibold text-primary sm:text-sm">
+                {stat.label}
+                <ChevronRight className="hidden h-4 w-4 sm:block" aria-hidden="true" />
+              </span>
+            </Link>
+          ))}
+        </div>
       </div>
     </section>
   )
