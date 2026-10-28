@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -140,7 +140,7 @@ const AddPassingGradeForm = ({ setOpenDialog, courseId }) => {
                   <SelectContent>
                     {majors.map((major) => (
                       <SelectItem key={major.id} value={major.id.toString()}>
-                        {major.label}
+                        {major.displayName}
                       </SelectItem>
                     ))}
                   </SelectContent>

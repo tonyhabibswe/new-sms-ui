@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
@@ -24,7 +24,7 @@ const FormSchema = z.object({
   password: z.string()
 })
 
-export function UserAuthForm({ className, ...props }) {
+export function UserAuthForm() {
   const [isLoading, setIsLoading] = useState(false)
   const searchParams = useSearchParams()
   const router = useRouter()

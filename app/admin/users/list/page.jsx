@@ -1,17 +1,3 @@
-import { promises as fs } from 'fs'
-import path from 'path'
-
-import { columns } from '@/components/custom/data-table/columns'
-import { DataTable } from '@/components/custom/data-table/data-table'
-import { PlusCircledIcon } from '@radix-ui/react-icons'
-import { Button } from '@/components/ui/button'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip'
-
 export const metadata = {
   title: 'Tasks',
   description: 'A task and issue tracker build using Tanstack Table.'

@@ -2,8 +2,8 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
-import { parseISO, format, parse } from 'date-fns'
+import * as z from '@/lib/zod'
+
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -24,7 +24,8 @@ import DatePicker from '@/components/ui/datepicker'
 
 const FormSchema = z.object({
   sessionDate: z.date({
-    required_error: 'Date is required'
+    error: (issue) =>
+      issue.input === undefined ? 'Date is required' : undefined
   }),
   startSessionTime: z.string(),
   endSessionTime: z.string(),
@@ -54,7 +55,7 @@ const AddSessionForm = ({ setOpenDialog, courseSectionId }) => {
         variant: 'success',
         title: 'Session created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create session'

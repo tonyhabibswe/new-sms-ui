@@ -6,7 +6,7 @@ import useFetchApi from '@/hooks/useFetchApi'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-const DeleteCourseButton = ({ defaultData, openDialog, setOpenDialog }) => {
+const DeleteCourseButton = ({ defaultData, setOpenDialog }) => {
   const { isLoading, fetchData } = useFetchApi()
   const { toast } = useToast()
   const router = useRouter()
@@ -22,7 +22,7 @@ const DeleteCourseButton = ({ defaultData, openDialog, setOpenDialog }) => {
         variant: 'success',
         title: `Course ${defaultData.code} deleted`
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: `Unable to delete ${defaultData.code} course`

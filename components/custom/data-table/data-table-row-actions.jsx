@@ -17,8 +17,7 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog'
 import AddSemesterForm from '../semesters/AddSemester/add-semester-form'
 import DeleteSemesterButton from '../semesters/delete-semester/delete-semester-button'
@@ -63,7 +62,7 @@ export function DataTableRowActions({ row }) {
           <DialogHeader>
             <DialogTitle>Edit Semester</DialogTitle>
             <DialogDescription>
-              Edit a semester here. Click save when you're done.
+              Edit a semester here. Click save when you&apos;re done.
             </DialogDescription>
           </DialogHeader>
           <AddSemesterForm

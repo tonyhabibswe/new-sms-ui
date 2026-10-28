@@ -1,9 +1,9 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { format } from 'date-fns'
+
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +22,7 @@ import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import { SheetFooter } from '@/components/ui/sheet'
 import ComboBoxMulti from '@/components/ui/comboboxmulti'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Combobox } from '@/components/ui/combobox'
 
 const FormSchema = z.object({
@@ -51,7 +51,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
   const router = useRouter()
   const { toast } = useToast()
   const form = useForm({
-    resolver: zodResolver(!!defaultData ? FormSchemaEdit : FormSchema),
+    resolver: zodResolver(defaultData ? FormSchemaEdit : FormSchema),
     defaultValues: defaultData
       ? {
           id: defaultData.id || 0,
@@ -81,6 +81,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
       }
     }
     fetchCourses()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   async function createData(data) {
@@ -96,7 +97,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
         variant: 'success',
         title: 'Course created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create course'
@@ -133,7 +134,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
       ...data,
       semesterId: parseInt(semesterId)
     }
-    if (!!defaultData) await editData(dataToSubmit)
+    if (defaultData) await editData(dataToSubmit)
     else await createData(dataToSubmit)
   }
 

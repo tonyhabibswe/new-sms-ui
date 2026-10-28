@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -26,7 +26,8 @@ import { DialogFooter } from '@/components/ui/dialog'
 const FormSchema = z.object({
   name: z.string(),
   date: z.date({
-    required_error: 'Date is required'
+    error: (issue) =>
+      issue.input === undefined ? 'Date is required' : undefined
   })
 })
 
@@ -56,7 +57,7 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
         variant: 'success',
         title: 'Holiday created!'
       })
-    } catch (exception) {
+    } catch {
       toast({
         variant: 'destructive',
         title: 'Unable to create holiday'

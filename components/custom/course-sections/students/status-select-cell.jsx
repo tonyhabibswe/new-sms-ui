@@ -67,7 +67,7 @@ export function StatusSelectCell({
 
       // Call API to update status
       await onStatusChange(enrollmentId, newStatusId, oldStatusId)
-    } catch (error) {
+    } catch {
       // Rollback: revert to old status on error
       setLocalStatusId(oldStatusId)
     } finally {

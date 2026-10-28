@@ -91,22 +91,6 @@ export default function GradesTab({ courseSectionId }) {
   }
 
   /**
-   * Parse grade cell data (handle {id, value} structure)
-   * @param {Object|number|null} cellData - Grade cell data
-   * @returns {{id: number|null, value: number|null}}
-   */
-  const parseGradeCell = (cellData) => {
-    if (cellData === null || cellData === undefined) {
-      return { id: null, value: null }
-    }
-    if (typeof cellData === 'object' && 'id' in cellData) {
-      return { id: cellData.id, value: cellData.value }
-    }
-    // Fallback for simple number
-    return { id: null, value: cellData }
-  }
-
-  /**
    * Fetch grades table from API
    */
   const fetchGradesTable = async () => {
@@ -245,7 +229,7 @@ export default function GradesTab({ courseSectionId }) {
       // Handle validation errors (422)
       if (err.statusCode === 422 && err.errors) {
         // Show specific validation errors
-        Object.entries(err.errors).forEach(([field, messages]) => {
+        Object.entries(err.errors).forEach(([, messages]) => {
           toast({
             variant: 'destructive',
             title: 'Validation Error',
@@ -279,27 +263,30 @@ export default function GradesTab({ courseSectionId }) {
     }
   }
 
+  const rows = gradesTableData?.rows
+
   /**
    * Filter rows by search query
    */
   const filteredRows = useMemo(() => {
-    if (!gradesTableData?.rows || !searchQuery) {
-      return gradesTableData?.rows || []
+    if (!rows || !searchQuery) {
+      return rows || []
     }
 
     const query = searchQuery.toLowerCase()
-    return gradesTableData.rows.filter(
+    return rows.filter(
       (row) =>
         row.studentName?.toLowerCase().includes(query) ||
         row.studentId?.toLowerCase().includes(query)
     )
-  }, [gradesTableData?.rows, searchQuery])
+  }, [rows, searchQuery])
 
   /**
    * Fetch on mount and when courseSectionId changes
    */
   useEffect(() => {
     if (courseSectionId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- loads data; state is set once the request settles
       fetchGradesTable()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

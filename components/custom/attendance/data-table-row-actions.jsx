@@ -9,9 +9,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 
-import Link from 'next/link'
-
-export function DataTableRowActions({ row }) {
+export function DataTableRowActions() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

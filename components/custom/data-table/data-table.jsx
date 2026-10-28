@@ -47,7 +47,8 @@ export function DataTable({
   React.useEffect(() => {
     let timer
     const handleError = async () => {
-      if (data.length === 0 && error !== '') {
+      // An empty list is normal; only report a failure the page passed in
+      if (data.length === 0 && error) {
         timer = setTimeout(() => {
           toast({
             variant: 'destructive',
@@ -62,8 +63,9 @@ export function DataTable({
     return () => {
       clearTimeout(timer)
     }
-  }, [toast])
+  }, [data.length, error, toast])
 
+  // eslint-disable-next-line react-hooks/incompatible-library -- only matters for React Compiler, which this app doesn't use
   const table = useReactTable({
     data,
     columns,

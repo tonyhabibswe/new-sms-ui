@@ -1,7 +1,6 @@
 'use client'
 import { useToast } from '@/components/ui/use-toast'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
 import React from 'react'
 
 // EditableNameCell: a component for inline-editing the "name" value.
@@ -9,8 +8,7 @@ const EditableNameCell = ({ row }) => {
   const initialValue = row.getValue('name')
   const [value, setValue] = React.useState(initialValue)
   const [editing, setEditing] = React.useState(false)
-  const { error, isLoading, fetchData } = useFetchApi()
-  const router = useRouter()
+  const { isLoading, fetchData } = useFetchApi()
   const { toast } = useToast()
 
   // Switch to edit mode on double-click.
@@ -66,7 +64,7 @@ const EditableNameCell = ({ row }) => {
             autoFocus
             className="border rounded p-1"
           />
-        ) : !!value ? (
+        ) : value ? (
           value
         ) : (
           <p className="text-blue-700 underline underline-offset-1 cursor-pointer">

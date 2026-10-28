@@ -20,7 +20,7 @@ export function EditableLabelCell({ row }) {
   const inputRef = useRef(null)
   const { toast } = useToast()
   const router = useRouter()
-  const { error, isLoading, fetchData } = useFetchApi()
+  const { isLoading, fetchData } = useFetchApi()
 
   // Focus input when entering edit mode
   useEffect(() => {
@@ -57,7 +57,7 @@ export function EditableLabelCell({ row }) {
       })
       setIsEditing(false)
       router.refresh()
-    } catch (exception) {
+    } catch {
       toast({
         title: 'Error',
         description: 'Failed to update major label',
