@@ -12,6 +12,8 @@ import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import EditableGradeCell from './editable-grade-cell'
 import GradesMobileList from './grades-mobile-list'
+import { algorithmLabel } from './categories-table'
+import { NeededGrade, SavedValue, formatPoints } from './what-if'
 
 const isLetterColumn = (col) => /letter/i.test(col.key)
 
@@ -22,16 +24,42 @@ const formatValue = (value) =>
       : value
     : '—'
 
-// Letter grades as chips; an F is flagged like an absence
-export function LetterChip({ value }) {
+// The grade each calculated column is judged by: the letter by the final grade,
+// the curved letter by the curved grade, as in the Excel export
+const GRADE_FOR_COLUMN = {
+  finalGrade: 'finalGrade',
+  letterGrade: 'finalGrade',
+  curvedFinalGrade: 'curvedFinalGrade',
+  curvedLetterGrade: 'curvedFinalGrade'
+}
+
+/**
+ * Whether a row's grade for a calculated column is below the student's passing
+ * mark: their major's passing grade for the course, or 60 when none is set.
+ */
+export const isBelowPassing = (row, columnKey) => {
+  const grade = row[GRADE_FOR_COLUMN[columnKey]]
+  if (grade === null || grade === undefined || row.passingGrade === undefined) return false
+  return grade < row.passingGrade
+}
+
+// Letter grades as chips; one below the passing mark is flagged like an absence.
+// Without a passing mark, an F is.
+export function LetterChip({ value, failing, passingGrade }) {
   if (value === undefined || value === null || value === '') return '—'
-  const failing = String(value).startsWith('F')
+  const isFailing = failing ?? String(value).startsWith('F')
   return (
     <span
-      title={failing ? 'Failing grade' : undefined}
+      title={
+        isFailing
+          ? passingGrade !== undefined
+            ? `Below the passing mark of ${formatPoints(passingGrade)}`
+            : 'Failing grade'
+          : undefined
+      }
       className={cn(
         'inline-flex min-w-[40px] justify-center rounded-lg border px-2.5 py-1 text-[13px] font-bold',
-        failing
+        isFailing
           ? 'border-absent-solid/30 bg-absent-tint text-absent'
           : 'border-border bg-muted text-foreground'
       )}>
@@ -53,19 +81,35 @@ function EmptyState({ children }) {
  * Renders grades table with dynamic columns from API
  * Supports dual rendering: one item at a time on phones, the full table on desktop
  *
+ * In what-if mode, modifiedGrades holds the what-if values, the calculated
+ * columns come from computedRows (the API's preview), and anything the what-if
+ * values changed shows its saved value under it.
+ *
  * @param {Object} props
  * @param {Object} props.columns - Categorized columns {identifiers, gradeableItems, categories, calculated}
  * @param {Array} props.rows - Student rows with dynamic grade data
  * @param {Map} props.modifiedGrades - Map of modified grades
  * @param {Function} props.onGradeChange - Grade change handler
  * @param {Function} props.onValidate - Validation function
+ * @param {boolean} props.whatIf - What-if mode
+ * @param {Map|null} props.computedRows - Previewed rows by enrollment ID
+ * @param {Object|null} props.neededItem - The item column the needed grades are for
+ * @param {boolean} props.neededReady - Whether computedRows has the needed grades for neededItem
+ * @param {boolean} props.hasCurve - Whether the section's grades are curved
+ * @param {Function} props.onNeededItemChange - On phones the item picked is the needed item (column key)
  */
 export default function GradesGrid({
   columns,
   rows,
   modifiedGrades,
   onGradeChange,
-  onValidate
+  onValidate,
+  whatIf = false,
+  computedRows = null,
+  neededItem = null,
+  neededReady = false,
+  hasCurve = false,
+  onNeededItemChange
 }) {
   if (!columns || !rows) {
     return <EmptyState>No grades data available</EmptyState>
@@ -157,6 +201,12 @@ export default function GradesGrid({
         getCurrentGradeValue={getCurrentGradeValue}
         onGradeChange={onGradeChange}
         onValidate={onValidate}
+        whatIf={whatIf}
+        computedRows={computedRows}
+        neededItem={neededItem}
+        neededReady={neededReady}
+        hasCurve={hasCurve}
+        onNeededItemChange={onNeededItemChange}
       />
 
       <div className="hidden overflow-hidden rounded-card border border-border bg-card shadow-card md:block">
@@ -196,7 +246,7 @@ export default function GradesGrid({
                     className="h-auto min-w-[120px] border-l border-border bg-muted px-3 py-3 text-right align-bottom">
                     {col.label}
                     <div className="mt-0.5 text-xs font-medium normal-case tracking-normal text-muted-foreground">
-                      {col.algorithm}
+                      {algorithmLabel(col.algorithm)}
                     </div>
                   </TableHead>
                 ))}
@@ -211,6 +261,15 @@ export default function GradesGrid({
                     {col.label}
                   </TableHead>
                 ))}
+
+                {whatIf && neededItem && (
+                  <TableHead className="sticky right-0 z-40 h-auto min-w-[150px] border-l border-border bg-card px-4 py-3 align-bottom text-foreground shadow-[-8px_0_12px_-12px_rgba(45,46,50,0.35)]">
+                    Needed on
+                    <div className="mt-0.5 text-[13px] font-bold normal-case tracking-normal">
+                      {neededItem.label}
+                    </div>
+                  </TableHead>
+                )}
               </TableRow>
             </TableHeader>
 
@@ -221,12 +280,17 @@ export default function GradesGrid({
                   const { id } = parseGradeCell(row, col.key)
                   return isGradeModified(id, row.enrollmentId, col.gradeableItemId)
                 })
+                // Only real, unsaved changes tint the row
+                const tinted = hasModifications && !whatIf
+                // The numbers to show: the preview's in what-if mode
+                const shown = computedRows?.get(row.enrollmentId) ?? row
+                const changed = (key) => whatIf && shown !== row && shown[key] !== row[key]
 
                 return (
                   <TableRow
                     key={row.enrollmentId}
                     className={cn(
-                      hasModifications && 'bg-brand-400/5',
+                      tinted && 'bg-brand-400/5',
                       isInactive && 'opacity-60'
                     )}>
                     {identifiers.map((col, index) => (
@@ -234,7 +298,7 @@ export default function GradesGrid({
                         key={col.key}
                         className={cn(
                           'sticky z-20 border-r border-border',
-                          stickyBg(hasModifications),
+                          stickyBg(tinted),
                           index === 0 && 'left-0',
                           index === 1 && 'left-[150px] font-semibold'
                         )}>
@@ -244,6 +308,12 @@ export default function GradesGrid({
                             <Badge variant="secondary">Inactive</Badge>
                           )}
                         </div>
+                        {whatIf && col.key === 'studentName' && (
+                          <div className="whitespace-nowrap text-[13px] font-normal text-muted-foreground">
+                            {shown.majorName ?? 'No major'} · pass{' '}
+                            {formatPoints(shown.passingGrade ?? 60)}
+                          </div>
+                        )}
                       </TableCell>
                     ))}
 
@@ -269,6 +339,7 @@ export default function GradesGrid({
                           maxPoints={col.maxPoints}
                           isModified={isModified}
                           isInactive={isInactive}
+                          whatIf={whatIf}
                           label={`${row.studentName}, ${col.label}`}
                           onChange={(gradeId, newValue) =>
                             onGradeChange(
@@ -288,7 +359,10 @@ export default function GradesGrid({
                       <TableCell
                         key={col.key}
                         className="border-l border-border bg-muted/60 px-3 text-right font-medium tabular-nums">
-                        {formatValue(row[col.key])}
+                        <span className={cn(changed(col.key) && 'font-bold')}>
+                          {formatValue(shown[col.key])}
+                        </span>
+                        {changed(col.key) && <SavedValue>{formatValue(row[col.key])}</SavedValue>}
                       </TableCell>
                     ))}
 
@@ -302,12 +376,29 @@ export default function GradesGrid({
                             : 'text-right font-display text-base font-bold tabular-nums'
                         )}>
                         {isLetterColumn(col) ? (
-                          <LetterChip value={row[col.key]} />
+                          <LetterChip
+                            value={shown[col.key]}
+                            failing={isBelowPassing(shown, col.key)}
+                            passingGrade={shown.passingGrade}
+                          />
                         ) : (
-                          formatValue(row[col.key])
+                          <span className={cn(isBelowPassing(shown, col.key) && 'text-absent')}>
+                            {formatValue(shown[col.key])}
+                          </span>
                         )}
+                        {changed(col.key) && <SavedValue>{formatValue(row[col.key])}</SavedValue>}
                       </TableCell>
                     ))}
+
+                    {whatIf && neededItem && (
+                      <TableCell className="sticky right-0 z-20 whitespace-nowrap border-l border-border bg-card px-4 shadow-[-8px_0_12px_-12px_rgba(45,46,50,0.35)]">
+                        <NeededGrade
+                          row={shown}
+                          maxPoints={neededItem.maxPoints}
+                          ready={neededReady && shown !== row}
+                        />
+                      </TableCell>
+                    )}
                   </TableRow>
                 )
               })}
@@ -315,21 +406,44 @@ export default function GradesGrid({
           </Table>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border px-6 py-4 text-[13px] text-faint">
-          <span className="inline-flex items-center gap-2">
-            <span
-              aria-hidden="true"
-              className="h-4 w-4 rounded border-2 border-primary bg-brand-400/5"
-            />
-            Changed, not saved yet
-          </span>
+          {whatIf ? (
+            <>
+              <span className="inline-flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-4 rounded border-2 border-dashed border-foreground bg-muted"
+                />
+                What-if value, not saved
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="font-display text-sm font-bold text-foreground">74</span>
+                Result with the what-if values, the saved one under it
+              </span>
+            </>
+          ) : (
+            <span className="inline-flex items-center gap-2">
+              <span
+                aria-hidden="true"
+                className="h-4 w-4 rounded border-2 border-primary bg-brand-400/5"
+              />
+              Changed, not saved yet
+            </span>
+          )}
           <span className="inline-flex items-center gap-2">
             <span
               aria-hidden="true"
               className="inline-flex h-[18px] items-center rounded border border-absent-solid/30 bg-absent-tint px-1.5 text-[11px] font-bold text-absent">
               F
             </span>
-            Failing grade
+            Below the passing mark: the major&apos;s passing grade, else 60
           </span>
+          {whatIf && neededItem && (
+            <span className="inline-flex items-center gap-2">
+              <span className="font-semibold text-foreground">Needed on</span>
+              The lowest score on that item that reaches the passing mark, with the
+              other grades as shown and the curve
+            </span>
+          )}
         </div>
       </div>
     </>
