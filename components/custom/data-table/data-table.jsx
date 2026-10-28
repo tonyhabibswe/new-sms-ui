@@ -47,7 +47,8 @@ export function DataTable({
   React.useEffect(() => {
     let timer
     const handleError = async () => {
-      if (data.length === 0 && error !== '') {
+      // An empty list is normal; only report a failure the page passed in
+      if (data.length === 0 && error) {
         timer = setTimeout(() => {
           toast({
             variant: 'destructive',
