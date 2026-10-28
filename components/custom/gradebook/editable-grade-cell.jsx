@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils'
  * @param {number} props.maxPoints - Maximum points for validation
  * @param {boolean} props.isModified - Whether grade has been modified
  * @param {boolean} props.isInactive - Whether student is inactive
+ * @param {boolean} props.whatIf - In what-if mode a changed grade is only tried, not saved
  * @param {Function} props.onChange - Callback when grade changes (gradeId, value)
  * @param {Function} props.onValidate - Validation function
  * @param {string} props.label - Accessible name, e.g. "Lea Haddad, Midterm"
@@ -24,6 +25,7 @@ export default function EditableGradeCell({
   maxPoints,
   isModified,
   isInactive,
+  whatIf = false,
   onChange,
   onValidate,
   label,
@@ -90,7 +92,8 @@ export default function EditableGradeCell({
   // A table cell in the desktop grid, a plain block in the phone list
   const Cell = as === 'div' ? 'div' : TableCell
 
-  // Reads as a field; a changed, unsaved grade gets the brand outline
+  // Reads as a field; a changed, unsaved grade gets the brand outline, and a
+  // what-if value a dashed one, so the two can't be mistaken for each other
   return (
     <Cell className={cn(as === 'div' ? 'flex flex-col items-end' : 'px-3 py-2.5')}>
       {isEditing ? (
@@ -118,12 +121,16 @@ export default function EditableGradeCell({
           onClick={handleClick}
           disabled={isInactive}
           aria-label={
-            label ? `${label}: ${displayValue}${isModified ? ', not saved yet' : ''}` : undefined
+            label
+              ? `${label}: ${displayValue}${isModified ? (whatIf ? ', what-if value' : ', not saved yet') : ''}`
+              : undefined
           }
           className={cn(
             'inline-flex h-10 min-w-[80px] items-center justify-end rounded-lg border px-2.5 text-[15px] tabular-nums transition-colors',
             isModified
-              ? 'border-2 border-primary bg-brand-400/5 font-semibold'
+              ? whatIf
+                ? 'border-2 border-dashed border-foreground bg-muted font-semibold'
+                : 'border-2 border-primary bg-brand-400/5 font-semibold'
               : 'border-input bg-card hover:bg-muted',
             isInactive && 'cursor-not-allowed border-border text-muted-foreground opacity-60'
           )}>
