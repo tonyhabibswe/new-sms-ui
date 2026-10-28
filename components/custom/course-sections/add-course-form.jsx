@@ -31,7 +31,12 @@ const FormSchema = z.object({
   courseDays: z.array(z.string()).optional(),
   startSessionTime: z.string(),
   endSessionTime: z.string(),
-  room: z.string(),
+  // Same rule as the API
+  room: z
+    .string()
+    .trim()
+    .min(1, 'Room is required')
+    .max(100, 'Room must be 100 characters or fewer'),
   curveAlgorithm: z.string().nullable().optional()
 })
 
@@ -243,7 +248,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                       className: 'flex flex-col gap-2'
                     }}
                     formLabelProps={{}}
-                    formLabel="Course Days"
+                    formLabel="Course days"
                     buttonProps={{
                       className: '',
                       placeholder: 'Select course days'
