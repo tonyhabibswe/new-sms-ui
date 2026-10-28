@@ -120,25 +120,44 @@ export function AttendanceSheet({ sessionId, students }) {
   const selectable = visible.filter((student) => !SPECIAL[statuses[student.id]])
   const allSelected = selectable.length > 0 && selectable.every((s) => selected.has(s.id))
 
-  // Optimistic: show the change at once, put it back if the API refuses it
-  const save = async (ids, value) => {
-    const previous = Object.fromEntries(ids.map((id) => [id, statuses[id]]))
-    setStatuses((current) => ({ ...current, ...Object.fromEntries(ids.map((id) => [id, value])) }))
+  // One student's switch saves just that student. Bulk saves go through the
+  // API's bulk endpoint, which also marks everyone it wasn't given who is still
+  // unmarked as present. Either way the change shows at once (the bulk rule
+  // included) and is put back if the API refuses it.
+  const save = async (ids, value, { bulk = false } = {}) => {
+    const changes = Object.fromEntries(ids.map((id) => [id, value]))
+    if (bulk) {
+      markable.forEach((student) => {
+        if (!(student.id in changes) && !statuses[student.id]) changes[student.id] = 'present'
+      })
+    }
+    const previous = Object.fromEntries(Object.keys(changes).map((id) => [id, statuses[id]]))
+    const othersMarked = Object.keys(changes).length - ids.length
+    setStatuses((current) => ({ ...current, ...changes }))
     setSaveState('saving')
     try {
-      if (ids.length === 1) {
-        await fetchData(`/attendance/${ids[0]}`, {
-          method: 'PUT',
-          body: JSON.stringify({ attendance: value }),
-          cache: 'no-store'
-        })
-      } else {
+      if (bulk) {
         await fetchData(`/course-session/${sessionId}/attendances/bulk`, {
           method: 'PUT',
           body: JSON.stringify({ attendanceIds: ids, attendance: value }),
           cache: 'no-store'
         })
-        toast({ variant: 'success', title: 'Attendance updated!' })
+        toast({
+          variant: 'success',
+          title: 'Attendance updated!',
+          description:
+            othersMarked === 1
+              ? "The student who wasn't marked is now present."
+              : othersMarked > 1
+                ? `The ${othersMarked} students who weren't marked are now present.`
+                : undefined
+        })
+      } else {
+        await fetchData(`/attendance/${ids[0]}`, {
+          method: 'PUT',
+          body: JSON.stringify({ attendance: value }),
+          cache: 'no-store'
+        })
       }
       setSaveState('saved')
       return true
@@ -155,11 +174,11 @@ export function AttendanceSheet({ sessionId, students }) {
     const ids = markable
       .filter((student) => statuses[student.id] !== 'present')
       .map((student) => student.id)
-    if (ids.length) save(ids, 'present')
+    if (ids.length) save(ids, 'present', { bulk: true })
   }
 
   const applyToSelection = async (value) => {
-    if (await save([...selected], value)) setSelected(new Set())
+    if (await save([...selected], value, { bulk: true })) setSelected(new Set())
   }
 
   const toggleSelected = (id) =>

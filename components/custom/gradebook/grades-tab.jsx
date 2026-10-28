@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import useFetchApi from '@/hooks/useFetchApi'
 import { useToast } from '@/components/ui/use-toast'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Loader2, Save, X, RefreshCcw } from 'lucide-react'
 import GradesGrid from './grades-grid'
 import GradesTableLoadingSkeleton from './grades-table-loading-skeleton'
@@ -314,10 +314,8 @@ export default function GradesTab({ courseSectionId }) {
   // No data
   if (!gradesTableData) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <p className="text-muted-foreground">No grades data available</p>
-        </CardContent>
+      <Card className="flex flex-col items-center justify-center px-6 py-12">
+        <p className="text-muted-foreground">No grades data available</p>
       </Card>
     )
   }

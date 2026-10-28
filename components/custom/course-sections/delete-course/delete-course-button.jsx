@@ -3,21 +3,22 @@ import { DialogFooter } from '@/components/ui/dialog'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import React from 'react'
 
 const DeleteCourseButton = ({ defaultData, setOpenDialog }) => {
   const { isLoading, fetchData } = useFetchApi()
   const { toast } = useToast()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
   const handleDeleteCourse = async () => {
     try {
       await fetchData(`/course-section/${defaultData.id}`, {
         method: 'DELETE',
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: `Course ${defaultData.code} deleted`
@@ -33,9 +34,9 @@ const DeleteCourseButton = ({ defaultData, setOpenDialog }) => {
     <DialogFooter>
       <Button
         variant="destructive"
-        disabled={isLoading}
+        disabled={busy}
         onClick={handleDeleteCourse}>
-        {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+        {busy && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
         Delete section
       </Button>
     </DialogFooter>
