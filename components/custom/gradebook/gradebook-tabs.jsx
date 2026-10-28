@@ -32,15 +32,15 @@ export default function GradebookTabs({ courseSectionId }) {
     courseSectionId: backendCategory.courseSectionId,
     name: backendCategory.name,
     weight: backendCategory.weightPercent,
-    algorithm: 'equal' // Frontend displays 'equal' for AVERAGE
+    algorithm: backendCategory.algorithm
   })
 
+  // No algorithm: an edit keeps the category's own
   const transformCategoryToBackend = (frontendCategory) => ({
     ...(frontendCategory.name && { name: frontendCategory.name }),
     ...(frontendCategory.weight !== undefined && {
       weightPercent: frontendCategory.weight
-    }),
-    algorithm: 'AVERAGE' // Backend only supports AVERAGE
+    })
   })
 
   const transformItemFromBackend = (backendItem) => ({
@@ -156,7 +156,8 @@ export default function GradebookTabs({ courseSectionId }) {
     try {
       const payload = {
         courseSectionId: parseInt(courseSectionId),
-        ...transformCategoryToBackend(newCategory)
+        ...transformCategoryToBackend(newCategory),
+        algorithm: 'AVERAGE' // New categories are points averages; the form offers no other
       }
 
       const response = await fetchData('/gradeable-categories', {
