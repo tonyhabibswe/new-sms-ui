@@ -139,7 +139,7 @@ const EditPassingGradeForm = ({ setOpenDialog, defaultData }) => {
                   <SelectContent>
                     {majors.map((major) => (
                       <SelectItem key={major.id} value={major.id.toString()}>
-                        {major.label}
+                        {major.displayName}
                       </SelectItem>
                     ))}
                   </SelectContent>
