@@ -88,6 +88,9 @@ export function DataTable({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     onPaginationChange: setPagination,
+    // Rows keep their identity across refreshes, so a deleted row's dialog goes
+    // away with it instead of briefly showing the row that moved into its place
+    getRowId: (row, index) => String(row.id ?? index),
     meta
   })
 
