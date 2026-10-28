@@ -101,11 +101,11 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="code"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Code</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Code</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter course code"
                     type="text"
                     {...field}
@@ -119,11 +119,11 @@ const AddCourseForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter course name"
                     type="text"
                     {...field}

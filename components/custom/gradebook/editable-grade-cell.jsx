@@ -15,6 +15,8 @@ import { cn } from '@/lib/utils'
  * @param {boolean} props.isInactive - Whether student is inactive
  * @param {Function} props.onChange - Callback when grade changes (gradeId, value)
  * @param {Function} props.onValidate - Validation function
+ * @param {string} props.label - Accessible name, e.g. "Lea Haddad, Midterm"
+ * @param {'td'|'div'} props.as - Render as a table cell (default) or a block
  */
 export default function EditableGradeCell({
   gradeId,
@@ -23,7 +25,9 @@ export default function EditableGradeCell({
   isModified,
   isInactive,
   onChange,
-  onValidate
+  onValidate,
+  label,
+  as = 'td'
 }) {
   const [isEditing, setIsEditing] = useState(false)
   const [inputValue, setInputValue] = useState('')
@@ -83,46 +87,49 @@ export default function EditableGradeCell({
   }
 
   const displayValue = value !== undefined && value !== null ? value : '—'
+  // A table cell in the desktop grid, a plain block in the phone list
+  const Cell = as === 'div' ? 'div' : TableCell
 
+  // Reads as a field; a changed, unsaved grade gets the brand outline
   return (
-    <TableCell
-      className={cn(
-        'text-center relative group',
-        isModified && 'bg-yellow-50 dark:bg-yellow-950/20',
-        isInactive && 'text-muted-foreground opacity-60',
-        !isInactive && 'cursor-pointer hover:bg-accent/50',
-        error && 'bg-red-50 dark:bg-red-950/20'
-      )}
-      onClick={handleClick}>
+    <Cell className={cn(as === 'div' ? 'flex flex-col items-end' : 'px-3 py-2.5')}>
       {isEditing ? (
-        <div className="flex flex-col items-center">
+        <div className="inline-flex flex-col items-end gap-1">
           <Input
             ref={inputRef}
             type="text"
+            inputMode="decimal"
+            aria-label={label}
             value={inputValue}
             onChange={handleInputChange}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
             className={cn(
-              'h-8 w-20 text-center',
-              error && 'border-red-500 focus-visible:ring-red-500'
+              'h-10 w-20 rounded-lg px-2.5 text-right tabular-nums',
+              error && 'border-destructive focus-visible:ring-destructive'
             )}
             disabled={isInactive}
           />
-          {error && (
-            <span className="text-xs text-red-600 dark:text-red-400 mt-1">
-              {error}
-            </span>
-          )}
+          {error && <span className="text-xs text-destructive">{error}</span>}
         </div>
       ) : (
-        <span className={cn(isModified && 'font-semibold')}>
+        <button
+          type="button"
+          onClick={handleClick}
+          disabled={isInactive}
+          aria-label={
+            label ? `${label}: ${displayValue}${isModified ? ', not saved yet' : ''}` : undefined
+          }
+          className={cn(
+            'inline-flex h-10 min-w-[80px] items-center justify-end rounded-lg border px-2.5 text-[15px] tabular-nums transition-colors',
+            isModified
+              ? 'border-2 border-primary bg-brand-400/5 font-semibold'
+              : 'border-input bg-card hover:bg-muted',
+            isInactive && 'cursor-not-allowed border-border text-muted-foreground opacity-60'
+          )}>
           {displayValue}
-        </span>
+        </button>
       )}
-      {isModified && !isEditing && (
-        <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-yellow-500" />
-      )}
-    </TableCell>
+    </Cell>
   )
 }

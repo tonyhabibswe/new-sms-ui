@@ -67,16 +67,16 @@ export default function AddItemForm({ categoryId, onItemAdd, onCancel }) {
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Title</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="e.g., Homework 1, Midterm"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -85,11 +85,11 @@ export default function AddItemForm({ categoryId, onItemAdd, onCancel }) {
             control={form.control}
             name="maxPoints"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Max Points</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Max points</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     type="number"
                     placeholder="100"
                     min="0"
@@ -97,7 +97,7 @@ export default function AddItemForm({ categoryId, onItemAdd, onCancel }) {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />

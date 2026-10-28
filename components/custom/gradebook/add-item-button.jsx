@@ -24,13 +24,13 @@ export default function AddItemButton({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button size="sm" disabled={disabled}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Item
+          <Plus className="h-4 w-4" />
+          Add item
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Grade Item</DialogTitle>
+          <DialogTitle>Add grade item</DialogTitle>
           <DialogDescription>
             Create a new graded item within this category
           </DialogDescription>

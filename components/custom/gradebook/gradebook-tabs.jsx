@@ -11,7 +11,7 @@ import AttendanceTab from './attendance-tab'
 
 export default function GradebookTabs({ courseSectionId }) {
   const searchParams = useSearchParams()
-  const initialTab = searchParams.get('tab') || 'categories-items'
+  const initialTab = searchParams.get('tab') || 'grades'
   const [activeTab, setActiveTab] = useState(initialTab)
   const { toast } = useToast()
   const router = useRouter()
@@ -341,9 +341,12 @@ export default function GradebookTabs({ courseSectionId }) {
 
   return (
     <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-      <TabsList className="grid w-full max-w-lg grid-cols-3">
-        <TabsTrigger value="categories-items">Categories & Items</TabsTrigger>
+      <TabsList className="grid w-full grid-cols-3 sm:inline-flex sm:w-auto">
         <TabsTrigger value="grades">Grades</TabsTrigger>
+        <TabsTrigger value="categories-items">
+          <span className="sm:hidden">Setup</span>
+          <span className="hidden sm:inline">Categories &amp; items</span>
+        </TabsTrigger>
         <TabsTrigger value="attendance">Students</TabsTrigger>
       </TabsList>
 

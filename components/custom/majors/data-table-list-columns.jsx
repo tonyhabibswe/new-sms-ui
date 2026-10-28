@@ -10,18 +10,18 @@ export const columns = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Id" />
     ),
-    cell: ({ row }) => <div className="w-[80px]">{row.getValue('id')}</div>,
+    cell: ({ row }) => <div>{row.getValue('id')}</div>,
     enableSorting: false,
     enableHiding: false
   },
   {
     accessorKey: 'systemName',
-    label: 'System Name',
+    label: 'System name',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="System Name" />
+      <DataTableColumnHeader column={column} title="System name" />
     ),
     cell: ({ row }) => (
-      <div className="w-[250px] font-medium">{row.getValue('systemName')}</div>
+      <div className="font-semibold">{row.getValue('systemName')}</div>
     )
   },
   {

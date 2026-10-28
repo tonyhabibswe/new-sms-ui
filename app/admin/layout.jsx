@@ -1,34 +1,20 @@
-'use client'
-
-import { Menu } from '@/components/custom/menu'
-import { Sidebar } from '@/components/custom/sidebar'
 import { NextAuthProvider } from '@/components/next-auth-provider'
-import { useState } from 'react'
+import { AppSidebar } from '@/components/custom/layout/app-sidebar'
+import { MobileTabBar } from '@/components/custom/layout/mobile-tab-bar'
+import { MobileTopBar } from '@/components/custom/layout/mobile-top-bar'
 
 const AdminLayout = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
   return (
     <NextAuthProvider>
-      <Menu onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
-      <div className="bg-background">
-        {/* Mobile sidebar overlay */}
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 z-30 bg-black/80 md:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-
-        {/* Sidebar */}
-        <Sidebar
-          className={`fixed top-0 left-0 bottom-0 z-40 w-64 transform border-r bg-background px-2 pt-20 transition-transform duration-300 ease-in-out md:z-10 md:translate-x-0 lg:flex lg:flex-col ${
-            isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          } md:flex md:flex-col`}
-          onLinkClick={() => setIsSidebarOpen(false)}
-        />
-
-        <div className="px-4 py-6 lg:px-8 lg:ml-64 mt-16">{children}</div>
+      <div className="min-h-screen bg-background lg:flex">
+        <AppSidebar />
+        <div className="min-w-0 flex-1">
+          <MobileTopBar />
+          <main className="mx-auto w-full max-w-[1296px] px-5 pb-28 pt-4 sm:px-8 lg:px-12 lg:pb-16 lg:pt-8">
+            {children}
+          </main>
+        </div>
+        <MobileTabBar />
       </div>
     </NextAuthProvider>
   )

@@ -1,35 +1,19 @@
 'use client'
 
-import { Cross2Icon } from '@radix-ui/react-icons'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import AddPassingGradeButton from './add-passing-grade-button'
+import { DataTableSearch } from '@/components/custom/data-table/data-table-search'
+import { DataTableViewOptions } from '@/components/custom/data-table/data-table-view-options'
 
-export function DataTableToolbar({ table, courseId }) {
-  const isFiltered = table.getState().columnFilters.length > 0
-
+export function DataTableToolbar({ table }) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Filter by major..."
-          value={table.getColumn('majorName')?.getFilterValue() ?? ''}
-          onChange={(event) =>
-            table.getColumn('majorName')?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
-        {isFiltered && (
-          <Button
-            variant="ghost"
-            onClick={() => table.resetColumnFilters()}
-            className="h-8 px-2 lg:px-3">
-            Reset
-            <Cross2Icon className="ml-2 h-4 w-4" />
-          </Button>
-        )}
-      </div>
-      <AddPassingGradeButton courseId={courseId} />
+    <div className="flex items-center justify-between gap-3">
+      <DataTableSearch
+        placeholder="Search by major"
+        value={table.getColumn('majorName')?.getFilterValue() ?? ''}
+        onChange={(event) =>
+          table.getColumn('majorName')?.setFilterValue(event.target.value)
+        }
+      />
+      <DataTableViewOptions table={table} />
     </div>
   )
 }

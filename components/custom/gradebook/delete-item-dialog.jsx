@@ -40,7 +40,7 @@ export default function DeleteItemDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Grade Item</DialogTitle>
+          <DialogTitle>Delete grade item</DialogTitle>
           <DialogDescription>
             Are you sure you want to delete &quot;{item?.title}&quot;?
             <br />

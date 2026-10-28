@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { Plus } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -8,42 +10,25 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog'
-import { useState } from 'react'
+import { Button } from '@/components/ui/button'
 import AddCourseForm from './add-course-form'
-
-const { Button } = require('@/components/ui/button')
-const {
-  TooltipTrigger,
-  TooltipProvider,
-  Tooltip,
-  TooltipContent
-} = require('@/components/ui/tooltip')
-const { PlusCircledIcon } = require('@radix-ui/react-icons')
 
 const AddCourseButton = () => {
   const [openDialog, setOpenDialog] = useState(false)
 
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <DialogTrigger asChild>
-              <Button
-                variant="ghost"
-                className="ml-1 px-2 hover:bg-transparent">
-                <PlusCircledIcon className="w-6 h-6" />
-              </Button>
-            </DialogTrigger>
-          </TooltipTrigger>
-          <TooltipContent>Add Course</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogTrigger asChild>
+        <Button>
+          <Plus className="h-[18px] w-[18px]" aria-hidden="true" />
+          New course
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Course</DialogTitle>
+          <DialogTitle>New course</DialogTitle>
           <DialogDescription>
-            Create a course here. Click save when you&apos;re done.
+            Semesters can then open sections of it.
           </DialogDescription>
         </DialogHeader>
         <AddCourseForm setOpenDialog={setOpenDialog} />

@@ -91,32 +91,32 @@ export function DataTable({
     meta
   })
 
+  // Desktop: one card holding the toolbar, table and pagination. Phones: the
+  // toolbar, then one card per row.
   return (
-    <div className="space-y-4">
+    <section className="flex flex-col gap-3 md:gap-0 md:overflow-hidden md:rounded-card md:border md:border-border md:bg-card md:shadow-card">
       {DataTableToolbar !== React.Fragment ? (
-        <DataTableToolbar table={table} />
+        <div className="md:px-6 md:py-5">
+          <DataTableToolbar table={table} />
+        </div>
       ) : (
         <></>
       )}
 
-      {/* Mobile Card View - visible on mobile only */}
-      <div className="md:hidden">
+      <div className="flex flex-col gap-3 md:hidden">
         {table.getRowModel().rows?.length ? (
           table
             .getRowModel()
-            .rows.map((row) => (
-              <DataTableMobileCard key={row.id} row={row} columns={columns} />
-            ))
+            .rows.map((row) => <DataTableMobileCard key={row.id} row={row} />)
         ) : (
-          <div className="rounded-md border border-dashed p-8 text-center text-sm text-muted-foreground">
+          <div className="rounded-card-sm border border-dashed border-input bg-card p-8 text-center text-sm text-muted-foreground">
             No results.
           </div>
         )}
       </div>
 
-      {/* Desktop Table View - hidden on mobile */}
       <div className="hidden md:block">
-        <div className="rounded-md border">
+        <div>
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -156,7 +156,7 @@ export function DataTable({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length}
-                    className="h-24 text-center">
+                    className="h-32 text-center text-muted-foreground">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -167,6 +167,6 @@ export function DataTable({
       </div>
 
       <DataTablePagination table={table} />
-    </div>
+    </section>
   )
 }

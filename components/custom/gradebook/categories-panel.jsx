@@ -29,12 +29,8 @@ export default function CategoriesPanel({
       <CardHeader>
         <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
           <div className="flex-1">
-            <CardTitle className="text-lg md:text-xl">
-              Grade Categories
-            </CardTitle>
-            <CardDescription className="text-sm">
-              Define grading structure and weights
-            </CardDescription>
+            <CardTitle>Categories</CardTitle>
+            <CardDescription>The parts of the final grade and their weights</CardDescription>
           </div>
           <AddCategoryButton
             courseSectionId={courseSectionId}

@@ -40,7 +40,7 @@ export default function DeleteCategoryDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Delete Category</DialogTitle>
+          <DialogTitle>Delete category</DialogTitle>
           <DialogDescription>
             Are you sure you want to delete the category &quot;{category?.name}
             &quot;?

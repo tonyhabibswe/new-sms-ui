@@ -1,33 +1,20 @@
 import GradebookTabs from '@/components/custom/gradebook/gradebook-tabs'
+import { PageHeader } from '@/components/custom/layout/page-header'
+import { pickSectionParams, sectionCrumbs, sectionTitle } from '@/lib/section-links'
 
 export default async function GradebookPage(props) {
   const params = await props.params
   const searchParams = await props.searchParams
-  const { id } = params
-
-  // Get course info from URL params or use defaults
-  const courseSection = {
-    id: parseInt(id),
-    courseCode: searchParams.code || 'Course',
-    section: searchParams.section || 'Section',
-    courseName: searchParams.name || 'Course Name'
-  }
+  const sectionParams = pickSectionParams(searchParams)
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight md:text-3xl">
-            Gradebook
-          </h1>
-          <p className="text-sm text-muted-foreground md:text-base">
-            {courseSection.courseCode} - {courseSection.section} -{' '}
-            {courseSection.courseName}
-          </p>
-        </div>
-      </div>
-
-      <GradebookTabs courseSectionId={id} />
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <PageHeader
+        breadcrumbs={[...sectionCrumbs(params.id, sectionParams), { label: 'Gradebook' }]}
+        eyebrow={[sectionTitle(sectionParams), sectionParams.name].filter(Boolean).join(' · ')}
+        title="Gradebook"
+      />
+      <GradebookTabs courseSectionId={params.id} />
     </div>
   )
 }

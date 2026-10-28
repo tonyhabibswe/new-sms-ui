@@ -66,12 +66,12 @@ const ImportStudentsDialog = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="file"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">CSV File</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>CSV File</FormLabel>
                 <FormControl>
                   <Input
                     type="file"
-                    className="col-span-3"
+                    className="w-full"
                     onChange={(e) =>
                       field.onChange(e.target.files ? e.target.files[0] : null)
                     }

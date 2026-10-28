@@ -16,12 +16,26 @@ module.exports = {
       }
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--font-manrope)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-outfit)', 'system-ui', 'sans-serif']
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        faint: 'hsl(var(--faint))',
+        brand: {
+          400: 'hsl(var(--brand-400))',
+          600: 'hsl(var(--brand-600))'
+        },
+        absent: {
+          DEFAULT: 'hsl(var(--absent))',
+          solid: 'hsl(var(--absent-solid))',
+          tint: 'hsl(var(--absent-tint))'
+        },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))'
@@ -54,7 +68,17 @@ module.exports = {
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 4px)',
+        card: '24px',
+        'card-sm': '20px',
+        panel: '28px'
+      },
+      boxShadow: {
+        card: 'var(--shadow-card)',
+        hero: 'var(--shadow-hero)'
+      },
+      letterSpacing: {
+        eyebrow: '1.4px'
       },
       keyframes: {
         'accordion-down': {

@@ -1,6 +1,7 @@
 'use client'
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons'
+import { Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -28,29 +29,31 @@ export function DataTableRowActions({ row }) {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 data-[state=open]:bg-muted">
-            <DotsHorizontalIcon className="h-4 w-4" />
+            variant="outline"
+            size="icon"
+            className="text-muted-foreground hover:text-foreground data-[state=open]:bg-accent">
+            <DotsHorizontalIcon className="h-[18px] w-[18px]" />
             <span className="sr-only">Open menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-[160px]">
+        <DropdownMenuContent align="end" className="w-[200px]">
           <DropdownMenuItem onClick={() => setOpenEditDialog(true)}>
+            <Pencil aria-hidden="true" />
             Edit
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpenDeleteDialog(true)}>
-            <span className="text-red-500">Delete</span>
+            <Trash2 className="text-destructive" aria-hidden="true" />
+            <span className="font-semibold text-destructive">Delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
       <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Edit Passing Grade</DialogTitle>
+            <DialogTitle>Edit passing grade</DialogTitle>
             <DialogDescription>
-              Update the passing grade for this course-major-semester
-              combination.
+              Change its major, semester or grade.
             </DialogDescription>
           </DialogHeader>
           <EditPassingGradeForm
@@ -61,9 +64,9 @@ export function DataTableRowActions({ row }) {
       </Dialog>
 
       <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Passing Grade</DialogTitle>
+            <DialogTitle>Delete passing grade</DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this passing grade?
             </DialogDescription>
