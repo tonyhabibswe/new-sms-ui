@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import * as z from '@/lib/zod'
@@ -26,7 +26,8 @@ const FormSchema = z.object({
 
 const ImportStudentsDialog = ({ setOpenDialog, defaultData }) => {
   const { isLoading, fetchData } = useFetchApi()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
   const { toast } = useToast()
   const form = useForm({
     resolver: zodResolver(FormSchema)
@@ -44,8 +45,8 @@ const ImportStudentsDialog = ({ setOpenDialog, defaultData }) => {
         },
         true
       )
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: `Students imported successfully!`
@@ -83,8 +84,8 @@ const ImportStudentsDialog = ({ setOpenDialog, defaultData }) => {
           />
         </div>
         <DialogFooter>
-          <Button disabled={isLoading} type="submit">
-            {isLoading && (
+          <Button disabled={busy} type="submit">
+            {busy && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Import

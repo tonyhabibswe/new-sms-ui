@@ -5,7 +5,7 @@ import useFetchApi from '@/hooks/useFetchApi'
 import { DataTable } from '@/components/custom/data-table/data-table'
 import { columns } from '@/components/custom/course-sections/students/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/course-sections/students/data-table-list-toolbar'
-import { Card, CardContent } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
@@ -162,11 +162,9 @@ export default function AttendanceTab({ courseSectionId }) {
   // Loading state - wait for both students and statuses to load
   if (isLoading || isLoadingStatuses) {
     return (
-      <Card>
-        <CardContent className="flex items-center justify-center py-12">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-          <p className="ml-4 text-muted-foreground">Loading students...</p>
-        </CardContent>
+      <Card className="flex items-center justify-center gap-4 px-6 py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        <p className="text-muted-foreground">Loading students...</p>
       </Card>
     )
   }
@@ -174,13 +172,11 @@ export default function AttendanceTab({ courseSectionId }) {
   // Error state
   if (error) {
     return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <p className="text-destructive mb-4">{error}</p>
-          <Button onClick={handleRetry} variant="outline">
-            Retry
-          </Button>
-        </CardContent>
+      <Card className="flex flex-col items-center justify-center gap-4 px-6 py-12">
+        <p className="text-destructive">{error}</p>
+        <Button onClick={handleRetry} variant="outline">
+          Retry
+        </Button>
       </Card>
     )
   }

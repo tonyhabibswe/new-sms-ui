@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input'
 import { DialogFooter } from '@/components/ui/dialog'
 import SemesterDatePicker from './semester-datepicker'
 import useFetchApi from '@/hooks/useFetchApi'
-import { useRouter } from 'next/navigation'
+import useRefresh from '@/hooks/useRefresh'
 import { Icons } from '@/components/ui/icons'
 import { useToast } from '@/components/ui/use-toast'
 import MultiSelectDatePicker from '@/components/ui/multi-select-datepicker'
@@ -43,7 +43,8 @@ const EditFormSchema = FormSchema.pick({ name: true })
 
 const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
   const { isLoading, fetchData } = useFetchApi()
-  const router = useRouter()
+  const { refresh, isRefreshing } = useRefresh()
+  const busy = isLoading || isRefreshing
   const { toast } = useToast()
   const form = useForm({
     resolver: zodResolver(defaultData ? EditFormSchema : FormSchema),
@@ -65,8 +66,8 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
         }),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: 'Semester created!'
@@ -87,8 +88,8 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
         }),
         cache: 'no-store'
       })
+      await refresh()
       setOpenDialog(false)
-      router.refresh()
       toast({
         variant: 'success',
         title: `Semester ${defaultData.name} edited!`
@@ -166,8 +167,8 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
           )}
         </div>
         <DialogFooter>
-          <Button disabled={isLoading} type="submit">
-            {isLoading && (
+          <Button disabled={busy} type="submit">
+            {busy && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Save changes
