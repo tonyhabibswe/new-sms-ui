@@ -37,20 +37,17 @@ const FormSchema = z.object({
   holidays: z.array(z.date())
 })
 
+// Editing only renames a semester (the API's update takes just the name), so the
+// edit form leaves out the dates and holidays it doesn't show.
+const EditFormSchema = FormSchema.pick({ name: true })
+
 const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
   const { isLoading, fetchData } = useFetchApi()
   const router = useRouter()
   const { toast } = useToast()
   const form = useForm({
-    resolver: zodResolver(FormSchema),
-    defaultValues: defaultData
-      ? {
-          name: defaultData.name || '',
-          startDate: new Date(defaultData.startDate),
-          endDate: new Date(defaultData.endDate),
-          holidays: defaultData.holidays || []
-        }
-      : {}
+    resolver: zodResolver(defaultData ? EditFormSchema : FormSchema),
+    defaultValues: defaultData ? { name: defaultData.name || '' } : {}
   })
 
   async function createData(data) {
