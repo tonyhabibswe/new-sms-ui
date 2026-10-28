@@ -72,16 +72,16 @@ export default function AddCategoryForm({ onCategoryAdd, onCancel }) {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="e.g., Assignments, Exams"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -90,11 +90,11 @@ export default function AddCategoryForm({ onCategoryAdd, onCancel }) {
             control={form.control}
             name="weight"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Weight (%)</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Weight (%)</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     type="number"
                     placeholder="0-100"
                     min="0"
@@ -103,7 +103,7 @@ export default function AddCategoryForm({ onCategoryAdd, onCancel }) {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="col-span-3 col-start-2" />
+                <FormMessage />
               </FormItem>
             )}
           />

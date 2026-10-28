@@ -73,11 +73,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="studentId"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Student Id</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Student ID</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter student id"
                     type="text"
                     {...field}
@@ -93,11 +93,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="firstName"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">First Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>First name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter first name"
                     type="text"
                     {...field}
@@ -113,11 +113,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="fatherName"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Father Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Father&apos;s name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter father name"
                     type="text"
                     {...field}
@@ -133,11 +133,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="lastName"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Last Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Last name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter last name"
                     type="text"
                     {...field}
@@ -153,11 +153,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="major"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Major</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Major</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter major"
                     type="text"
                     {...field}
@@ -173,11 +173,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Email</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter email"
                     type="text"
                     {...field}
@@ -193,11 +193,11 @@ const AddStudentForm = ({ setOpenSheet, courseSectionId }) => {
             control={form.control}
             name="campus"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Campus</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Campus</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter campus"
                     type="text"
                     {...field}

@@ -25,18 +25,18 @@ export default function SemesterDatePicker({ form, label, placeholder, name }) {
       control={form.control}
       name={name}
       render={({ field }) => (
-        <FormItem className="grid grid-cols-4 items-center gap-4">
-          <FormLabel className="text-right">{label}</FormLabel>
+        <FormItem className="flex flex-col gap-2">
+          <FormLabel>{label}</FormLabel>
           <Popover>
             <PopoverTrigger asChild>
               <FormControl>
                 <Button
-                  variant={'outline'}
+                  variant="field"
                   className={cn(
-                    'w-[280px] justify-start text-left font-normal',
-                    !field.value && 'text-muted-foreground'
+                    'w-full justify-start text-left',
+                    !field.value && 'text-faint'
                   )}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <CalendarIcon className="h-4 w-4 text-muted-foreground" />
                   {field.value ? (
                     format(field.value, 'PPP')
                   ) : (

@@ -67,7 +67,7 @@ const EditableNameCell = ({ row }) => {
         ) : value ? (
           value
         ) : (
-          <p className="text-blue-700 underline underline-offset-1 cursor-pointer">
+          <p className="cursor-pointer text-primary underline underline-offset-2">
             Double click to edit
           </p>
         ))}

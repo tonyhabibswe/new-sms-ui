@@ -1,54 +1,41 @@
+import { notFound } from 'next/navigation'
 import AddCourseButton from '@/components/custom/course-sections/add-course-button'
 import { columns } from '@/components/custom/course-sections/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/course-sections/data-table-list-toolbar'
 import { DataTable } from '@/components/custom/data-table/data-table'
-import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
+import { SemesterHeader } from '@/components/custom/semesters/semester-header'
+import { getSemester, getSemesterSections } from '@/lib/semesters-server'
 
 export const metadata = {
   title: 'Course Sections',
   description: 'Course Sections'
 }
 export const revalidate = 0
-const getData = async (id) => {
-  const res = await fetchInstanceSSR(`/semester/${id}/courses`, {
-    cache: 'no-store'
-  })
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch courses')
-  }
-  const resJson = await res.json()
-  return resJson.data
-}
 
 const CoursesListPage = async (props) => {
   const params = await props.params
-  const searchParams = await props.searchParams
-  const data = await getData(params.id)
-  const semesterName = searchParams.semester || ''
+  const [semester, data] = await Promise.all([
+    getSemester(params.id),
+    getSemesterSections(params.id)
+  ])
+  if (!semester) notFound()
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-            Course Sections
-          </h2>
-          {semesterName && (
-            <p className="text-sm text-muted-foreground md:text-base">
-              {semesterName}
-            </p>
-          )}
-        </div>
-        <AddCourseButton />
-      </div>
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <SemesterHeader
+        semester={semester}
+        active="sections"
+        sectionCount={data.length}
+        holidayCount={semester.holidayCount}
+        action={<AddCourseButton />}
+      />
       <DataTable
         data={data}
         columns={columns}
         toolbar={DataTableToolbar}
+        meta={{ semester: { id: semester.id, name: semester.name } }}
         columnVisibilityInitialState={{
           id: false,
-          name: false,
           curveAlgorithm: false
         }}
       />

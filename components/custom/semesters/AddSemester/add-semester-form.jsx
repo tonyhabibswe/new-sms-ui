@@ -115,11 +115,11 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter semester name"
                     type="text"
                     {...field}
@@ -149,8 +149,8 @@ const AddSemesterForm = ({ setOpenDialog, defaultData }) => {
                 control={form.control}
                 name="holidays"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right">Holidays</FormLabel>
+                  <FormItem className="flex flex-col gap-2">
+                    <FormLabel>Holidays</FormLabel>
                     <FormControl>
                       <MultiSelectDatePicker
                         placeholder="Select dates..."

@@ -67,7 +67,7 @@ export default function EditItemForm({ item, open, onOpenChange, onItemEdit }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Grade Item</DialogTitle>
+          <DialogTitle>Edit grade item</DialogTitle>
           <DialogDescription>Update item details</DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -77,12 +77,12 @@ export default function EditItemForm({ item, open, onOpenChange, onItemEdit }) {
                 control={form.control}
                 name="title"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right">Title</FormLabel>
+                  <FormItem className="flex flex-col gap-2">
+                    <FormLabel>Title</FormLabel>
                     <FormControl>
-                      <Input className="col-span-3" {...field} />
+                      <Input className="w-full" {...field} />
                     </FormControl>
-                    <FormMessage className="col-span-3 col-start-2" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -91,18 +91,18 @@ export default function EditItemForm({ item, open, onOpenChange, onItemEdit }) {
                 control={form.control}
                 name="maxPoints"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right">Max Points</FormLabel>
+                  <FormItem className="flex flex-col gap-2">
+                    <FormLabel>Max points</FormLabel>
                     <FormControl>
                       <Input
-                        className="col-span-3"
+                        className="w-full"
                         type="number"
                         min="0"
                         step="0.1"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage className="col-span-3 col-start-2" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />

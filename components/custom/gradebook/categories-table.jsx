@@ -15,6 +15,9 @@ import EditCategoryForm from './edit-category-form'
 import DeleteCategoryDialog from './delete-category-dialog'
 import { cn } from '@/lib/utils'
 
+const algorithmLabel = (algorithm) =>
+  algorithm === 'equal' ? 'Equal weight' : 'Points based'
+
 export default function CategoriesTable({
   categories,
   selectedCategoryId,
@@ -40,10 +43,12 @@ export default function CategoriesTable({
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead className="w-24">Weight (%)</TableHead>
-            <TableHead className="w-32">Algorithm</TableHead>
-            <TableHead className="w-24 text-right">Actions</TableHead>
+            <TableHead className="px-3">Name</TableHead>
+            <TableHead className="hidden px-3 sm:table-cell">Weight</TableHead>
+            <TableHead className="hidden px-3 sm:table-cell">Algorithm</TableHead>
+            <TableHead className="px-3">
+              <span className="sr-only">Actions</span>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -52,35 +57,47 @@ export default function CategoriesTable({
               key={category.id}
               className={cn(
                 'cursor-pointer',
-                selectedCategoryId === category.id && 'bg-muted'
+                selectedCategoryId === category.id && 'bg-brand-400/5 hover:bg-brand-400/5'
               )}
               onClick={() => onCategorySelect(category.id)}>
-              <TableCell className="font-medium">{category.name}</TableCell>
-              <TableCell>{category.weight}%</TableCell>
-              <TableCell className="capitalize">
-                {category.algorithm === 'equal'
-                  ? 'Equal Weight'
-                  : 'Points Based'}
+              <TableCell className="px-3 font-semibold">
+                <button
+                  type="button"
+                  aria-pressed={selectedCategoryId === category.id}
+                  className="text-left hover:text-primary">
+                  {category.name}
+                </button>
+                <span className="mt-0.5 block text-[13px] font-normal text-muted-foreground sm:hidden">
+                  {category.weight}% · {algorithmLabel(category.algorithm)}
+                </span>
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="hidden px-3 font-display text-base font-bold text-primary sm:table-cell">
+                {category.weight}%
+              </TableCell>
+              <TableCell className="hidden whitespace-nowrap px-3 sm:table-cell">
+                {algorithmLabel(category.algorithm)}
+              </TableCell>
+              <TableCell className="px-3 text-right">
                 <div className="flex justify-end gap-2">
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
+                    aria-label={`Edit ${category.name}`}
                     onClick={(e) => {
                       e.stopPropagation()
                       setEditingCategory(category)
                     }}>
-                    <Pencil className="h-4 w-4" />
+                    <Pencil className="h-4 w-4 text-muted-foreground" />
                   </Button>
                   <Button
-                    variant="ghost"
+                    variant="outline"
                     size="icon"
+                    aria-label={`Delete ${category.name}`}
                     onClick={(e) => {
                       e.stopPropagation()
                       setDeletingCategory(category)
                     }}>
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
               </TableCell>

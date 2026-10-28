@@ -19,14 +19,14 @@ export default function AddCategoryButton({ courseSectionId, onCategoryAdd }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Category
+        <Button variant="outline" size="sm">
+          <Plus className="h-4 w-4" />
+          Add category
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Grade Category</DialogTitle>
+          <DialogTitle>Add grade category</DialogTitle>
           <DialogDescription>
             Create a new grading category with weight and calculation method
           </DialogDescription>

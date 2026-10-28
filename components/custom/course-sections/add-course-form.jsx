@@ -159,16 +159,16 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
           <Icons.spinner className="h-4 w-4 animate-spin" />
         ) : (
           <>
-            <div className="grid gap-4 py-4">
+            <div className="grid gap-4 py-2">
               <FormField
                 control={form.control}
                 name="sectionCode"
                 render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel className="text-right">Section</FormLabel>
+                  <FormItem className="flex flex-col gap-2">
+                    <FormLabel>Section</FormLabel>
                     <FormControl>
                       <Input
-                        className="col-span-3"
+                        className="w-full"
                         placeholder="Enter course section"
                         type="text"
                         {...field}
@@ -180,14 +180,14 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
               />
             </div>
             {!!defaultData && (
-              <div className="grid gap-4 py-4">
+              <div className="grid gap-4 py-2">
                 <FormField
                   control={form.control}
                   name="curveAlgorithm"
                   render={({ field }) => (
-                    <FormItem className="grid grid-cols-4 items-center gap-4">
-                      <FormLabel className="text-right">
-                        Curve Algorithm
+                    <FormItem className="flex flex-col gap-2">
+                      <FormLabel>
+                        Curve algorithm
                       </FormLabel>
                       <FormControl>
                         <Combobox
@@ -201,7 +201,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                           displayKey="code"
                           searchKey="code"
                           allowClear={true}
-                          className="col-span-3"
+                          className="w-full"
                         />
                       </FormControl>
                       <FormMessage />
@@ -212,13 +212,13 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
             )}
             {!defaultData && (
               <>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-2">
                   <FormField
                     control={form.control}
                     name="courseId"
                     render={({ field }) => (
-                      <FormItem className="grid grid-cols-4 items-center gap-4">
-                        <FormLabel className="text-right">Course</FormLabel>
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>Course</FormLabel>
                         <FormControl>
                           <Combobox
                             items={courses?.data || []}
@@ -235,17 +235,17 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                     )}
                   />
                 </div>{' '}
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-2">
                   <ComboBoxMulti
                     form={form}
                     name="courseDays"
                     formItemProps={{
-                      className: 'grid grid-cols-4 items-center gap-4'
+                      className: 'flex flex-col gap-2'
                     }}
-                    formLabelProps={{ className: 'text-right' }}
+                    formLabelProps={{}}
                     formLabel="Course Days"
                     buttonProps={{
-                      className: 'col-span-3',
+                      className: '',
                       placeholder: 'Select course days'
                     }}
                     options={[
@@ -257,16 +257,16 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                     ]}
                   />
                 </div>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-2">
                   <FormField
                     control={form.control}
                     name="startSessionTime"
                     render={({ field }) => (
-                      <FormItem className="grid grid-cols-4 items-center gap-4">
-                        <FormLabel className="text-right">Start Time</FormLabel>
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>Start time</FormLabel>
                         <FormControl>
                           <Input
-                            className="col-span-3"
+                            className="w-full"
                             placeholder="Enter course start time"
                             type="time"
                             {...field}
@@ -277,16 +277,16 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                     )}
                   />
                 </div>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-2">
                   <FormField
                     control={form.control}
                     name="endSessionTime"
                     render={({ field }) => (
-                      <FormItem className="grid grid-cols-4 items-center gap-4">
-                        <FormLabel className="text-right">End Time</FormLabel>
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>End time</FormLabel>
                         <FormControl>
                           <Input
-                            className="col-span-3"
+                            className="w-full"
                             placeholder="Enter course end time"
                             type="time"
                             {...field}
@@ -297,16 +297,16 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                     )}
                   />
                 </div>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-2">
                   <FormField
                     control={form.control}
                     name="room"
                     render={({ field }) => (
-                      <FormItem className="grid grid-cols-4 items-center gap-4">
-                        <FormLabel className="text-right">Room</FormLabel>
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>Room</FormLabel>
                         <FormControl>
                           <Input
-                            className="col-span-3"
+                            className="w-full"
                             placeholder="Enter course room"
                             type="text"
                             {...field}
@@ -317,14 +317,14 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                     )}
                   />
                 </div>
-                <div className="grid gap-4 py-4">
+                <div className="grid gap-4 py-2">
                   <FormField
                     control={form.control}
                     name="curveAlgorithm"
                     render={({ field }) => (
-                      <FormItem className="grid grid-cols-4 items-center gap-4">
-                        <FormLabel className="text-right">
-                          Curve Algorithm
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel>
+                          Curve algorithm
                         </FormLabel>
                         <FormControl>
                           <Combobox
@@ -338,7 +338,7 @@ const AddCourseForm = ({ setOpenSheet, defaultData, semesterId }) => {
                             displayKey="code"
                             searchKey="code"
                             allowClear={true}
-                            className="col-span-3"
+                            className="w-full"
                           />
                         </FormControl>
                         <FormMessage />

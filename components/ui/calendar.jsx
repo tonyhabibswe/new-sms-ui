@@ -21,32 +21,32 @@ function Calendar({
       classNames={{
         months: "relative flex flex-col sm:flex-row gap-4",
         month: "space-y-4",
-        month_caption: "flex justify-center pt-1 items-center",
-        caption_label: "text-sm font-medium",
-        nav: "absolute inset-x-1 top-0 flex items-center justify-between",
+        month_caption: "flex h-10 justify-center items-center",
+        caption_label: "font-display text-[17px] font-bold",
+        nav: "absolute inset-x-0 top-0 flex items-center justify-between",
         button_previous: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-10 w-10 p-0"
         ),
         button_next: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100"
+          "h-10 w-10 p-0"
         ),
         month_grid: "w-full border-collapse space-y-1",
         weekdays: "flex",
         weekday:
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
+          "w-10 text-xs font-semibold text-faint",
         week: "flex w-full mt-2",
         day: "text-center text-sm p-0 relative aria-selected:bg-accent first:aria-selected:rounded-l-md last:aria-selected:rounded-r-md focus-within:relative focus-within:z-20",
         day_button: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal"
+          "h-10 w-10 p-0 font-medium"
         ),
         selected:
           "[&>button]:bg-primary [&>button]:text-primary-foreground [&>button:hover]:bg-primary [&>button:hover]:text-primary-foreground [&>button:focus]:bg-primary [&>button:focus]:text-primary-foreground",
         today: "[&>button]:bg-accent [&>button]:text-accent-foreground",
-        outside: "text-muted-foreground opacity-50",
-        disabled: "text-muted-foreground opacity-50",
+        outside: "text-faint opacity-60",
+        disabled: "text-faint opacity-40",
         range_middle:
           "[&>button]:bg-accent [&>button]:text-accent-foreground",
         hidden: "invisible",

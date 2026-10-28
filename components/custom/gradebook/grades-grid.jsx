@@ -8,16 +8,50 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 import EditableGradeCell from './editable-grade-cell'
-import GradesMobileCard from './grades-mobile-card'
+import GradesMobileList from './grades-mobile-list'
+
+const isLetterColumn = (col) => /letter/i.test(col.key)
+
+const formatValue = (value) =>
+  value !== undefined && value !== null
+    ? typeof value === 'number'
+      ? value.toFixed(2)
+      : value
+    : '—'
+
+// Letter grades as chips; an F is flagged like an absence
+export function LetterChip({ value }) {
+  if (value === undefined || value === null || value === '') return '—'
+  const failing = String(value).startsWith('F')
+  return (
+    <span
+      title={failing ? 'Failing grade' : undefined}
+      className={cn(
+        'inline-flex min-w-[40px] justify-center rounded-lg border px-2.5 py-1 text-[13px] font-bold',
+        failing
+          ? 'border-absent-solid/30 bg-absent-tint text-absent'
+          : 'border-border bg-muted text-foreground'
+      )}>
+      {value}
+    </span>
+  )
+}
+
+function EmptyState({ children }) {
+  return (
+    <div className="rounded-card-sm border border-dashed border-input bg-card px-6 py-12 text-center text-sm text-muted-foreground sm:rounded-card">
+      {children}
+    </div>
+  )
+}
 
 /**
  * Dynamic Grades Grid Component
  * Renders grades table with dynamic columns from API
- * Supports dual rendering: card view on mobile, table view on desktop
+ * Supports dual rendering: one item at a time on phones, the full table on desktop
  *
  * @param {Object} props
  * @param {Object} props.columns - Categorized columns {identifiers, gradeableItems, categories, calculated}
@@ -34,37 +68,17 @@ export default function GradesGrid({
   onValidate
 }) {
   if (!columns || !rows) {
-    return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <p className="text-muted-foreground">No grades data available</p>
-        </CardContent>
-      </Card>
-    )
+    return <EmptyState>No grades data available</EmptyState>
   }
 
   const { identifiers, gradeableItems, categories, calculated } = columns
 
   if (gradeableItems.length === 0) {
-    return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <p className="text-muted-foreground">
-            No grade items yet. Add categories and items first.
-          </p>
-        </CardContent>
-      </Card>
-    )
+    return <EmptyState>No grade items yet. Add categories and items first.</EmptyState>
   }
 
   if (rows.length === 0) {
-    return (
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12">
-          <p className="text-muted-foreground">No enrolled students found</p>
-        </CardContent>
-      </Card>
-    )
+    return <EmptyState>No enrolled students found</EmptyState>
   }
 
   /**
@@ -130,198 +144,194 @@ export default function GradesGrid({
     return originalValue
   }
 
+  const stickyBg = (hasModifications) =>
+    hasModifications ? 'bg-[hsl(var(--card))] [background-image:linear-gradient(hsl(var(--brand-400)/0.05),hsl(var(--brand-400)/0.05))]' : 'bg-card'
+
   return (
     <>
-      {/* Mobile Card View */}
-      <div className="md:hidden space-y-4">
-        {rows.map((row) => (
-          <GradesMobileCard
-            key={row.enrollmentId}
-            row={row}
-            columns={columns}
-            modifiedGrades={modifiedGrades}
-            onGradeChange={onGradeChange}
-            onValidate={onValidate}
-          />
-        ))}
-      </div>
+      <GradesMobileList
+        columns={columns}
+        rows={rows}
+        parseGradeCell={parseGradeCell}
+        isGradeModified={isGradeModified}
+        getCurrentGradeValue={getCurrentGradeValue}
+        onGradeChange={onGradeChange}
+        onValidate={onValidate}
+      />
 
-      {/* Desktop Table View */}
-      <Card className="hidden md:block">
-        <CardContent className="p-0">
-          <div className="relative overflow-auto w-full">
-            <Table>
-              <TableHeader className="sticky top-0 z-30">
-                <TableRow className="border-b">
-                  {/* Sticky identifier columns */}
-                  {identifiers.map((col, index) => (
-                    <TableHead
-                      key={col.key}
-                      className={cn(
-                        'sticky z-40 bg-muted border-r min-w-[150px]',
-                        index === 0 && 'left-0',
-                        index === 1 && 'left-[150px]'
-                      )}>
-                      {col.label}
-                    </TableHead>
-                  ))}
+      <div className="hidden overflow-hidden rounded-card border border-border bg-card shadow-card md:block">
+        <div className="relative w-full overflow-auto">
+          <Table>
+            <TableHeader className="sticky top-0 z-30">
+              <TableRow>
+                {identifiers.map((col, index) => (
+                  <TableHead
+                    key={col.key}
+                    className={cn(
+                      'sticky z-40 h-auto min-w-[150px] border-r border-border bg-card py-3 align-bottom',
+                      index === 0 && 'left-0',
+                      index === 1 && 'left-[150px]'
+                    )}>
+                    {col.label}
+                  </TableHead>
+                ))}
 
-                  {/* Gradeable item columns */}
-                  {gradeableItems.map((col) => (
-                    <TableHead
-                      key={col.key}
-                      className="text-center min-w-[120px] bg-muted">
-                      <div className="text-xs font-normal text-muted-foreground mb-1">
-                        {col.categoryName}
-                      </div>
-                      <div className="font-medium">{col.label}</div>
-                      <div className="text-xs font-normal text-muted-foreground">
-                        (Max: {col.maxPoints})
-                      </div>
-                    </TableHead>
-                  ))}
+                {gradeableItems.map((col) => (
+                  <TableHead
+                    key={col.key}
+                    className="h-auto min-w-[120px] bg-card px-3 py-3 text-right align-bottom normal-case tracking-normal">
+                    <div className="text-[11px] font-semibold uppercase tracking-[1.2px] text-faint">
+                      {col.categoryName}
+                    </div>
+                    <div className="text-sm font-semibold text-foreground">{col.label}</div>
+                    <div className="text-xs font-medium text-muted-foreground">
+                      /{col.maxPoints}
+                    </div>
+                  </TableHead>
+                ))}
 
-                  {/* Category average columns */}
-                  {categories.map((col) => (
-                    <TableHead
-                      key={col.key}
-                      className="text-center min-w-[120px] bg-muted border-l-2">
-                      <div className="font-medium">{col.label}</div>
-                      <div className="text-xs font-normal text-muted-foreground">
-                        {col.algorithm}
-                      </div>
-                    </TableHead>
-                  ))}
+                {categories.map((col) => (
+                  <TableHead
+                    key={col.key}
+                    className="h-auto min-w-[120px] border-l border-border bg-muted px-3 py-3 text-right align-bottom">
+                    {col.label}
+                    <div className="mt-0.5 text-xs font-medium normal-case tracking-normal text-muted-foreground">
+                      {col.algorithm}
+                    </div>
+                  </TableHead>
+                ))}
 
-                  {/* Calculated columns */}
-                  {calculated.map((col) => (
-                    <TableHead
-                      key={col.key}
-                      className="text-center min-w-[120px] bg-accent/50 border-l-2">
-                      <div className="font-medium">{col.label}</div>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
+                {calculated.map((col) => (
+                  <TableHead
+                    key={col.key}
+                    className={cn(
+                      'h-auto min-w-[110px] border-l border-border bg-muted px-3 py-3 align-bottom',
+                      isLetterColumn(col) ? 'text-center' : 'text-right'
+                    )}>
+                    {col.label}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
 
-              <TableBody>
-                {rows.map((row) => {
-                  const isInactive = row.enrollmentStatus === 'inactive'
-                  const hasModifications = gradeableItems.some((col) => {
-                    const { id } = parseGradeCell(row, col.key)
-                    return isGradeModified(
-                      id,
-                      row.enrollmentId,
-                      col.gradeableItemId
-                    )
-                  })
+            <TableBody>
+              {rows.map((row) => {
+                const isInactive = row.enrollmentStatus === 'inactive'
+                const hasModifications = gradeableItems.some((col) => {
+                  const { id } = parseGradeCell(row, col.key)
+                  return isGradeModified(id, row.enrollmentId, col.gradeableItemId)
+                })
 
-                  return (
-                    <TableRow
-                      key={row.enrollmentId}
-                      className={cn(
-                        hasModifications &&
-                          'bg-yellow-50/30 dark:bg-yellow-950/10',
-                        isInactive && 'opacity-60'
-                      )}>
-                      {/* Sticky identifier columns */}
-                      {identifiers.map((col, index) => (
-                        <TableCell
+                return (
+                  <TableRow
+                    key={row.enrollmentId}
+                    className={cn(
+                      hasModifications && 'bg-brand-400/5',
+                      isInactive && 'opacity-60'
+                    )}>
+                    {identifiers.map((col, index) => (
+                      <TableCell
+                        key={col.key}
+                        className={cn(
+                          'sticky z-20 border-r border-border',
+                          stickyBg(hasModifications),
+                          index === 0 && 'left-0',
+                          index === 1 && 'left-[150px] font-semibold'
+                        )}>
+                        <div className="flex items-center gap-2">
+                          {row[col.key]}
+                          {isInactive && index === 0 && (
+                            <Badge variant="secondary">Inactive</Badge>
+                          )}
+                        </div>
+                      </TableCell>
+                    ))}
+
+                    {gradeableItems.map((col) => {
+                      const { id, value } = parseGradeCell(row, col.key)
+                      const currentValue = getCurrentGradeValue(
+                        id,
+                        value,
+                        row.enrollmentId,
+                        col.gradeableItemId
+                      )
+                      const isModified = isGradeModified(
+                        id,
+                        row.enrollmentId,
+                        col.gradeableItemId
+                      )
+
+                      return (
+                        <EditableGradeCell
                           key={col.key}
-                          className={cn(
-                            'sticky z-20 bg-background border-r',
-                            index === 0 && 'left-0 font-medium',
-                            index === 1 && 'left-[150px]',
-                            hasModifications &&
-                              'bg-yellow-50/30 dark:bg-yellow-950/10'
-                          )}>
-                          <div className="flex items-center gap-2">
-                            {row[col.key]}
-                            {isInactive && index === 0 && (
-                              <Badge variant="outline" className="text-xs">
-                                Inactive
-                              </Badge>
-                            )}
-                          </div>
-                        </TableCell>
-                      ))}
+                          gradeId={id}
+                          value={currentValue}
+                          maxPoints={col.maxPoints}
+                          isModified={isModified}
+                          isInactive={isInactive}
+                          label={`${row.studentName}, ${col.label}`}
+                          onChange={(gradeId, newValue) =>
+                            onGradeChange(
+                              gradeId,
+                              newValue,
+                              value,
+                              row.enrollmentId,
+                              col.gradeableItemId
+                            )
+                          }
+                          onValidate={onValidate}
+                        />
+                      )
+                    })}
 
-                      {/* Gradeable item cells (editable) */}
-                      {gradeableItems.map((col) => {
-                        const { id, value } = parseGradeCell(row, col.key)
-                        const currentValue = getCurrentGradeValue(
-                          id,
-                          value,
-                          row.enrollmentId,
-                          col.gradeableItemId
-                        )
-                        const isModified = isGradeModified(
-                          id,
-                          row.enrollmentId,
-                          col.gradeableItemId
-                        )
+                    {categories.map((col) => (
+                      <TableCell
+                        key={col.key}
+                        className="border-l border-border bg-muted/60 px-3 text-right font-medium tabular-nums">
+                        {formatValue(row[col.key])}
+                      </TableCell>
+                    ))}
 
-                        return (
-                          <EditableGradeCell
-                            key={col.key}
-                            gradeId={id}
-                            value={currentValue}
-                            maxPoints={col.maxPoints}
-                            isModified={isModified}
-                            isInactive={isInactive}
-                            onChange={(gradeId, newValue) =>
-                              onGradeChange(
-                                gradeId,
-                                newValue,
-                                value,
-                                row.enrollmentId,
-                                col.gradeableItemId
-                              )
-                            }
-                            onValidate={onValidate}
-                          />
-                        )
-                      })}
-
-                      {/* Category average cells (read-only) */}
-                      {categories.map((col) => {
-                        const value = row[col.key]
-                        return (
-                          <TableCell
-                            key={col.key}
-                            className="text-center bg-muted/30 border-l-2 font-medium">
-                            {value !== undefined && value !== null
-                              ? typeof value === 'number'
-                                ? value.toFixed(2)
-                                : value
-                              : '—'}
-                          </TableCell>
-                        )
-                      })}
-
-                      {/* Calculated cells (read-only) */}
-                      {calculated.map((col) => {
-                        const value = row[col.key]
-                        return (
-                          <TableCell
-                            key={col.key}
-                            className="text-center bg-accent/20 border-l-2 font-medium">
-                            {value !== undefined && value !== null
-                              ? typeof value === 'number'
-                                ? value.toFixed(2)
-                                : value
-                              : '—'}
-                          </TableCell>
-                        )
-                      })}
-                    </TableRow>
-                  )
-                })}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                    {calculated.map((col) => (
+                      <TableCell
+                        key={col.key}
+                        className={cn(
+                          'border-l border-border bg-muted/60 px-3',
+                          isLetterColumn(col)
+                            ? 'text-center'
+                            : 'text-right font-display text-base font-bold tabular-nums'
+                        )}>
+                        {isLetterColumn(col) ? (
+                          <LetterChip value={row[col.key]} />
+                        ) : (
+                          formatValue(row[col.key])
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )
+              })}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border px-6 py-4 text-[13px] text-faint">
+          <span className="inline-flex items-center gap-2">
+            <span
+              aria-hidden="true"
+              className="h-4 w-4 rounded border-2 border-primary bg-brand-400/5"
+            />
+            Changed, not saved yet
+          </span>
+          <span className="inline-flex items-center gap-2">
+            <span
+              aria-hidden="true"
+              className="inline-flex h-[18px] items-center rounded border border-absent-solid/30 bg-absent-tint px-1.5 text-[11px] font-bold text-absent">
+              F
+            </span>
+            Failing grade
+          </span>
+        </div>
+      </div>
     </>
   )
 }

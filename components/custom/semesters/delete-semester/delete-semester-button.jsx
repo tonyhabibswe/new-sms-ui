@@ -36,7 +36,7 @@ const DeleteSemesterButton = ({ defaultData, setOpenDialog }) => {
         disabled={isLoading}
         onClick={handleDeleteSemester}>
         {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Delete Semester
+        Delete semester
       </Button>
     </DialogFooter>
   )

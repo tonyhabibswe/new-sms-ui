@@ -1,4 +1,5 @@
 import { DataTable } from '@/components/custom/data-table/data-table'
+import { PageHeader } from '@/components/custom/layout/page-header'
 import fetchInstanceSSR from '@/lib/fetchInstanceSSR'
 import { columns } from '@/components/custom/courses/data-table-list-columns'
 import { DataTableToolbar } from '@/components/custom/courses/data-table-list-toolbar'
@@ -23,13 +24,13 @@ const CoursesListPage = async () => {
   const data = await getData()
 
   return (
-    <div className="flex h-full flex-1 flex-col space-y-4 p-4 md:space-y-8 md:p-8">
-      <div className="flex items-center md:justify-start justify-between">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-          Courses
-        </h2>
-        <AddCourseButton />
-      </div>
+    <div className="flex flex-col gap-6 lg:gap-8">
+      <PageHeader
+        eyebrow="Catalog"
+        title="Courses"
+        description="Every course a semester can open sections of, and the grade each major needs to pass it."
+        actions={<AddCourseButton />}
+      />
       <DataTable
         data={data}
         columns={columns}

@@ -36,7 +36,7 @@ const DeleteCourseButton = ({ defaultData, setOpenDialog }) => {
         disabled={isLoading}
         onClick={handleDeleteCourse}>
         {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-        Delete Course
+        Delete course
       </Button>
     </DialogFooter>
   )

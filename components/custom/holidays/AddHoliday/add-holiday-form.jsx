@@ -77,11 +77,11 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
             control={form.control}
             name="date"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Select Date</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Date</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className="col-span-3"
+                    className="w-full"
                     date={field.value}
                     setDate={field.onChange}
                     placeholder="Pick a date"
@@ -97,11 +97,11 @@ const AddHolidayForm = ({ setOpenDialog, semesterId }) => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem className="grid grid-cols-4 items-center gap-4">
-                <FormLabel className="text-right">Name</FormLabel>
+              <FormItem className="flex flex-col gap-2">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="col-span-3"
+                    className="w-full"
                     placeholder="Enter holiday name"
                     type="text"
                     {...field}

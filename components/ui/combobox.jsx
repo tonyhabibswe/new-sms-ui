@@ -71,15 +71,15 @@ export function Combobox({
       }}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
+          variant="field"
           role="combobox"
           aria-expanded={open}
-          className={cn('w-[200px] justify-between', buttonClassName)}>
+          className={cn('w-full justify-between', buttonClassName)}>
           {selectedLabel || placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="h-4 w-4 shrink-0 text-muted-foreground" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[var(--radix-popover-trigger-width)] min-w-[220px] p-0">
         <Command>
           <CommandInput
             placeholder={`Search ${placeholder.toLowerCase()}`}

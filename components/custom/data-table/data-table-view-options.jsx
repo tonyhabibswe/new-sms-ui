@@ -16,15 +16,12 @@ export function DataTableViewOptions({ table }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="ml-auto hidden h-8 lg:flex">
-          <MixerHorizontalIcon className="mr-2 h-4 w-4" />
-          View
+        <Button variant="outline" className="ml-auto hidden lg:flex">
+          <MixerHorizontalIcon className="h-4 w-4" aria-hidden="true" />
+          Columns
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[150px]">
+      <DropdownMenuContent align="end" className="w-[200px]">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table
@@ -37,7 +34,6 @@ export function DataTableViewOptions({ table }) {
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}
-                className="capitalize"
                 checked={column.getIsVisible()}
                 onCheckedChange={(value) => column.toggleVisibility(!!value)}>
                 {column.columnDef.label ?? column.id}
