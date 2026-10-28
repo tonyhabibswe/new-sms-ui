@@ -38,12 +38,15 @@ export default function GradesTab({ courseSectionId }) {
    * @returns {{isValid: boolean, error?: string, parsedValue: number|null}}
    */
   const validateGrade = (value, maxPoints) => {
-    // Empty/null is valid (not graded)
-    if (value === null || value === '' || value === undefined) {
+    // Empty/null is valid (not graded): clearing a cell saves the grade as empty
+    const text = value === null || value === undefined ? '' : String(value).trim()
+    if (text === '') {
       return { isValid: true, parsedValue: null }
     }
 
-    const numValue = parseFloat(value)
+    // Number, not parseFloat, so "12abc" isn't saved as 12. A decimal comma
+    // ("12,5") counts as a point: some phone keyboards only offer a comma.
+    const numValue = Number(text.replace(',', '.'))
 
     // Check if valid number
     if (isNaN(numValue)) {
