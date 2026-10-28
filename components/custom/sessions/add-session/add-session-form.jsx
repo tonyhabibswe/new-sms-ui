@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 import { parseISO, format, parse } from 'date-fns'
 import { Button } from '@/components/ui/button'
 import {
@@ -24,7 +24,8 @@ import DatePicker from '@/components/ui/datepicker'
 
 const FormSchema = z.object({
   sessionDate: z.date({
-    required_error: 'Date is required'
+    error: (issue) =>
+      issue.input === undefined ? 'Date is required' : undefined
   }),
   startSessionTime: z.string(),
   endSessionTime: z.string(),

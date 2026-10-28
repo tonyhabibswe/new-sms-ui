@@ -3,7 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { useForm } from 'react-hook-form'
-import * as z from 'zod'
+import * as z from '@/lib/zod'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -28,10 +28,12 @@ import { useState } from 'react'
 const FormSchema = z.object({
   name: z.string(),
   startDate: z.date({
-    required_error: 'Start date is required'
+    error: (issue) =>
+      issue.input === undefined ? 'Start date is required' : undefined
   }),
   endDate: z.date({
-    required_error: 'End date is required'
+    error: (issue) =>
+      issue.input === undefined ? 'End date is required' : undefined
   }),
   holidays: z.array(z.date())
 })
